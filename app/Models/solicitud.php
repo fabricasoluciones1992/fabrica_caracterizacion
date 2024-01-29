@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class permanence extends Model
+class solicitud extends Model
 {
     use HasFactory;
-    protected $primaryKey = "perm_id";
+    protected $primaryKey = "sol_id";
     protected $fillable = [
-        'perm_date',
-        'perm_description',
-        'sol_id',
-        'act_id'
+        'sol_date',
+        'sol_description',
+        'rea_id',
+        'stu_id'
 
     ];
     public $timestamps = false;
