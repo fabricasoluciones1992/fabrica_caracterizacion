@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActionsController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\GendersController;
+use App\Http\Controllers\PermanencesController;
 use App\Http\Controllers\ReasonsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('actions', ActionsController::class)->names('actions');
 Route::resource('reasons', ReasonsController::class)->names('reasons');
+Route::resource('permanences', PermanencesController::class)->names('permanences');
+
 // Route::resource('genders', GendersController::class)->names('genders');
