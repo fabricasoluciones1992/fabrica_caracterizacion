@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActionsController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\GendersController;
 use Illuminate\Http\Request;
@@ -20,5 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('eps', EpsController::class)->names('eps');
-Route::resource('genders', GendersController::class)->names('genders');
+Route::resource('actions', ActionsController::class)->names('actions');
+// Route::resource('genders', GendersController::class)->names('genders');
