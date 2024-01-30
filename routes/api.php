@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\AssistancesController;
 use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\EpsController;
@@ -36,6 +37,7 @@ Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes
 
 Route::resource('bienestarActTypes', BienestarActivityTypesController::class)->names('bienestarActTypes');
 Route::resource('bienestarActivities', BienestarActivitiesController::class)->names('bienestarActivities');
+Route::resource('assistances', AssistancesController::class)->names('assistances');
 
 Route::resource('monetaryStates', MonetaryStatesController::class)->names('monetaryStates');
 
