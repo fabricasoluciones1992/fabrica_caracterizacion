@@ -35,6 +35,8 @@ class SolicitudesController extends Controller
            'status' => true,
             'data' => $solicitudes
         ],200);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes",4,2,1);
+
     }
  
     public function store(Request $request)
@@ -62,6 +64,8 @@ class SolicitudesController extends Controller
              'message' => "The request success has been created."
             ],200);
         }
+        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla solicitudes",3,2,1);
+
     }
     public function show($id)
     {
@@ -95,6 +99,8 @@ class SolicitudesController extends Controller
                 'data' => $solicitudes
             ]);
         }
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes",4,2,1);
+
     }
     public function update(Request $request,$id)
     {
@@ -130,6 +136,8 @@ class SolicitudesController extends Controller
                 ],200);
             }
         }
+        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla solicitudes",1,2,1);
+
     }
     public function destroy(solicitud $solicitudes)
     {
@@ -137,5 +145,7 @@ class SolicitudesController extends Controller
             'status' => false,
             'message' => "Funcion no disponible"
          ],400);
+         Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla solicitudes",2,2,1);
+
     }
 }

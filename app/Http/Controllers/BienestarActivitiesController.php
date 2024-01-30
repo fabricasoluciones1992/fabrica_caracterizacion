@@ -20,6 +20,8 @@ class BienestarActivitiesController extends Controller
             'status' => true,
             'data' => $bienestarActivity
         ],200);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Bienestar Activities",4,2,1);
+
     }
 
     public function store(Request $request)
@@ -44,6 +46,8 @@ class BienestarActivitiesController extends Controller
                 'message' => "The bienestar activity successfully has been created."
             ],200);
         }
+        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla Bienestar Activities",3,2,1);
+
     }
     public function show($id)
     {
@@ -64,6 +68,8 @@ class BienestarActivitiesController extends Controller
                 'data' => $bienestarActivity
             ]);
         }
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Bienestar Activities",4,2,1);
+
     }
     public function update(Request $request, $id)
     {
@@ -98,6 +104,8 @@ class BienestarActivitiesController extends Controller
                 ],200);
             }
         }
+        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla Bienestar Activities",1,2,1);
+
     }
     public function destroy(BienestarActivity $bienestarActivity)
     {
@@ -105,5 +113,8 @@ class BienestarActivitiesController extends Controller
             'status' => false,
             'message' => "Funcion no disponible"
         ],400);
+        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla Bienestar Activities",2,2,1);
+
     }
+    
 }

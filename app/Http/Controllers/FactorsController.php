@@ -16,6 +16,8 @@ class FactorsController extends Controller
             'status' => true,
             'data' => $factors
         ],200);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla factors",4,2,1);
+
     }
     public function store(Request $request)
     {
@@ -38,6 +40,8 @@ class FactorsController extends Controller
              'message' => "El tipo de factor ".$factor->fac_name." ha sido creado exitosamente."
             ],200);
         }
+        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla factors",3,2,1);
+
     }
     public function show($id)
     {
@@ -54,6 +58,8 @@ class FactorsController extends Controller
                 'data' => $factor
             ]);
         }
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla factors",4,2,1);
+
     }
     public function update(Request $request, $id)
     {
@@ -83,6 +89,8 @@ class FactorsController extends Controller
                 ],200);
             };
         }
+        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla factors",1,2,1);
+
     }
     public function destroy(factor $factors)
     {
@@ -91,5 +99,8 @@ class FactorsController extends Controller
             'message' => "Funcion no disponible"
  
         ],400);
+        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla factors",2,2,1);
+
     }
+    
 }

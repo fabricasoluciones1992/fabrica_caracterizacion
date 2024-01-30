@@ -19,6 +19,8 @@ class PermanencesController extends Controller
            'status' => true,
             'data' => $permanences
         ],200);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla permanences",4,2,1);
+
     }
  
     public function store(Request $request)
@@ -44,6 +46,8 @@ class PermanencesController extends Controller
              'message' => "The permanences success has been created."
             ],200);
         }
+        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla permanences",3,2,1);
+
     }
     public function show($id)
     {
@@ -63,6 +67,8 @@ class PermanencesController extends Controller
                 'data' => $permanences
             ]);
         }
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla permanences",4,2,1);
+
     }
     public function update(Request $request,$id)
     {
@@ -97,6 +103,8 @@ class PermanencesController extends Controller
                 ],200);
             }
         }
+        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla permanences",1,2,1);
+
     }
     public function destroy(permanence $permanences)
     {
@@ -104,5 +112,8 @@ class PermanencesController extends Controller
             'status' => false,
             'message' => "Funcion no disponible"
          ],400);
+         Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla permanences",2,2,1);
+
     }
+
 }

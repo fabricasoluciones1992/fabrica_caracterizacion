@@ -35,6 +35,8 @@ class BienestarActivityTypesController extends Controller
                 'message' => "El tipo de actividad de bienestar '".$bienestarActTypes->bie_act_typ_name."' ha sido creado exitosamente."
             ],200);
         }
+        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla Bienestar Activities types",4,2,1);
+
     }
     public function show($id)
     {
@@ -50,6 +52,8 @@ class BienestarActivityTypesController extends Controller
                 'data' => $bienestarActTypes
             ]);
         }
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Bienestar Activities types",4,2,1);
+
     }
     public function update(Request $request, $id)
     {
@@ -78,6 +82,8 @@ class BienestarActivityTypesController extends Controller
                 ],200);
             };
         }
+        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla Bienestar Activities types",1,2,1);
+
     }
     public function destroy(BienestarActivityTypes $bienestarActTypes)
     {
@@ -85,5 +91,7 @@ class BienestarActivityTypesController extends Controller
             'status' => false,
             'message' => "Funcion no disponible"
         ],400);
+        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla Bienestar Activities types",2,2,1);
+
     }
 }

@@ -21,6 +21,8 @@ class AssistancesController extends Controller
             'status' => true,
             'data' => $assistances
         ],200);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla assistences",4,2,1);
+
     }
     public function store(Request $request)
     {
@@ -44,6 +46,8 @@ class AssistancesController extends Controller
                 'message' => "The assistance successfully has been created."
             ],200);
         }
+        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla assistences",3,2,1);
+
     }
     public function show($id)
     {
@@ -65,6 +69,8 @@ class AssistancesController extends Controller
                 'data' => $assistances
             ]);
         }
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla assistences",4,2,1);
+
     }
     public function update(Request $request, $id)
     {
@@ -99,6 +105,8 @@ class AssistancesController extends Controller
                 ],200);
             }
         }
+        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla assistences",1,2,1);
+
     }
     public function destroy(Assistance $assitance)
     {
@@ -106,5 +114,7 @@ class AssistancesController extends Controller
            'status' => false,
            'message' => "Funcion no disponible"
          ],400);
+         Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla assistences",2,2,1);
+
     }
 }

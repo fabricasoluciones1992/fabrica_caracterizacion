@@ -15,6 +15,8 @@ class solicitudesTypesController extends Controller
             'status' => true,
             'data' => $solicitudTypes
         ],200);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes types",4,2,1);
+
     }
     public function store(Request $request)
     {
@@ -36,6 +38,8 @@ class solicitudesTypesController extends Controller
              'message' => "El tipo de razon '".$solicitudTypes->sol_typ_name."' ha sido creado exitosamente."
             ],200);
         }  
+        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla solicitudes types",3,2,1);
+
     }
     public function show($id)
     {
@@ -51,6 +55,8 @@ class solicitudesTypesController extends Controller
                 'data' => $solicitudTypes
             ]);
         }
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes types",4,2,1);
+
     }
     public function update(Request $request, $id)
     {
@@ -79,6 +85,8 @@ class solicitudesTypesController extends Controller
                 ],200);
             };
         }
+        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla solicitudes types",1,2,1);
+
     }
     public function destroy(solicitudType $solicitudTypes)
     {
@@ -86,5 +94,7 @@ class solicitudesTypesController extends Controller
           'status' => false,
           'message' => "Funcion no disponible"
         ],400);
+        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla solicitudes types",2,2,1);
+
     }
 }

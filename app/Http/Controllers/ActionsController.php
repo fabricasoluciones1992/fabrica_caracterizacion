@@ -16,6 +16,7 @@ class ActionsController extends Controller
             'status' => true,
             'data' => $actions
         ],200);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla actions",4,2,1);
     }
     public function store(Request $request)
     {
@@ -38,6 +39,8 @@ class ActionsController extends Controller
              'message' => "El tipo de Accion ".$action->act_name." ha sido creado exitosamente."
             ],200);
         }
+        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla actions",3,2,1);
+
     }
     public function show($id)
     {
@@ -54,6 +57,8 @@ class ActionsController extends Controller
                 'data' => $action
             ]);
         }
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla actions",4,2,1);
+
     }
     public function update(Request $request, $id)
     {
@@ -83,6 +88,8 @@ class ActionsController extends Controller
                 ],200);
             };
         }
+        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla actions",1,2,1);
+
     }
     public function destroy(action $actions)
     {
@@ -91,5 +98,8 @@ class ActionsController extends Controller
             'message' => "Funcion no disponible"
  
         ],400);
+        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla actions",2,2,1);
+
     }
+    
 }
