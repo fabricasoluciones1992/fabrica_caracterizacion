@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\BienestarActivitiesController;
+use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\GendersController;
 use App\Http\Controllers\MonetaryStatesController;
@@ -30,6 +32,9 @@ Route::resource('TSolicitudes', solicitudesTypesController::class)->names('TSoli
 Route::resource('permanences', PermanencesController::class)->names('permanences');
 
 Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes');
+
+Route::resource('bienestarActTypes', BienestarActivityTypesController::class)->names('bienestarActTypes');
+Route::resource('bienestarActivities', BienestarActivitiesController::class)->names('bienestarActivities');
 
 Route::resource('monetaryStates', MonetaryStatesController::class)->names('monetaryStates');
 
