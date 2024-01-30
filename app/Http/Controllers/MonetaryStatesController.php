@@ -16,11 +16,12 @@ class MonetaryStatesController extends Controller
     public function index()
     {
         $monState = MonetaryState::all();
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
+
         return response()->json([
             'status' => true,
             'data' => $monState
         ],200);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
 
     }
     public function store(Request $request)
@@ -37,12 +38,13 @@ class MonetaryStatesController extends Controller
         } else {
             $monState = new MonetaryState($request->input());
             $monState->save();
+            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla monetary states",3,2,1);
+
             return response()->json([
                 'status' => True,
                 'message' => "El tipo de estado economico '".$monState->mon_sta_name."' ha sido creado exitosamente."
             ],200);
         } 
-        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla monetary states",3,2,1);
 
     }
     public function show($id)
@@ -54,12 +56,13 @@ class MonetaryStatesController extends Controller
                 'data' => ['message' => 'no se ha encontrado el estado economico solicitado']
             ],400);
         } else {
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
+
             return response()->json([
                 'status' => true,
                 'data' => $monState
             ]);
         }
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
 
     }
     public function update(Request $request, $id)
@@ -83,13 +86,14 @@ class MonetaryStatesController extends Controller
             } else {
                 $monState->mon_sta_name = $request->mon_sta_name;
                 $monState->save();
+                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla monetary states",1,2,1);
+
                 return response()->json([
                    'status' => True,
                     'data' => "el estado economico ".$monState->mon_sta_name." ha sido actualizada exitosamente."
                 ],200);
             };
         }
-        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla monetary states",1,2,1);
 
     }
     public function destroy(MonetaryState $monetaryState)
@@ -98,7 +102,6 @@ class MonetaryStatesController extends Controller
             'status' => false,
             'message' => "Funcion no disponible"
         ],400);
-        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla monetary states",2,2,1);
 
     }
 }

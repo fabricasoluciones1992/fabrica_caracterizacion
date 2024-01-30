@@ -16,11 +16,12 @@ class BienestarActivitiesController extends Controller
         FROM bienestar_activities ba
         INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
         ");
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Bienestar Activities",4,2,1);
+
         return response()->json([
             'status' => true,
             'data' => $bienestarActivity
         ],200);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Bienestar Activities",4,2,1);
 
     }
 
@@ -41,12 +42,13 @@ class BienestarActivitiesController extends Controller
         } else {
             $bienestarActivity = new BienestarActivity($request->input());
             $bienestarActivity->save();
+            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla Bienestar Activities",3,2,1);
+
             return response()->json([
                 'status' => True,
                 'message' => "The bienestar activity successfully has been created."
             ],200);
         }
-        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla Bienestar Activities",3,2,1);
 
     }
     public function show($id)
@@ -63,12 +65,13 @@ class BienestarActivitiesController extends Controller
                 "data" => ['message' => 'The searched bienestar activity was not found']
             ],400);
         } else {
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Bienestar Activities",4,2,1);
+
             return response()->json([
                 'status' => true,
                 'data' => $bienestarActivity
             ]);
         }
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Bienestar Activities",4,2,1);
 
     }
     public function update(Request $request, $id)
@@ -98,13 +101,14 @@ class BienestarActivitiesController extends Controller
                 $bienestarActivity->bie_act_description = $request->bie_act_description;
                 $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
                 $bienestarActivity->save();
+                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla Bienestar Activities",1,2,1);
+
                 return response()->json([
                     'status' => True,
                     'message' => "The bienestar activity has been updated."
                 ],200);
             }
         }
-        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla Bienestar Activities",1,2,1);
 
     }
     public function destroy(BienestarActivity $bienestarActivity)
@@ -113,7 +117,6 @@ class BienestarActivitiesController extends Controller
             'status' => false,
             'message' => "Funcion no disponible"
         ],400);
-        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla Bienestar Activities",2,2,1);
 
     }
     

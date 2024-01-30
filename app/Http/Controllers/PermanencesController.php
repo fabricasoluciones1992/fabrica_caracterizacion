@@ -15,11 +15,12 @@ class PermanencesController extends Controller
         INNER JOIN solicitudes ON permanences.sol_id = solicitudes.sol_id
         INNER JOIN actions ON permanences.act_id = actions.act_id
         ");
+                Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla permanences",4,2,1);
+
         return response()->json([
            'status' => true,
             'data' => $permanences
         ],200);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla permanences",4,2,1);
 
     }
  
@@ -41,12 +42,13 @@ class PermanencesController extends Controller
         }else{
             $permanences = new permanence($request->input());
             $permanences->save();
+            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla permanences",3,2,1);
+
             return response()->json([
              'status' => True,
              'message' => "The permanences success has been created."
             ],200);
         }
-        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla permanences",3,2,1);
 
     }
     public function show($id)
@@ -62,12 +64,13 @@ class PermanencesController extends Controller
                 "data" => ['message' => 'The searched permanences was not found']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla permanences",4,2,1);
+
             return response()->json([
                'status' => true,
                 'data' => $permanences
             ]);
         }
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla permanences",4,2,1);
 
     }
     public function update(Request $request,$id)
@@ -92,6 +95,8 @@ class PermanencesController extends Controller
                   'message' => $validator->errors()->all()
                 ]);
             }else{
+                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla permanences",1,2,1);
+
                 $permanences->perm_date = $request->perm_date;
                 $permanences->perm_description = $request->perm_description;
                 $permanences->sol_id = $request->sol_id;
@@ -103,7 +108,6 @@ class PermanencesController extends Controller
                 ],200);
             }
         }
-        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla permanences",1,2,1);
 
     }
     public function destroy(permanence $permanences)
@@ -112,7 +116,6 @@ class PermanencesController extends Controller
             'status' => false,
             'message' => "Funcion no disponible"
          ],400);
-         Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla permanences",2,2,1);
 
     }
 

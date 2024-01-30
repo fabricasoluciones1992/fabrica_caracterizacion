@@ -17,11 +17,12 @@ class AssistancesController extends Controller
             INNER JOIN students stu ON stu.stu_id = ass.stu_id
             INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id 
         ");
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla assistences",4,2,1);
+
         return response()->json([
             'status' => true,
             'data' => $assistances
         ],200);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla assistences",4,2,1);
 
     }
     public function store(Request $request)
@@ -41,12 +42,12 @@ class AssistancesController extends Controller
         } else {
             $assistances = new assistance($request->input());
             $assistances->save();
+            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla assistences",3,2,1);
             return response()->json([
                 'status' => True,
                 'message' => "The assistance successfully has been created."
             ],200);
         }
-        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla assistences",3,2,1);
 
     }
     public function show($id)
@@ -59,17 +60,19 @@ class AssistancesController extends Controller
             WHERE ass.ass_id = $id;
         ");
         if ($assistances == null) {
+
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'The searched assistance was not found']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla assistences",4,2,1);
+
             return response()->json([
                 'status' => true,
                 'data' => $assistances
             ]);
         }
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla assistences",4,2,1);
 
     }
     public function update(Request $request, $id)
@@ -99,13 +102,14 @@ class AssistancesController extends Controller
                 $assistances->stu_id = $request->stu_id;
                 $assistances->bie_act_id = $request->bie_act_id;
                 $assistances->save();
+                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla assistences",1,2,1);
+
                 return response()->json([
                     'status' => True,
                     'message' => "The assistance has been updated."
                 ],200);
             }
         }
-        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla assistences",1,2,1);
 
     }
     public function destroy(Assistance $assitance)
@@ -114,7 +118,6 @@ class AssistancesController extends Controller
            'status' => false,
            'message' => "Funcion no disponible"
          ],400);
-         Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla assistences",2,2,1);
 
     }
 }

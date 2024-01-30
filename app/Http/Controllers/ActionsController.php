@@ -12,11 +12,11 @@ class ActionsController extends Controller
     {
  
         $actions = action::all();
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla actions",4,2,1);
         return response()->json([
             'status' => true,
             'data' => $actions
         ],200);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla actions",4,2,1);
     }
     public function store(Request $request)
     {
@@ -26,6 +26,7 @@ class ActionsController extends Controller
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
+
             return response()->json([
  
              'status' => False,
@@ -34,36 +35,40 @@ class ActionsController extends Controller
         }else{
             $action = new action($request->input());
             $action->save();
+            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla actions",3,2,1);
+
             return response()->json([
              'status' => True,
              'message' => "El tipo de Accion ".$action->act_name." ha sido creado exitosamente."
             ],200);
         }
-        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla actions",3,2,1);
 
     }
     public function show($id)
     {
         $action = action::find($id);
         if ($action == null) {
+
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'no se encuentra la Accion solicitada']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla actions",4,2,1);
+
             return response()->json([
                 'status' => true,
  
                 'data' => $action
             ]);
         }
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla actions",4,2,1);
 
     }
     public function update(Request $request, $id)
     {
         $action = action::find($id);
         if ($action == null) {
+
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'no se encuentra la Accion solicitada']
@@ -82,13 +87,14 @@ class ActionsController extends Controller
             }else{
                 $action->act_name = $request->act_name;
                 $action->save();
+                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla actions",1,2,1);
+
                 return response()->json([
              'status' => True,
                    'data' => "la Accion ".$action->act_name." ha sido actualizado exitosamente."
                 ],200);
             };
         }
-        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla actions",1,2,1);
 
     }
     public function destroy(action $actions)
@@ -98,7 +104,6 @@ class ActionsController extends Controller
             'message' => "Funcion no disponible"
  
         ],400);
-        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla actions",2,2,1);
 
     }
     

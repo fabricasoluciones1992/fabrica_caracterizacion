@@ -31,11 +31,12 @@ class SolicitudesController extends Controller
         persons ON students.per_id = persons.per_id;
     
             ");
+                    Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes",4,2,1);
+
         return response()->json([
            'status' => true,
             'data' => $solicitudes
         ],200);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes",4,2,1);
 
     }
  
@@ -59,12 +60,13 @@ class SolicitudesController extends Controller
         }else{
             $solicitudes = new solicitud($request->input());
             $solicitudes->save();
+            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla solicitudes",3,2,1);
+
             return response()->json([
              'status' => True,
              'message' => "The request success has been created."
             ],200);
         }
-        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla solicitudes",3,2,1);
 
     }
     public function show($id)
@@ -94,12 +96,13 @@ class SolicitudesController extends Controller
                 "data" => ['message' => 'The searched requests was not found']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes",4,2,1);
+
             return response()->json([
                'status' => true,
                 'data' => $solicitudes
             ]);
         }
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes",4,2,1);
 
     }
     public function update(Request $request,$id)
@@ -125,18 +128,20 @@ class SolicitudesController extends Controller
                   'message' => $validator->errors()->all()
                 ]);
             }else{
+
                 $solicitudes->sol_date = $request->sol_date;
                 $solicitudes->sol_description = $request->sol_description;
                 $solicitudes->sol_typ_id = $request->sol_typ_id;
                 $solicitudes->fac_id = $request->fac_id;
                 $solicitudes->save();
+                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla solicitudes",1,2,1);
+
                 return response()->json([
                   'status' => True,
                   'message' => "The requests has been updated."
                 ],200);
             }
         }
-        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla solicitudes",1,2,1);
 
     }
     public function destroy(solicitud $solicitudes)
@@ -145,7 +150,6 @@ class SolicitudesController extends Controller
             'status' => false,
             'message' => "Funcion no disponible"
          ],400);
-         Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla solicitudes",2,2,1);
 
     }
 }

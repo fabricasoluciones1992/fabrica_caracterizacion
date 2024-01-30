@@ -11,11 +11,12 @@ class solicitudesTypesController extends Controller
     public function index()
     {
         $solicitudTypes = solicitudType::all();
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes types",4,2,1);
         return response()->json([
             'status' => true,
             'data' => $solicitudTypes
         ],200);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes types",4,2,1);
+        
 
     }
     public function store(Request $request)
@@ -33,12 +34,13 @@ class solicitudesTypesController extends Controller
         } else {
             $solicitudTypes = new solicitudType($request->input());
             $solicitudTypes->save();
+            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla solicitudes types",3,2,1);
             return response()->json([
              'status' => True,
              'message' => "El tipo de razon '".$solicitudTypes->sol_typ_name."' ha sido creado exitosamente."
             ],200);
         }  
-        Controller::NewRegisterTrigger("Se realizo una insercion en la tabla solicitudes types",3,2,1);
+        
 
     }
     public function show($id)
@@ -50,12 +52,13 @@ class solicitudesTypesController extends Controller
                 'data' => ['message' => 'no se ha encontrado la razon solicitada']
             ],400);
         } else {
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes types",4,2,1);
             return response()->json([
                 'status' => true,
                 'data' => $solicitudTypes
             ]);
         }
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes types",4,2,1);
+        
 
     }
     public function update(Request $request, $id)
@@ -79,13 +82,14 @@ class solicitudesTypesController extends Controller
             } else {
                 $solicitudTypes->sol_typ_name = $request->sol_typ_name;
                 $solicitudTypes->save();
+                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla solicitudes types",1,2,1);
                 return response()->json([
                     'status' => True,
                     'data' => "la razon ".$solicitudTypes->sol_typ_name." ha sido actualizado exitosamente."
                 ],200);
             };
         }
-        Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla solicitudes types",1,2,1);
+        
 
     }
     public function destroy(solicitudType $solicitudTypes)
@@ -94,7 +98,7 @@ class solicitudesTypesController extends Controller
           'status' => false,
           'message' => "Funcion no disponible"
         ],400);
-        Controller::NewRegisterTrigger("Se realizo una eliminacion en la tabla solicitudes types",2,2,1);
+        
 
     }
 }
