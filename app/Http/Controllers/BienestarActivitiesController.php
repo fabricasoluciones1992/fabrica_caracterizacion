@@ -26,8 +26,8 @@ class BienestarActivitiesController extends Controller
     {
         $rules = [
             'bie_act_date' =>'required|date',
-            'bie_act_quotas' =>'string|min:1|max:25',
-            'bie_act_description' =>'string|min:1|max:255',
+            'bie_act_quotas' =>'string|max:25',
+            'bie_act_description' =>'string|max:255',
             'bie_act_typ_id' =>'required|integer'
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -76,8 +76,8 @@ class BienestarActivitiesController extends Controller
         } else {
             $rules = [
                 'bie_act_date' =>'required|date',
-                'bie_act_quotas' =>'string|min:1|max:25',
-                'bie_act_description' =>'string|min:1|max:255',
+                'bie_act_quotas' =>'string|max:25',
+                'bie_act_description' =>'string|max:255',
                 'bie_act_typ_id' =>'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
