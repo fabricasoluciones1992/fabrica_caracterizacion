@@ -12,7 +12,7 @@ class AssistancesController extends Controller
     public function index()
     {
         $assistances = DB::select("
-            SELECT ass.ass_id, ass.ass_date, ass.ass_assistance, stu.stu_code, ba.bie_act_quotas
+            SELECT ass.ass_id, ass.ass_date, if(ass.ass_assistance=1,'Asistio','No asistio') ass_assistance, stu.stu_code, ba.bie_act_quotas
             FROM assistances ass
             INNER JOIN students stu ON stu.stu_id = ass.stu_id
             INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id 
@@ -48,7 +48,7 @@ class AssistancesController extends Controller
     public function show($id)
     {
         $assistances =  DB::select("
-            SELECT ass.ass_id, ass.ass_date, ass.ass_assistance, stu.stu_code, ba.bie_act_quotas
+            SELECT ass.ass_id, ass.ass_date, if(ass.ass_assistance=1,'Asistio','No asistio') ass_assistance, stu.stu_code, ba.bie_act_quotas
             FROM assistances ass
             INNER JOIN students stu ON stu.stu_id = ass.stu_id
             INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id
