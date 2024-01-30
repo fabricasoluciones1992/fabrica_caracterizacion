@@ -4,6 +4,7 @@ use App\Http\Controllers\ActionsController;
 use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\EpsController;
+use App\Http\Controllers\FactorsController;
 use App\Http\Controllers\GendersController;
 use App\Http\Controllers\MonetaryStatesController;
 use App\Http\Controllers\PermanencesController;
@@ -37,6 +38,9 @@ Route::resource('bienestarActTypes', BienestarActivityTypesController::class)->n
 Route::resource('bienestarActivities', BienestarActivitiesController::class)->names('bienestarActivities');
 
 Route::resource('monetaryStates', MonetaryStatesController::class)->names('monetaryStates');
+
+Route::resource('factors', FactorsController::class)->names('factors');
+
 
 
 // Route::resource('genders', GendersController::class)->names('genders');
