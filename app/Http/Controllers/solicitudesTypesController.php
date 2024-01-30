@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reason;
+use App\Models\solicitudType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ReasonsController extends Controller
+class solicitudesTypesController extends Controller
 {
     public function index()
     {
-        $reason = Reason::all();
+        $solicitudTypes = solicitudType::all();
         return response()->json([
             'status' => true,
-            'data' => $reason
+            'data' => $solicitudTypes
         ],200);
     }
     public function store(Request $request)
     {
         $rules = [
-            'rea_name' => 'required|string|min:1|max:100',
+            'sol_typ_name' => 'required|string|min:1|max:100',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -29,18 +29,18 @@ class ReasonsController extends Controller
              'message' => $validator->errors()->all()
             ]);
         } else {
-            $reason = new Reason($request->input());
-            $reason->save();
+            $solicitudTypes = new solicitudType($request->input());
+            $solicitudTypes->save();
             return response()->json([
              'status' => True,
-             'message' => "El tipo de razon '".$reason->rea_name."' ha sido creado exitosamente."
+             'message' => "El tipo de razon '".$solicitudTypes->sol_typ_name."' ha sido creado exitosamente."
             ],200);
         }  
     }
     public function show($id)
     {
-        $reason = Reason::find($id);
-        if ($reason == null) {
+        $solicitudTypes = solicitudType::find($id);
+        if ($solicitudTypes == null) {
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'no se ha encontrado la razon solicitada']
@@ -48,21 +48,21 @@ class ReasonsController extends Controller
         } else {
             return response()->json([
                 'status' => true,
-                'data' => $reason
+                'data' => $solicitudTypes
             ]);
         }
     }
     public function update(Request $request, $id)
     {
-        $reason = Reason::find($id);
-        if ($reason == null) {
+        $solicitudTypes = solicitudType::find($id);
+        if ($solicitudTypes == null) {
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'no se ha encontrado la razon solicitada']
             ],400);
         } else {
             $rules = [
-              'rea_name' =>'required|string|min:1|max:100',
+              'sol_typ_name' =>'required|string|min:1|max:100',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -71,16 +71,16 @@ class ReasonsController extends Controller
               'message' => $validator->errors()->all()
                 ]);
             } else {
-                $reason->rea_name = $request->rea_name;
-                $reason->save();
+                $solicitudTypes->sol_typ_name = $request->sol_typ_name;
+                $solicitudTypes->save();
                 return response()->json([
                     'status' => True,
-                    'data' => "la razon ".$reason->rea_name." ha sido actualizado exitosamente."
+                    'data' => "la razon ".$solicitudTypes->sol_typ_name." ha sido actualizado exitosamente."
                 ],200);
             };
         }
     }
-    public function destroy(string $id)
+    public function destroy(solicitudType $solicitudTypes)
     {
         return response()->json([
           'status' => false,

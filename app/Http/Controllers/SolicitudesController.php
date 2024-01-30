@@ -12,10 +12,25 @@ class SolicitudesController extends Controller
  
     public function index()
     {
-        $solicitudes = DB::select("SELECT solicitudes.sol_id,solicitudes.sol_date,solicitudes.sol_description,request_types.rea_typ_name,studens.stu_name FROM permanences
-        INNER JOIN reasons ON solicitudes.sol_id = solicitudes.sol_id
-        INNER JOIN actions ON permanences.act_id = actions.act_id
-        ");
+        $solicitudes = DB::select("SELECT 
+        solicitudes.sol_id,
+        solicitudes.sol_date,
+        solicitudes.sol_description,
+        solicitude_types.sol_typ_name,
+        factors.fac_name,
+        persons.per_name
+    FROM 
+        solicitudes
+    INNER JOIN 
+        solicitude_types ON solicitudes.sol_typ_id = solicitude_types.sol_typ_id
+    INNER JOIN 
+        factors ON solicitudes.fac_id = factors.fac_id
+    INNER JOIN 
+        students ON solicitudes.stu_id = students.stu_id
+    INNER JOIN 
+        persons ON students.per_id = persons.per_id;
+    
+            ");
         return response()->json([
            'status' => true,
             'data' => $solicitudes
@@ -26,10 +41,12 @@ class SolicitudesController extends Controller
     {
         // return $request;
         $rules = [
-            'perm_date' =>'required|date',
-            'perm_description' =>'required|string|min:1|max:50',
-            'sol_id' =>'required|integer',
-            'act_id' =>'required|integer'
+            'sol_date' =>'required|date',
+            'sol_description' =>'required|string|min:1|max:50',
+            'sol_typ_id' =>'required|integer',
+            'stu_id' =>'required|integer',
+            'fac_id' =>'required|integer'
+
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -48,15 +65,29 @@ class SolicitudesController extends Controller
     }
     public function show($id)
     {
-        $solicitudes =  DB::select("SELECT permanences.perm_id,permanences.perm_date,permanences.perm_description,solicitudes.sol_description,actions.act_name FROM permanences
-        INNER JOIN solicitudes ON permanences.sol_id = solicitudes.sol_id
-        INNER JOIN actions ON permanences.act_id = actions.act_id
-         WHERE $id = permanences.perm_id;
-        ");
+        $solicitudes =  DB::select("SELECT 
+        solicitudes.sol_id,
+        solicitudes.sol_date,
+        solicitudes.sol_description,
+        solicitude_types.sol_typ_name,
+        factors.fac_name,
+        persons.per_name
+    FROM 
+        solicitudes
+    INNER JOIN 
+        solicitude_types ON solicitudes.sol_typ_id = solicitude_types.sol_typ_id
+    INNER JOIN 
+        factors ON solicitudes.fac_id = factors.fac_id
+    INNER JOIN 
+        students ON solicitudes.stu_id = students.stu_id
+    INNER JOIN 
+        persons ON students.per_id = persons.per_id
+    WHERE 
+        solicitudes.sol_id = $id");
         if ($solicitudes == null) {
             return response()->json([
                 'status' => false,
-                "data" => ['message' => 'The searched solicitudes was not found']
+                "data" => ['message' => 'The searched requests was not found']
             ],400);
         }else{
             return response()->json([
@@ -67,7 +98,7 @@ class SolicitudesController extends Controller
     }
     public function update(Request $request,$id)
     {
-        $solicitudes = permanence::find($id);
+        $solicitudes = solicitud::find($id);
         if ($solicitudes == null) {
             return response()->json([
                 'status' => false,
@@ -75,10 +106,11 @@ class SolicitudesController extends Controller
             ],400);
         }else{
             $rules = [
-                'perm_date' =>'required|date',
-            'perm_description' =>'required|string|min:1|max:50',
-            'sol_id' =>'required|integer',
-            'act_id' =>'required|integer'
+                'sol_date' =>'required|date',
+            'sol_description' =>'required|string|min:1|max:50',
+            'sol_typ_id' =>'required|integer',
+            'stu_id' =>'required|integer',
+            'fac_id' =>'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -87,14 +119,14 @@ class SolicitudesController extends Controller
                   'message' => $validator->errors()->all()
                 ]);
             }else{
-                $solicitudes->perm_date = $request->perm_date;
-                $solicitudes->perm_description = $request->perm_description;
-                $solicitudes->sol_id = $request->sol_id;
-                $solicitudes->act_id = $request->act_id;
+                $solicitudes->sol_date = $request->sol_date;
+                $solicitudes->sol_description = $request->sol_description;
+                $solicitudes->sol_typ_id = $request->sol_typ_id;
+                $solicitudes->fac_id = $request->fac_id;
                 $solicitudes->save();
                 return response()->json([
                   'status' => True,
-                  'message' => "The solicitudes has been updated."
+                  'message' => "The requests has been updated."
                 ],200);
             }
         }

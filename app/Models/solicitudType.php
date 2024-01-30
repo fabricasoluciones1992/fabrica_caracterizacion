@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reason extends Model
+class solicitudType extends Model
 {
     use HasFactory;
-    protected $primaryKey = "rea_id";
+    protected $primaryKey = "sol_typ_id";
+    protected $table = "solicitude_types";
     protected $fillable = [
-      'rea_name',
+      'sol_typ_name',
 
     ];
     public $timestamps = false;

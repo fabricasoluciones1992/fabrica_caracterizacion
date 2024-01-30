@@ -50,7 +50,7 @@ class PermanencesController extends Controller
         $permanences =  DB::select("SELECT permanences.perm_id,permanences.perm_date,permanences.perm_description,solicitudes.sol_description,actions.act_name FROM permanences
         INNER JOIN solicitudes ON permanences.sol_id = solicitudes.sol_id
         INNER JOIN actions ON permanences.act_id = actions.act_id
-         WHERE $id = permanences.perm_id;
+         WHERE permanences.perm_id = $id;
         ");
         if ($permanences == null) {
             return response()->json([
