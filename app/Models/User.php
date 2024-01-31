@@ -12,16 +12,19 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $primaryKey = 'use_id';
+
     protected $fillable = [
-        'email',
-        'password',
-        'status',
-        'rol_id',
+        'use_email',
+        'use_password',
+        'use_status',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    public $timestamps = false;
 
 }
