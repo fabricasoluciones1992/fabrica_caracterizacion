@@ -22,7 +22,7 @@ class AuthController extends Controller
             // $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
             // Auth::login($user);
         Auth::login($user);
-        return Auth::user();
+        
     
         // Verifica si la solicitud HTTP fue exitosa
         if ($response->successful()) {
@@ -96,7 +96,7 @@ class AuthController extends Controller
     
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
-            ])->post('http://127.0.0.1:8088/api/genders');
+            ])->get('http://127.0.0.1:8088/api/genders');
     
             if ($response->successful()) {
                 return response()->json([
@@ -106,7 +106,7 @@ class AuthController extends Controller
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => $response->body()
+                    'message' => 'HTTP request failed'
                 ]);
             }
         } else {
