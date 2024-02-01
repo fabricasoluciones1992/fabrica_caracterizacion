@@ -18,10 +18,7 @@ class MonetaryStatesController extends Controller
         $monState = MonetaryState::all();
         Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
 
-        return response()->json([
-            'status' => true,
-            'data' => $monState
-        ],200);
+        return response()->json($monState,200);
 
     }
     public function store(Request $request)
@@ -58,10 +55,8 @@ class MonetaryStatesController extends Controller
         } else {
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
 
-            return response()->json([
-                'status' => true,
-                'data' => $monState
-            ]);
+            return response()->json($monState
+            );
         }
 
     }
@@ -89,7 +84,7 @@ class MonetaryStatesController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla monetary states",1,2,1);
 
                 return response()->json([
-                   'status' => True,
+                    'status' => True,
                     'data' => "el estado economico ".$monState->mon_sta_name." ha sido actualizada exitosamente."
                 ],200);
             };
