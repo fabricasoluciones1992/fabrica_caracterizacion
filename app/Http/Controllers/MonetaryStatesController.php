@@ -8,23 +8,20 @@ use Illuminate\Support\Facades\Validator;
 
 class MonetaryStatesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $monState = MonetaryState::all();
         Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
 
-        return response()->json($monState,200);
-
+        return response()->json([
+            'status' => true,
+            'data' => $monState
+        ],200);
     }
     public function store(Request $request)
     {
         $rules = [
-          'mon_sta_name' =>'required|string|min:1|max:50',
+            'mon_sta_name' =>'required|string|min:1|max:50',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -55,17 +52,18 @@ class MonetaryStatesController extends Controller
         } else {
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
 
-            return response()->json($monState
-            );
+            return response()->json([
+                'status' => true,
+                'data' => $monState
+            ]);
         }
-
     }
     public function update(Request $request, $id)
     {
         $monState = MonetaryState::find($id);
         if ($monState == null) {
             return response()->json([
-               'status' => false,
+                'status' => false,
                 'data' => ['message' => 'no se ha encontrado el estado economico solicitado']
             ],400);
         } else {
@@ -89,7 +87,6 @@ class MonetaryStatesController extends Controller
                 ],200);
             };
         }
-
     }
     public function destroy(MonetaryState $monetaryState)
     {
