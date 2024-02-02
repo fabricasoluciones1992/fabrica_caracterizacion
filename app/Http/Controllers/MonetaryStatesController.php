@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Validator;
 
 class MonetaryStatesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $monState = MonetaryState::all();
@@ -22,12 +17,11 @@ class MonetaryStatesController extends Controller
             'status' => true,
             'data' => $monState
         ],200);
-
     }
     public function store(Request $request)
     {
         $rules = [
-          'mon_sta_name' =>'required|string|min:1|max:50',
+            'mon_sta_name' =>'required|string|min:1|max:50',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -63,14 +57,13 @@ class MonetaryStatesController extends Controller
                 'data' => $monState
             ]);
         }
-
     }
     public function update(Request $request, $id)
     {
         $monState = MonetaryState::find($id);
         if ($monState == null) {
             return response()->json([
-               'status' => false,
+                'status' => false,
                 'data' => ['message' => 'no se ha encontrado el estado economico solicitado']
             ],400);
         } else {
@@ -89,12 +82,11 @@ class MonetaryStatesController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla monetary states",1,2,1);
 
                 return response()->json([
-                   'status' => True,
+                    'status' => True,
                     'data' => "el estado economico ".$monState->mon_sta_name." ha sido actualizada exitosamente."
                 ],200);
             };
         }
-
     }
     public function destroy(MonetaryState $monetaryState)
     {

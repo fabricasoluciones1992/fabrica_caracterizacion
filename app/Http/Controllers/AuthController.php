@@ -14,21 +14,52 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     public function login(Request $request){
+
+        $response = Http::post("http://127.0.0.1:8088/api/login", [
+            "use_mail" => $request->use_mail,
+            "use_password" => Hash::make($request->use_password)
+        ]);
+        $user=DB::table('users')->where("use_mail",'=',$request->use_mail)->first();
+        $user = User::find($user->use_id);
+            // $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
+            // Auth::login($user);
+        Auth::login($user);
         
-            $response= Http::post("http://127.0.0.1:8080/api/login",[
-                "use_mail"=>$request->use_mail,
-                "use_password"=>Hash::make($request->use_password)
-            ]);
-            $token = $response->object()->token;
-            session_start();
-            // return $token;
-            $_SESSION['api_token'] = $token;
+    
+        // Verifica si la solicitud HTTP fue exitosa
+        if ($response->successful()) {
+            // Obtener el token de la respuesta JSON, si está presente
+            $responseData = $response->json();
+            $token = isset($responseData['token']) ? $responseData['token'] : null;
+    
+            // Verifica si se obtuvo un token antes de almacenarlo
+            if ($token !== null) {
+                // Iniciar la sesión y almacenar el token
+                session_start();
+                $_SESSION['api_token'] = $token;
+    
+                return response()->json([
+                    'status' => true,
+                    'data' => $token
+                ]);
+            } else {
+                // Manejar el caso en el que 'token' no está presente en la respuesta
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Token not found in the response'
+                ]);
+            }
+        } else {
+            // Manejar el caso en el que la solicitud HTTP no fue exitosa
             return response()->json([
-                'status' => True,
-                'data' => $response->object()->token
+                'status' => false,
+                'message' => 'HTTP request failed'
             ]);
-            
+        }
+
     }
+
+
 
     public function register(Request $request){
         $rules = [
@@ -88,41 +119,37 @@ class AuthController extends Controller
         
     }
 
-    public function prueba() {
-        // Obtener el token de la sesión
+    public function genders() {
         session_start();
-        $token = $_SESSION['api_token'];
-        // return $token;
-        // Verifica si el token está presente en la sesión
-        if ($token) {
-            // Realizar la solicitud HTTP con el token en el encabezado de autorización
+    
+        if (isset($_SESSION['api_token'])) {
+            $token = $_SESSION['api_token'];
+    
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
-            ])->get('http://127.0.0.1:8080/api/genders');
+            ])->get('http://127.0.0.1:8088/api/genders');
     
-            // Verificar si la solicitud HTTP fue exitosa
             if ($response->successful()) {
-                // return "asd";
-                // Retornar la respuesta JSON con los datos de la solicitud HTTP
                 return response()->json([
                     'status' => true,
-                    'data' => $response->object()
+                    'data' => $response->json()
                 ]);
             } else {
-                // Manejar el caso en el que la solicitud HTTP no fue exitosa
                 return response()->json([
                     'status' => false,
-                    'message' => 'HTTP request failed'.$response
+                    'message' => 'HTTP request failed'
                 ]);
             }
         } else {
-            // Manejar el caso en el que el token no esté presente en la sesión
             return response()->json([
                 'status' => false,
                 'message' => 'Token not found in session'
             ]);
         }
     }
-    
+
+
+
+
     
 }

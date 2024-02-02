@@ -1,13 +1,14 @@
 <?php
 
 use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AssistancesController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\FactorsController;
-use App\Http\Controllers\GendersController;
+use App\Http\Controllers\GenderController;
 use App\Http\Controllers\MonetaryStatesController;
 use App\Http\Controllers\PermanencesController;
 use App\Http\Controllers\SolicitudesController;
@@ -44,10 +45,8 @@ Route::resource('monetaryStates', MonetaryStatesController::class)->names('monet
 
 Route::resource('factors', FactorsController::class)->names('factors');
 
-Route::get('/genders', [AuthController::class, 'prueba'])->name('prueba');
+
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-
-// Route::resource('genders', GendersController::class)->names('genders');
+Route::get('/genders', [AuthController::class, 'genders']);
