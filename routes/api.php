@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AssistancesController;
 use App\Http\Controllers\BienestarActivitiesController;
@@ -26,10 +27,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 Route::resource('actions', ActionsController::class)->names('actions');
 Route::resource('TSolicitudes', solicitudesTypesController::class)->names('TSolicitudes');
 Route::resource('permanences', PermanencesController::class)->names('permanences');
@@ -45,6 +45,8 @@ Route::resource('monetaryStates', MonetaryStatesController::class)->names('monet
 Route::resource('factors', FactorsController::class)->names('factors');
 
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/genders', [AuthController::class, 'genders']);
+
+Route::post('/login', [Controller::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+

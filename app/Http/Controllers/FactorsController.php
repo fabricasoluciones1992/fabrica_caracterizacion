@@ -10,7 +10,9 @@ class FactorsController extends Controller
 {
     public function index()
     {
- 
+        $token = Controller::auth();
+        $data = Controller::genders($token);
+        return $data;
         $factors = factor::all();
         Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla factors",4,2,1);
 
@@ -24,7 +26,6 @@ class FactorsController extends Controller
     {
         $rules = [
             'fac_name' => 'required|string|min:1|max:50'
- 
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
