@@ -12,7 +12,6 @@ class FactorsController extends Controller
     {
         $token = Controller::auth();
         $data = Controller::genders($token);
-        return $data;
         $factors = factor::all();
         Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla factors",4,2,1);
 
