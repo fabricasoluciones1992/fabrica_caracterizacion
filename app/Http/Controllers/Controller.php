@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -28,7 +27,7 @@ class Controller extends BaseController
             return $token;
         }else{
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $token,
+                'Authorization' => 'Bearer ' . $token['token'],
             ])->get('http://127.0.0.1:8088/api/genders');
 
             if ($response->successful()) {
@@ -68,7 +67,11 @@ class Controller extends BaseController
         session_start();
         if (isset($_SESSION['api_token'])) {
             $token = $_SESSION['api_token'];
-            return $token;
+            $use_id = $_SESSION['use_id'];
+            return [
+                "token" => $token,
+                "use_id" => $use_id
+            ];
         } else {
             return  'Token not found in session';
         }
@@ -78,7 +81,7 @@ class Controller extends BaseController
 
         $response = Http::post("http://127.0.0.1:8088/api/login", [
             "use_mail" => $request->use_mail,
-            "use_password" => Hash::make($request->use_password),
+            "use_password" => $request->use_password,
             "proj_id" => env('APP_ID')
         ]);
         $user=DB::table('users')->where("use_mail",'=',$request->use_mail)->first();
@@ -96,10 +99,14 @@ class Controller extends BaseController
                 // Iniciar la sesión y almacenar el token
                 session_start();
                 $_SESSION['api_token'] = $token;
+                $_SESSION['use_id'] = $user->use_id;
     
                 return response()->json([
                     'status' => true,
-                    'data' => $token
+                    'data' => [
+                        "token" => $token,
+                        "use_id" => $user->use_id
+                    ]
                 ]);
             } else {
                 // Manejar el caso en el que 'token' no está presente en la respuesta

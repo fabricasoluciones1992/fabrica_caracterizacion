@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\factor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Validator;
 
 class FactorsController extends Controller
@@ -13,7 +15,7 @@ class FactorsController extends Controller
         $token = Controller::auth();
         $data = Controller::genders($token);
         $factors = factor::all();
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla factors",4,2,1);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla factors",4,2,$token['use_id']);
 
         return response()->json([
             'status' => true,
