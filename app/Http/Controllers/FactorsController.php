@@ -15,11 +15,10 @@ class FactorsController extends Controller
         $token = Controller::auth();
         $data = Controller::genders($token);
         $factors = factor::all();
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla factors",4,2,$token['use_id']);
-
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla factors",4,env('APP_ID'),$token['use_id']);
         return response()->json([
             'status' => true,
-            'data' => $factors
+            'data' => $factors, $data
         ],200);
 
     }

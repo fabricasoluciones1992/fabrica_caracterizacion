@@ -28,8 +28,8 @@ class Controller extends BaseController
         }else{
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token['token'],
+                
             ])->get('http://127.0.0.1:8088/api/genders');
-
             if ($response->successful()) {
                 return response()->json([
                     'data' => $response->json()
@@ -68,9 +68,11 @@ class Controller extends BaseController
         if (isset($_SESSION['api_token'])) {
             $token = $_SESSION['api_token'];
             $use_id = $_SESSION['use_id'];
+            $proj_id = $_SESSION['proj_id'];
             return [
                 "token" => $token,
-                "use_id" => $use_id
+                "use_id" => $use_id,
+                "proj_id" => $proj_id
             ];
         } else {
             return  'Token not found in session';
@@ -100,26 +102,28 @@ class Controller extends BaseController
                 session_start();
                 $_SESSION['api_token'] = $token;
                 $_SESSION['use_id'] = $user->use_id;
+                $_SESSION['proj_id'] = env('APP_ID');
     
                 return response()->json([
                     'status' => true,
                     'data' => [
                         "token" => $token,
-                        "use_id" => $user->use_id
+                        "use_id" => $user->use_id,
+                        "proj_id" => env("APP_ID")
                     ]
                 ]);
             } else {
                 // Manejar el caso en el que 'token' no está presente en la respuesta
                 return response()->json([
                     'status' => false,
-                    'message' => 'Token not found in the response'
+                    'message' => $response->json()
                 ]);
             }
         } else {
             // Manejar el caso en el que la solicitud HTTP no fue exitosa
             return response()->json([
                 'status' => false,
-                'message' => 'HTTP request failed'
+                'message' => $response->json()['message']
             ]);
         }
 

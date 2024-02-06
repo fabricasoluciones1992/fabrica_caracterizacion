@@ -116,7 +116,7 @@ class SolicitudesController extends Controller
         }else{
             $rules = [
                 'sol_date' =>'required|date',
-            'sol_description' =>'required|string|min:1|max:50',
+            'sol_description' =>'required|string|min:1|max:250',
             'sol_typ_id' =>'required|integer',
             'stu_id' =>'required|integer',
             'fac_id' =>'required|integer'

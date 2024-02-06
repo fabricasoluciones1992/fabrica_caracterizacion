@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 Route::resource('actions', ActionsController::class)->names('actions');
-Route::resource('TSolicitudes', solicitudesTypesController::class)->names('TSolicitudes');
+Route::resource('types/solicitudes', solicitudesTypesController::class)->names('types/solicitudes');
 Route::resource('permanences', PermanencesController::class)->names('permanences');
 
 Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes');
