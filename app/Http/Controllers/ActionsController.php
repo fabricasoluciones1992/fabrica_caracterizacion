@@ -21,7 +21,7 @@ class ActionsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'act_name' => 'required|string|min:1|max:50'
+            'act_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
  
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -75,7 +75,7 @@ class ActionsController extends Controller
             ],400);
         }else{
             $rules = [
-                'act_name' => 'required|string|min:1|max:50'
+                'act_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
  
             ];
             $validator = Validator::make($request->input(), $rules);

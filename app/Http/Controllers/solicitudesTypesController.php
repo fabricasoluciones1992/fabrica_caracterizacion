@@ -22,7 +22,7 @@ class solicitudesTypesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'sol_typ_name' => 'required|string|min:1|max:100',
+            'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-Z\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -71,7 +71,7 @@ class solicitudesTypesController extends Controller
             ],400);
         } else {
             $rules = [
-              'sol_typ_name' =>'required|string|min:1|max:100',
+              'sol_typ_name' =>'required|string|min:1|max:100|regex:/^[A-Z\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

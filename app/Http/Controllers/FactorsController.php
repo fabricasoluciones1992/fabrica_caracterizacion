@@ -25,7 +25,7 @@ class FactorsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'fac_name' => 'required|string|min:1|max:50'
+            'fac_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -75,7 +75,7 @@ class FactorsController extends Controller
             ],400);
         }else{
             $rules = [
-                'fac_name' => 'required|string|min:1|max:50'
+                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
  
             ];
             $validator = Validator::make($request->input(), $rules);

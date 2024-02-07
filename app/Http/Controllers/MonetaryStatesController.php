@@ -21,7 +21,7 @@ class MonetaryStatesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'mon_sta_name' =>'required|string|min:1|max:50',
+            'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {

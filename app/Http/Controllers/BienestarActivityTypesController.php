@@ -19,7 +19,7 @@ class BienestarActivityTypesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'bie_act_typ_name' =>'required|string|min:1|max:55',
+            'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-Z\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -67,7 +67,7 @@ class BienestarActivityTypesController extends Controller
             ],400);
         } else {
             $rules = [
-                'bie_act_typ_name' =>'required|string|min:1|max:55',
+                'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-Z\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
