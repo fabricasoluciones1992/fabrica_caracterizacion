@@ -44,8 +44,8 @@ class SolicitudesController extends Controller
     {
         // return $request;
         $rules = [
-            'sol_date' =>'required|date',
-            'sol_description' =>'required|string|min:1|max:50',
+            'sol_date' =>'date',
+            'sol_description' =>'required|string|min:1|max:250',
             'sol_typ_id' =>'required|integer',
             'stu_id' =>'required|integer',
             'fac_id' =>'required|integer'
@@ -58,6 +58,9 @@ class SolicitudesController extends Controller
              'message' => $validator->errors()->all()
             ]);
         }else{
+            $currentDate = now()->toDateString();
+
+            $request->merge(['sol_date' => $currentDate]);
             $solicitudes = new solicitud($request->input());
             $solicitudes->save();
             Controller::NewRegisterTrigger("Se realizo una insercion en la tabla solicitudes",3,2,1);
@@ -115,7 +118,7 @@ class SolicitudesController extends Controller
             ],400);
         }else{
             $rules = [
-                'sol_date' =>'required|date',
+                'sol_date' =>'date',
             'sol_description' =>'required|string|min:1|max:250',
             'sol_typ_id' =>'required|integer',
             'stu_id' =>'required|integer',
@@ -128,6 +131,9 @@ class SolicitudesController extends Controller
                   'message' => $validator->errors()->all()
                 ]);
             }else{
+                $currentDate = now()->toDateString();
+
+            $request->merge(['sol_date' => $currentDate]);
 
                 $solicitudes->sol_date = $request->sol_date;
                 $solicitudes->sol_description = $request->sol_description;
