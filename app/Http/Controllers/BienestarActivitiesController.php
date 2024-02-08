@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\Validator;
 
 class BienestarActivitiesController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
+        $token = Controller::auth();
+
         $bienestarActivity = DB::select("
         SELECT ba.bie_act_id, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_description, bat.bie_act_typ_name
         FROM bienestar_activities ba
         INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
         ");
-        Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table",4,2,1);
+        Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table",4,$proj_id, $token['use_id']);
 
         return response()->json([
             'status' => true,
@@ -25,8 +27,10 @@ class BienestarActivitiesController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
+
         $rules = [
             'bie_act_date' =>'required|date',
             'bie_act_quotas' =>'string|max:25',
@@ -42,7 +46,7 @@ class BienestarActivitiesController extends Controller
         } else {
             $bienestarActivity = new BienestarActivity($request->input());
             $bienestarActivity->save();
-            Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table",3,2,1);
+            Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table",3,$proj_id, $token['use_id']);
 
             return response()->json([
                 'status' => True,
@@ -51,8 +55,10 @@ class BienestarActivitiesController extends Controller
         }
 
     }
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
+
         $bienestarActivity = DB::select("
         SELECT ba.bie_act_id, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_description, bat.bie_act_typ_name
         FROM bienestar_activities ba
@@ -65,7 +71,7 @@ class BienestarActivitiesController extends Controller
                 "data" => ['message' => 'The searched bienestar activity was not found']
             ],400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table",4,2,1);
+            Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table",4,$proj_id, $token['use_id']);
 
             return response()->json([
                 'status' => true,
@@ -74,8 +80,10 @@ class BienestarActivitiesController extends Controller
         }
 
     }
-    public function update(Request $request, $id)
+    public function update($proj_id,Request $request, $id)
     {
+        $token = Controller::auth();
+
         $bienestarActivity = BienestarActivity::find($id);
         if ($bienestarActivity == null) {
             return response()->json([
@@ -101,7 +109,7 @@ class BienestarActivitiesController extends Controller
                 $bienestarActivity->bie_act_description = $request->bie_act_description;
                 $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
                 $bienestarActivity->save();
-                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table",1,2,1);
+                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table",1,$proj_id, $token['use_id']);
 
                 return response()->json([
                     'status' => True,

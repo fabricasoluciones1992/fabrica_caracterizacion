@@ -8,18 +8,22 @@ use Illuminate\Support\Facades\Validator;
 
 class ActionsController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
- 
+
+        $token = Controller::auth();
+
         $actions = action::all();
-        Controller::NewRegisterTrigger("A search was performed on the actions table",4,2,1);
+        Controller::NewRegisterTrigger("A search was performed on the actions table",4,$proj_id, $token['use_id']);
         return response()->json([
             'status' => true,
             'data' => $actions
         ],200);
     }
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
+
         session_start();
         if ($_SESSION['acc_administrator'] == 1) {
             $rules = [
@@ -34,7 +38,7 @@ class ActionsController extends Controller
             }else{
                 $action = new action($request->input());
                 $action->save();
-                Controller::NewRegisterTrigger("An insertion was made in the actions table",3,2,1);
+                Controller::NewRegisterTrigger("An insertion was made in the actions table",3,$proj_id, $token['use_id']);
     
                 return response()->json([
                     'status' => True,
@@ -48,8 +52,10 @@ class ActionsController extends Controller
             ], 403); 
         }
     }
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
+
         $action = action::find($id);
         if ($action == null) {
             return response()->json([
@@ -57,7 +63,7 @@ class ActionsController extends Controller
                 'data' => ['message' => 'The requested Action was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("A search was performed on the actions table",4,2,1);
+            Controller::NewRegisterTrigger("A search was performed on the actions table",4,$proj_id, $token['use_id']);
 
             return response()->json([
                 'status' => true,
@@ -65,8 +71,10 @@ class ActionsController extends Controller
             ]);
         }
     }
-    public function update(Request $request, $id)
+    public function update($proj_id,Request $request, $id)
     {
+        $token = Controller::auth();
+
         $action = action::find($id);
         if ($action == null) {
             return response()->json([
@@ -86,7 +94,7 @@ class ActionsController extends Controller
             }else{
                 $action->act_name = $request->act_name;
                 $action->save();
-                Controller::NewRegisterTrigger("An update was made in the actions table",1,2,1);
+                Controller::NewRegisterTrigger("An update was made in the actions table",1,$proj_id, $token['use_id']);
 
                 return response()->json([
                     'status' => True,

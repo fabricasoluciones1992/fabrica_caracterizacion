@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\Validator;
 
 class MonetaryStatesController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
+        $token = Controller::auth();
+
         $monState = MonetaryState::all();
-        Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, 2, 1);
+        Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, $proj_id, $token['use_id']);
 
         return response()->json([
             'status' => true,
@@ -19,8 +21,10 @@ class MonetaryStatesController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
+
         $rules = [
             'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
         ];
@@ -33,7 +37,7 @@ class MonetaryStatesController extends Controller
         } else {
             $monState = new MonetaryState($request->input());
             $monState->save();
-            Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3, 2, 1);
+            Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3,$proj_id, $token['use_id']);
 
             return response()->json([
                 'status' => True,
@@ -42,8 +46,10 @@ class MonetaryStatesController extends Controller
         } 
     }
 
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
+
         $monState = MonetaryState::find($id);
         if ($monState == null) {
             return response()->json([
@@ -51,7 +57,7 @@ class MonetaryStatesController extends Controller
                 'data' => ['message' => 'The requested economic state was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, 2, 1);
+            Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, $proj_id, $token['use_id']);
 
             return response()->json([
                 'status' => true,
@@ -60,8 +66,10 @@ class MonetaryStatesController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update($proj_id,Request $request, $id)
     {
+        $token = Controller::auth();
+
         $monState = MonetaryState::find($id);
         if ($monState == null) {
             return response()->json([
@@ -81,7 +89,7 @@ class MonetaryStatesController extends Controller
             } else {
                 $monState->mon_sta_name = $request->mon_sta_name;
                 $monState->save();
-                Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, 2, 1);
+                Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, $proj_id, $token['use_id']);
 
                 return response()->json([
                     'status' => True,

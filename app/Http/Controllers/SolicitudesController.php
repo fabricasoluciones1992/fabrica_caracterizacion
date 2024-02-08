@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\DB;
 class SolicitudesController extends Controller
 {
  
-    public function index()
+    public function index($proj_id)
     {
+        $token = Controller::auth();
+
         $solicitudes = DB::select("SELECT 
         solicitudes.sol_id,
         solicitudes.sol_date,
@@ -31,7 +33,7 @@ class SolicitudesController extends Controller
         persons ON students.per_id = persons.per_id;
     
             ");
-        Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4, 2, 1);
+        Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4,  $proj_id, $token['use_id']);
 
         return response()->json([
            'status' => true,
@@ -40,8 +42,10 @@ class SolicitudesController extends Controller
 
     }
  
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
+
         // return $request;
         $rules = [
             'sol_date' =>'date',
@@ -63,7 +67,7 @@ class SolicitudesController extends Controller
             $request->merge(['sol_date' => $currentDate]);
             $solicitudes = new Solicitud($request->input());
             $solicitudes->save();
-            Controller::NewRegisterTrigger("An insertion was made in the solicitudes table", 3, 2, 1);
+            Controller::NewRegisterTrigger("An insertion was made in the solicitudes table", 3,  $proj_id, $token['use_id']);
 
             return response()->json([
              'status' => True,
@@ -72,8 +76,10 @@ class SolicitudesController extends Controller
         }
 
     }
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
+
         $solicitudes =  DB::select("SELECT 
         solicitudes.sol_id,
         solicitudes.sol_date,
@@ -99,7 +105,7 @@ class SolicitudesController extends Controller
                 "data" => ['message' => 'The searched request was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4, 2, 1);
+            Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4,  $proj_id, $token['use_id']);
 
             return response()->json([
                'status' => true,
@@ -108,8 +114,10 @@ class SolicitudesController extends Controller
         }
 
     }
-    public function update(Request $request, $id)
+    public function update($proj_id,Request $request, $id)
     {
+        $token = Controller::auth();
+
         $solicitudes = Solicitud::find($id);
         if ($solicitudes == null) {
             return response()->json([
@@ -140,7 +148,7 @@ class SolicitudesController extends Controller
                 $solicitudes->sol_typ_id = $request->sol_typ_id;
                 $solicitudes->fac_id = $request->fac_id;
                 $solicitudes->save();
-                Controller::NewRegisterTrigger("An update was made in the solicitudes table", 1, 2, 1);
+                Controller::NewRegisterTrigger("An update was made in the solicitudes table", 1, $proj_id, $token['use_id']);
 
                 return response()->json([
                   'status' => True,

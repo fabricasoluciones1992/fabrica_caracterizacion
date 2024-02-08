@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\Validator;
 
 class AssistancesController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
+        $token = Controller::auth();
+
         $assistances = DB::select("
             SELECT ass.ass_id, ass.ass_date, if(ass.ass_assistance=1,'Attended','Did not attend') ass_assistance, stu.stu_code, ba.bie_act_quotas
             FROM assistances ass
             INNER JOIN students stu ON stu.stu_id = ass.stu_id
             INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id 
         ");
-        Controller::NewRegisterTrigger("A search was performed on the assistences table",4,2,1);
+        Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $token['use_id']);
 
         return response()->json([
             'status' => true,
@@ -25,8 +27,10 @@ class AssistancesController extends Controller
         ],200);
 
     }
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
+
         $rules = [
             'ass_date' =>'date',
             'ass_assistance' =>'integer|max:1',
@@ -49,7 +53,7 @@ class AssistancesController extends Controller
             $assistances = new assistance($request->input());
             $assistances->save();
 
-            Controller::NewRegisterTrigger("An insertion was made in the assistences table",3,2,1);
+            Controller::NewRegisterTrigger("An insertion was made in the assistences table",3,$proj_id, $token['use_id']);
 
             return response()->json([
                 'status' => True,
@@ -58,8 +62,10 @@ class AssistancesController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
+
         $assistances =  DB::select("
             SELECT ass.ass_id, ass.ass_date, if(ass.ass_assistance=1,'Attended','Did not attend') ass_assistance, stu.stu_code, ba.bie_act_quotas
             FROM assistances ass
@@ -75,7 +81,7 @@ class AssistancesController extends Controller
             ],400);
         }else{
             
-            Controller::NewRegisterTrigger("A search was performed on the assistences table",4,2,1);
+            Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $token['use_id']);
 
             return response()->json([
                 'status' => true,
@@ -84,8 +90,10 @@ class AssistancesController extends Controller
         }
 
     }
-    public function update(Request $request, $id)
+    public function update($proj_id,Request $request, $id)
     {
+        $token = Controller::auth();
+
         $assistances = assistance::find($id);
         if ($assistances == null) {
             return response()->json([
@@ -115,7 +123,7 @@ class AssistancesController extends Controller
                 $assistances->stu_id = $request->stu_id;
                 $assistances->bie_act_id = $request->bie_act_id;
                 $assistances->save();
-                Controller::NewRegisterTrigger("An update was made in the assistences table",1,2,1);
+                Controller::NewRegisterTrigger("An update was made in the assistences table",1,$proj_id, $token['use_id']);
 
                 return response()->json([
                     'status' => True,
