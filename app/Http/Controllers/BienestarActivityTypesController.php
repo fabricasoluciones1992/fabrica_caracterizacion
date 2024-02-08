@@ -11,6 +11,8 @@ class BienestarActivityTypesController extends Controller
     public function index()
     {
         $bienestarActTypes = BienestarActivityTypes::all();
+        Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities Types table",4,2,1);
+
         return response()->json([
             'status' => true,
             'data' => $bienestarActTypes
@@ -30,11 +32,11 @@ class BienestarActivityTypesController extends Controller
         } else {
             $bienestarActTypes = new BienestarActivityTypes($request->input());
             $bienestarActTypes->save();
-            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla Bienestar Activities types",4,2,1);
+            Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities types table",4,2,1);
 
             return response()->json([
                 'status' => true,
-                'message' => "El tipo de actividad de bienestar '".$bienestarActTypes->bie_act_typ_name."' ha sido creado exitosamente."
+                'message' => "The bienestar activity type '".$bienestarActTypes->bie_act_typ_name."' has been created successfully."
             ],200);
         }
 
@@ -45,10 +47,10 @@ class BienestarActivityTypesController extends Controller
         if ($bienestarActTypes == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se ha encontrado el tipo de actividad de bienestar solicitada']
+                'data' => ['message' => 'The requested bienestar activity type was not found']
             ],400);
         } else {
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Bienestar Activities types",4,2,1);
+            Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities types table",4,2,1);
 
             return response()->json([
                 'status' => true,
@@ -63,7 +65,7 @@ class BienestarActivityTypesController extends Controller
         if ($bienestarActTypes == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se ha encontrado el tipo de actividad de bienestar solicitada']
+                'data' => ['message' => 'The requested bienestar activity type was not found']
             ],400);
         } else {
             $rules = [
@@ -78,11 +80,11 @@ class BienestarActivityTypesController extends Controller
             } else {
                 $bienestarActTypes->bie_act_typ_name = $request->bie_act_typ_name;
                 $bienestarActTypes->save();
-                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla Bienestar Activities types",1,2,1);
+                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities types table",1,2,1);
 
                 return response()->json([
                    'status' => True,
-                    'data' => "el tipo de actividad de bienestar ".$bienestarActTypes->bie_act_typ_name." ha sido actualizado exitosamente."
+                    'data' => "The bienestar activity type ".$bienestarActTypes->bie_act_typ_name." has been updated successfully."
                 ],200);
             };
         }
@@ -92,7 +94,7 @@ class BienestarActivityTypesController extends Controller
     {
         return response()->json([
             'status' => false,
-            'message' => "Funcion no disponible"
+            'message' => "Function not available"
         ],400);
 
     }

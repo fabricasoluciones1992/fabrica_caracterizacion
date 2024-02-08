@@ -11,13 +11,14 @@ class MonetaryStatesController extends Controller
     public function index()
     {
         $monState = MonetaryState::all();
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
+        Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, 2, 1);
 
         return response()->json([
             'status' => true,
             'data' => $monState
-        ],200);
+        ], 200);
     }
+
     public function store(Request $request)
     {
         $rules = [
@@ -32,25 +33,25 @@ class MonetaryStatesController extends Controller
         } else {
             $monState = new MonetaryState($request->input());
             $monState->save();
-            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla monetary states",3,2,1);
+            Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3, 2, 1);
 
             return response()->json([
                 'status' => True,
-                'message' => "El tipo de estado economico '".$monState->mon_sta_name."' ha sido creado exitosamente."
-            ],200);
+                'message' => "The economic state type '".$monState->mon_sta_name."' has been created successfully."
+            ], 200);
         } 
-
     }
+
     public function show($id)
     {
         $monState = MonetaryState::find($id);
         if ($monState == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se ha encontrado el estado economico solicitado']
-            ],400);
+                'data' => ['message' => 'The requested economic state was not found']
+            ], 400);
         } else {
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla monetary states",4,2,1);
+            Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, 2, 1);
 
             return response()->json([
                 'status' => true,
@@ -58,17 +59,18 @@ class MonetaryStatesController extends Controller
             ]);
         }
     }
+
     public function update(Request $request, $id)
     {
         $monState = MonetaryState::find($id);
         if ($monState == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se ha encontrado el estado economico solicitado']
-            ],400);
+                'data' => ['message' => 'The requested economic state was not found']
+            ], 400);
         } else {
             $rules = [
-            'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -79,21 +81,21 @@ class MonetaryStatesController extends Controller
             } else {
                 $monState->mon_sta_name = $request->mon_sta_name;
                 $monState->save();
-                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla monetary states",1,2,1);
+                Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, 2, 1);
 
                 return response()->json([
                     'status' => True,
-                    'data' => "el estado economico ".$monState->mon_sta_name." ha sido actualizada exitosamente."
-                ],200);
-            };
+                    'message' => "The economic state '".$monState->mon_sta_name."' has been updated successfully."
+                ], 200);
+            }
         }
     }
+
     public function destroy(MonetaryState $monetaryState)
     {
         return response()->json([
             'status' => false,
-            'message' => "Funcion no disponible"
-        ],400);
-
+            'message' => "Function not available"
+        ], 400);
     }
 }

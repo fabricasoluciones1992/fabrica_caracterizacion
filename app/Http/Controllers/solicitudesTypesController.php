@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\solicitudType;
+use App\Models\SolicitudType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class solicitudesTypesController extends Controller
+class SolicitudesTypesController extends Controller
 {
     public function index()
     {
-        $solicitudTypes = solicitudType::all();
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes types",4,2,1);
+        $solicitudTypes = SolicitudType::all();
+        Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4, 2, 1);
         return response()->json([
             'status' => true,
             'data' => $solicitudTypes
-        ],200);
-        
-
+        ], 200);
     }
+
     public function store(Request $request)
     {
         $rules = [
@@ -27,78 +26,72 @@ class solicitudesTypesController extends Controller
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
- 
-             'status' => False,
-             'message' => $validator->errors()->all()
+                'status' => false,
+                'message' => $validator->errors()->all()
             ]);
         } else {
-            $solicitudTypes = new solicitudType($request->input());
+            $solicitudTypes = new SolicitudType($request->input());
             $solicitudTypes->save();
-            Controller::NewRegisterTrigger("Se realizo una insercion en la tabla solicitudes types",3,2,1);
+            Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table", 3, 2, 1);
             return response()->json([
-             'status' => True,
-             'message' => "El tipo de razon '".$solicitudTypes->sol_typ_name."' ha sido creado exitosamente."
-            ],200);
-        }  
-        
-
+                'status' => true,
+                'message' => "The reason type '".$solicitudTypes->sol_typ_name."' has been created successfully."
+            ], 200);
+        }
     }
+
     public function show($id)
     {
-        $solicitudTypes = solicitudType::find($id);
+        $solicitudTypes = SolicitudType::find($id);
         if ($solicitudTypes == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se ha encontrado la razon solicitada']
-            ],400);
+                'data' => ['message' => 'The requested reason was not found']
+            ], 400);
         } else {
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes types",4,2,1);
+            Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4, 2, 1);
             return response()->json([
                 'status' => true,
                 'data' => $solicitudTypes
             ]);
         }
-        
-
     }
+
     public function update(Request $request, $id)
     {
-        $solicitudTypes = solicitudType::find($id);
+        $solicitudTypes = SolicitudType::find($id);
         if ($solicitudTypes == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se ha encontrado la razon solicitada']
-            ],400);
+                'data' => ['message' => 'The requested reason was not found']
+            ], 400);
         } else {
             $rules = [
-              'sol_typ_name' =>'required|string|min:1|max:100|regex:/^[A-Z\s]+$/',
+                'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-Z\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
                 return response()->json([
-              'status' => False,
-              'message' => $validator->errors()->all()
+                    'status' => false,
+                    'message' => $validator->errors()->all()
                 ]);
             } else {
                 $solicitudTypes->sol_typ_name = $request->sol_typ_name;
                 $solicitudTypes->save();
-                Controller::NewRegisterTrigger("Se realizo una actualizacion en la tabla solicitudes types",1,2,1);
+                Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 1, 2, 1);
                 return response()->json([
-                    'status' => True,
-                    'data' => "la razon ".$solicitudTypes->sol_typ_name." ha sido actualizado exitosamente."
-                ],200);
-            };
+                    'status' => true,
+                    'message' => "The reason '".$solicitudTypes->sol_typ_name."' has been updated successfully."
+                ], 200);
+            }
         }
-        
-
     }
-    public function destroy(solicitudType $solicitudTypes)
+
+    public function destroy(SolicitudType $solicitudTypes)
     {
         return response()->json([
-          'status' => false,
-          'message' => "Funcion no disponible"
-        ],400);
-        
-
+            'status' => false,
+            'message' => "Function not available"
+        ], 400);
     }
 }

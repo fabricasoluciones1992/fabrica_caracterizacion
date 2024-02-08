@@ -80,47 +80,44 @@ class Controller extends BaseController
     }
 
     public function login(Request $request){
-
-        $response = Http::post("http://127.0.0.1:8088/api/login", [
+        $response = Http::post(env('APP_URL_GENERAL')."login/".env('APP_ID'), [
             "use_mail" => $request->use_mail,
-            "use_password" => $request->use_password,
-            "proj_id" => env('APP_ID')
+            "use_password" => $request->use_password
         ]);
         $user=DB::table('users')->where("use_mail",'=',$request->use_mail)->first();
         $user = User::find($user->use_id);
         Auth::login($user);
         
-        // Verifica si la solicitud HTTP fue exitosa
+        // Check if the HTTP request was successful
         if ($response->successful()) {
-            // Obtener el token de la respuesta JSON, si está presente
+            // Get the token from the JSON response if present
             $responseData = $response->json();
             $token = isset($responseData['token']) ? $responseData['token'] : null;
-    
-            // Verifica si se obtuvo un token antes de almacenarlo
+            // Check if a token was retrieved before storing it
             if ($token !== null) {
-                // Iniciar la sesión y almacenar el token
+                // Start the session and store the token
                 session_start();
                 $_SESSION['api_token'] = $token;
                 $_SESSION['use_id'] = $user->use_id;
-                $_SESSION['proj_id'] = env('APP_ID');
+                $_SESSION['acc_administrator'] = $responseData['acc_administrator'];
     
                 return response()->json([
                     'status' => true,
                     'data' => [
                         "token" => $token,
                         "use_id" => $user->use_id,
-                        "proj_id" => env("APP_ID")
+                        "acc_administrator" => $responseData['acc_administrator']
                     ]
                 ]);
             } else {
-                // Manejar el caso en el que 'token' no está presente en la respuesta
+                // Handle the case where 'token' is not present in the response
                 return response()->json([
                     'status' => false,
                     'message' => $response->json()
                 ]);
             }
         } else {
-            // Manejar el caso en el que la solicitud HTTP no fue exitosa
+            // Handle the case where the HTTP request was not successful
             return response()->json([
                 'status' => false,
                 'message' => $response->json()['message']

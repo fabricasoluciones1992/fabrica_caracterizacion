@@ -37,7 +37,7 @@ Route::resource('permanences', PermanencesController::class)->names('permanences
 Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes');
 
 Route::resource('bienestarActTypes', BienestarActivityTypesController::class)->names('bienestarActTypes');
-Route::resource('bienestarActivities', BienestarActivitiesController::class)->names('bienestarActivities');
+Route::resource('bienestar/activities', BienestarActivitiesController::class)->names('bienestarActivities');
 Route::resource('assistances', AssistancesController::class)->names('assistances');
 
 Route::resource('monetaryStates', MonetaryStatesController::class)->names('monetaryStates');
