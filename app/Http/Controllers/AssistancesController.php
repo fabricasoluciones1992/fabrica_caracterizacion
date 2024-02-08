@@ -138,7 +138,7 @@ class AssistancesController extends Controller
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;
                     $assistances->save();
-                    Controller::NewRegisterTrigger("An update was made in the assistences table",1,2,1);
+                    Controller::NewRegisterTrigger("An update was made in the assistences table",1,$proj_id, $token['use_id']);
 
                     return response()->json([
                         'status' => True,
