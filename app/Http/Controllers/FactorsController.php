@@ -23,27 +23,34 @@ class FactorsController extends Controller
     }
     public function store(Request $request)
     {
-        $rules = [
-            'fac_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
-        ];
-        $validator = Validator::make($request->input(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $rules = [
+                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
 
-             'status' => False,
-             'message' => $validator->errors()->all()
-            ]);
+                'status' => False,
+                'message' => $validator->errors()->all()
+                ]);
+            } else {
+                $factor = new factor($request->input());
+                $factor->save();
+                Controller::NewRegisterTrigger("An insertion was made in the factors table", 3, 2, 1);
+
+                return response()->json([
+                'status' => True,
+                'message' => "The factor type '".$factor->fac_name."' has been created successfully."
+                ], 200);
+            }
         } else {
-            $factor = new factor($request->input());
-            $factor->save();
-            Controller::NewRegisterTrigger("An insertion was made in the factors table", 3, 2, 1);
-
             return response()->json([
-             'status' => True,
-             'message' => "The factor type '".$factor->fac_name."' has been created successfully."
-            ], 200);
+                'status' => false,
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
-
     }
     public function show($id)
     {
@@ -58,7 +65,6 @@ class FactorsController extends Controller
 
             return response()->json([
                 'status' => true,
-
                 'data' => $factor
             ]);
         }
@@ -66,35 +72,42 @@ class FactorsController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $factor = factor::find($id);
-        if ($factor == null) {
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $factor = factor::find($id);
+            if ($factor == null) {
+                return response()->json([
+                    'status' => false,
+                    'data' => ['message' => 'The requested factor was not found']
+                ], 400);
+            } else {
+                $rules = [
+                    'fac_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
+
+                ];
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+                    ]);
+                } else {
+                    $factor->fac_name = $request->fac_name;
+                    $factor->save();
+                    Controller::NewRegisterTrigger("An update was made in the factors table", 1, 2, 1);
+
+                    return response()->json([
+                'status' => True,
+                    'data' => "The factor '".$factor->fac_name."' has been updated successfully."
+                    ], 200);
+                };
+            }
+        } else {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'The requested factor was not found']
-            ], 400);
-        } else {
-            $rules = [
-                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
-
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-               'status' => False,
-               'message' => $validator->errors()->all()
-                ]);
-            } else {
-                $factor->fac_name = $request->fac_name;
-                $factor->save();
-                Controller::NewRegisterTrigger("An update was made in the factors table", 1, 2, 1);
-
-                return response()->json([
-             'status' => True,
-                   'data' => "The factor '".$factor->fac_name."' has been updated successfully."
-                ], 200);
-            };
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
-
     }
     public function destroy(factor $factors)
     {

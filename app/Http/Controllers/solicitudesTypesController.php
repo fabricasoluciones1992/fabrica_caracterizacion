@@ -20,23 +20,31 @@ class SolicitudesTypesController extends Controller
 
     public function store(Request $request)
     {
-        $rules = [
-            'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-Z\s]+$/',
-        ];
-        $validator = Validator::make($request->input(), $rules);
-        if ($validator->fails()) {
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $rules = [
+                'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-Z\s]+$/',
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->all()
+                ]);
+            } else {
+                $solicitudTypes = new SolicitudType($request->input());
+                $solicitudTypes->save();
+                Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table", 3, 2, 1);
+                return response()->json([
+                    'status' => true,
+                    'message' => "The reason type '".$solicitudTypes->sol_typ_name."' has been created successfully."
+                ], 200);
+            }
+        } else {
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()->all()
-            ]);
-        } else {
-            $solicitudTypes = new SolicitudType($request->input());
-            $solicitudTypes->save();
-            Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table", 3, 2, 1);
-            return response()->json([
-                'status' => true,
-                'message' => "The reason type '".$solicitudTypes->sol_typ_name."' has been created successfully."
-            ], 200);
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
     }
 
@@ -59,31 +67,39 @@ class SolicitudesTypesController extends Controller
 
     public function update(Request $request, $id)
     {
-        $solicitudTypes = SolicitudType::find($id);
-        if ($solicitudTypes == null) {
-            return response()->json([
-                'status' => false,
-                'data' => ['message' => 'The requested reason was not found']
-            ], 400);
-        } else {
-            $rules = [
-                'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-Z\s]+$/',
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $solicitudTypes = SolicitudType::find($id);
+            if ($solicitudTypes == null) {
                 return response()->json([
                     'status' => false,
-                    'message' => $validator->errors()->all()
-                ]);
+                    'data' => ['message' => 'The requested reason was not found']
+                ], 400);
             } else {
-                $solicitudTypes->sol_typ_name = $request->sol_typ_name;
-                $solicitudTypes->save();
-                Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 1, 2, 1);
-                return response()->json([
-                    'status' => true,
-                    'message' => "The reason '".$solicitudTypes->sol_typ_name."' has been updated successfully."
-                ], 200);
+                $rules = [
+                    'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-Z\s]+$/',
+                ];
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => $validator->errors()->all()
+                    ]);
+                } else {
+                    $solicitudTypes->sol_typ_name = $request->sol_typ_name;
+                    $solicitudTypes->save();
+                    Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 1, 2, 1);
+                    return response()->json([
+                        'status' => true,
+                        'message' => "The reason '".$solicitudTypes->sol_typ_name."' has been updated successfully."
+                    ], 200);
+                }
             }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
     }
 

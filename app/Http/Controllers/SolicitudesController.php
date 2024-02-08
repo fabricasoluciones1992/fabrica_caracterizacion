@@ -42,35 +42,41 @@ class SolicitudesController extends Controller
  
     public function store(Request $request)
     {
-        // return $request;
-        $rules = [
-            'sol_date' =>'date',
-            'sol_description' =>'required|string|min:1|max:250',
-            'sol_typ_id' =>'required|integer',
-            'stu_id' =>'required|integer',
-            'fac_id' =>'required|integer'
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $rules = [
+                'sol_date' =>'date',
+                'sol_description' =>'required|string|min:1|max:250|/^[a-zA-Z0-9\s]+$/',
+                'sol_typ_id' =>'required|integer|max:1',
+                'stu_id' =>'required|integer|max:1',
+                'fac_id' =>'required|integer|max:1'
 
-        ];
-        $validator = Validator::make($request->input(), $rules);
-        if ($validator->fails()) {
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+                ]);
+            }else{
+                $currentDate = now()->toDateString();
+
+                $request->merge(['sol_date' => $currentDate]);
+                $solicitudes = new Solicitud($request->input());
+                $solicitudes->save();
+                Controller::NewRegisterTrigger("An insertion was made in the solicitudes table", 3, 2, 1);
+
+                return response()->json([
+                'status' => True,
+                'message' => "The request has been created successfully."
+                ], 200);
+            }
+        } else {
             return response()->json([
-             'status' => False,
-             'message' => $validator->errors()->all()
-            ]);
-        }else{
-            $currentDate = now()->toDateString();
-
-            $request->merge(['sol_date' => $currentDate]);
-            $solicitudes = new Solicitud($request->input());
-            $solicitudes->save();
-            Controller::NewRegisterTrigger("An insertion was made in the solicitudes table", 3, 2, 1);
-
-            return response()->json([
-             'status' => True,
-             'message' => "The request has been created successfully."
-            ], 200);
+                'status' => false,
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
-
     }
     public function show($id)
     {
@@ -110,52 +116,58 @@ class SolicitudesController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $solicitudes = Solicitud::find($id);
-        if ($solicitudes == null) {
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $solicitudes = Solicitud::find($id);
+            if ($solicitudes == null) {
+                return response()->json([
+                    'status' => false,
+                    'data' => ['message' => 'The searched request was not found']
+                ], 400);
+            } else {
+                $rules = [
+                    'sol_date' =>'date',
+                    'sol_description' =>'required|string|min:1|max:250',
+                    'sol_typ_id' =>'required|integer',
+                    'stu_id' =>'required|integer',
+                    'fac_id' =>'required|integer'
+                ];
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                    ]);
+                } else {
+                    $currentDate = now()->toDateString();
+
+                    $request->merge(['sol_date' => $currentDate]);
+
+                    $solicitudes->sol_date = $request->sol_date;
+                    $solicitudes->sol_description = $request->sol_description;
+                    $solicitudes->sol_typ_id = $request->sol_typ_id;
+                    $solicitudes->fac_id = $request->fac_id;
+                    $solicitudes->save();
+                    Controller::NewRegisterTrigger("An update was made in the solicitudes table", 1, 2, 1);
+
+                    return response()->json([
+                    'status' => True,
+                    'message' => "The request has been updated successfully."
+                    ], 200);
+                }
+            }
+        } else {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'The searched request was not found']
-            ], 400);
-        } else {
-            $rules = [
-                'sol_date' =>'date',
-                'sol_description' =>'required|string|min:1|max:250',
-                'sol_typ_id' =>'required|integer',
-                'stu_id' =>'required|integer',
-                'fac_id' =>'required|integer'
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                   'status' => False,
-                  'message' => $validator->errors()->all()
-                ]);
-            } else {
-                $currentDate = now()->toDateString();
-
-                $request->merge(['sol_date' => $currentDate]);
-
-                $solicitudes->sol_date = $request->sol_date;
-                $solicitudes->sol_description = $request->sol_description;
-                $solicitudes->sol_typ_id = $request->sol_typ_id;
-                $solicitudes->fac_id = $request->fac_id;
-                $solicitudes->save();
-                Controller::NewRegisterTrigger("An update was made in the solicitudes table", 1, 2, 1);
-
-                return response()->json([
-                  'status' => True,
-                  'message' => "The request has been updated successfully."
-                ], 200);
-            }
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
-
     }
     public function destroy(Solicitud $solicitudes)
     {
         return response()->json([
             'status' => false,
             'message' => "Function not available"
-         ], 400);
-
+        ], 400);
     }
 }
