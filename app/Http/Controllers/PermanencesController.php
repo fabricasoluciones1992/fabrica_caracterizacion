@@ -30,30 +30,37 @@ class PermanencesController extends Controller
     {
         $token = Controller::auth();
 
-        // return $request;
-        $rules = [
-            'perm_date' =>'required|date',
-            'perm_description' =>'required|string|min:1|max:50',
-            'req_id' =>'required|integer',
-            'act_id' =>'required|integer'
-        ];
-        $validator = Validator::make($request->input(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => False,
-                'message' => $validator->errors()->all()
-            ]);
+        
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $rules = [
+                'perm_date' =>'required|date',
+                'perm_description' =>'required|string|min:1|max:50|/^[a-zA-Z0-9\s]+$/',
+                'req_id' =>'required|integer|max:1',
+                'act_id' =>'required|integer|max:1'
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                ]);
+            } else {
+                $permanences = new Permanence($request->input());
+                $permanences->save();
+                Controller::NewRegisterTrigger("An insertion was made in the permanences table", 3, $proj_id, $token['use_id']);
+
+                return response()->json([
+                    'status' => True,
+                    'message' => "The permanences has been created successfully."
+                ], 200);
+            }
         } else {
-            $permanences = new Permanence($request->input());
-            $permanences->save();
-            Controller::NewRegisterTrigger("An insertion was made in the permanences table", 3, $proj_id, $token['use_id']);
-
             return response()->json([
-                'status' => True,
-                'message' => "The permanences has been created successfully."
-            ], 200);
+                'status' => false,
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
-
     }
 
     public function show($proj_id,$id)
@@ -86,39 +93,48 @@ class PermanencesController extends Controller
         $token = Controller::auth();
 
         $permanences = Permanence::find($id);
-        if ($permanences == null) {
+        
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $permanences = Permanence::find($id);
+            if ($permanences == null) {
+                return response()->json([
+                    'status' => false,
+                    'data' => ['message' => 'The searched permanence was not found']
+                ], 400);
+            } else {
+                $rules = [
+                    'perm_date' =>'required|date',
+                    'perm_description' =>'required|string|min:1|max:50|/^[a-zA-Z0-9\s]+$/',
+                    'req_id' =>'required|integer|max:1',
+                    'act_id' =>'required|integer|max:1'
+                ];
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => False,
+                        'message' => $validator->errors()->all()
+                    ]);
+                } else {
+                    Controller::NewRegisterTrigger("An update was made in the permanences table", 1, $proj_id, $token['use_id']);
+
+                    $permanences->perm_date = $request->perm_date;
+                    $permanences->perm_description = $request->perm_description;
+                    $permanences->req_id = $request->req_id;
+                    $permanences->act_id = $request->act_id;
+                    $permanences->save();
+                    return response()->json([
+                        'status' => True,
+                        'message' => "The permanence has been updated successfully."
+                    ], 200);
+                }
+            }
+        } else {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'The searched permanence was not found']
-            ], 400);
-        } else {
-            $rules = [
-                'perm_date' =>'required|date',
-                'perm_description' =>'required|string|min:1|max:50',
-                'req_id' =>'required|integer',
-                'act_id' =>'required|integer'
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                ]);
-            } else {
-                Controller::NewRegisterTrigger("An update was made in the permanences table", 1, $proj_id, $token['use_id']);
-
-                $permanences->perm_date = $request->perm_date;
-                $permanences->perm_description = $request->perm_description;
-                $permanences->req_id = $request->req_id;
-                $permanences->act_id = $request->act_id;
-                $permanences->save();
-                return response()->json([
-                    'status' => True,
-                    'message' => "The permanence has been updated successfully."
-                ], 200);
-            }
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
-
     }
 
     public function destroy(Permanence $permanences)

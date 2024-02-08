@@ -25,25 +25,34 @@ class MonetaryStatesController extends Controller
     {
         $token = Controller::auth();
 
-        $rules = [
-            'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
-        ];
-        $validator = Validator::make($request->input(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => False,
-                'message' => $validator->errors()->all()
-            ]);
-        } else {
-            $monState = new MonetaryState($request->input());
-            $monState->save();
-            Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3,$proj_id, $token['use_id']);
 
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $rules = [
+                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                ]);
+            } else {
+                $monState = new MonetaryState($request->input());
+                $monState->save();
+                Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3,$proj_id, $token['use_id']);
+
+                return response()->json([
+                    'status' => True,
+                    'message' => "The economic state type '".$monState->mon_sta_name."' has been created successfully."
+                ], 200);
+            }
+        } else {
             return response()->json([
-                'status' => True,
-                'message' => "The economic state type '".$monState->mon_sta_name."' has been created successfully."
-            ], 200);
-        } 
+                'status' => false,
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
+        }
     }
 
     public function show($proj_id,$id)
@@ -71,31 +80,41 @@ class MonetaryStatesController extends Controller
         $token = Controller::auth();
 
         $monState = MonetaryState::find($id);
-        if ($monState == null) {
+        
+        session_start();
+        if ($_SESSION['acc_administrator'] == 1) {
+            $monState = MonetaryState::find($id);
+            if ($monState == null) {
+                return response()->json([
+                    'status' => false,
+                    'data' => ['message' => 'The requested economic state was not found']
+                ], 400);
+            } else {
+                $rules = [
+                    'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                ];
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => False,
+                        'message' => $validator->errors()->all()
+                    ]);
+                } else {
+                    $monState->mon_sta_name = $request->mon_sta_name;
+                    $monState->save();
+                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, $proj_id, $token['use_id']);
+
+                    return response()->json([
+                        'status' => True,
+                        'message' => "The economic state '".$monState->mon_sta_name."' has been updated successfully."
+                    ], 200);
+                }
+            }
+        } else {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'The requested economic state was not found']
-            ], 400);
-        } else {
-            $rules = [
-                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                ]);
-            } else {
-                $monState->mon_sta_name = $request->mon_sta_name;
-                $monState->save();
-                Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, $proj_id, $token['use_id']);
-
-                return response()->json([
-                    'status' => True,
-                    'message' => "The economic state '".$monState->mon_sta_name."' has been updated successfully."
-                ], 200);
-            }
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403); 
         }
     }
 
