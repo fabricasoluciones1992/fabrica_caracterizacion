@@ -44,6 +44,10 @@ Route::resource('monetaryStates', MonetaryStatesController::class)->names('monet
 
 Route::resource('factors', FactorsController::class)->names('factors');
 
+Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
+Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
+Route::get('/student/activities/{code}', [Controller::class, 'viewStudentBie'])->name('student.viewStudentBie');
+
 
 Route::get('/genders', [AuthController::class, 'genders']);
 

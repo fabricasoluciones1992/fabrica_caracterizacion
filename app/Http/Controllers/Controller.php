@@ -123,6 +123,56 @@ class Controller extends BaseController
                 'message' => $response->json()['message']
             ]);
         }
+    }
 
+    public function viewStudentMed($code) {
+        $codigoStu = DB::select("SELECT * FROM Vista_Historial_Medico_Estudiante
+        WHERE stu_code = $code
+        ");
+        if ($codigoStu == null) {
+            return response()->json([
+               'status' => false,
+                "data" => ['message' => 'The searched student was not found']
+            ],400);
+        } else {
+            return response()->json([
+                'status' => true,
+                'data' => $codigoStu
+            ],200);
+        }
+    }
+
+    public function viewStudentSol($code) {
+        $codigoStu = DB::select("SELECT * FROM Vista_Solicitudes_Estudiante
+        WHERE stu_code = $code
+        ");
+        if ($codigoStu == null) {
+            return response()->json([
+               'status' => false,
+                "data" => ['message' => 'The searched student was not found']
+            ],400);
+        } else {
+            return response()->json([
+                'status' => true,
+                'data' => $codigoStu
+            ],200);
+        }
+    }
+
+    public function viewStudentBie($code) {
+        $codigoStu = DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante
+        WHERE stu_code = $code
+        ");
+        if ($codigoStu == null) {
+            return response()->json([
+               'status' => false,
+                "data" => ['message' => 'The searched student was not found']
+            ],400);
+        } else {
+            return response()->json([
+                'status' => true,
+                'data' => $codigoStu
+            ],200);
+        }
     }
 }
