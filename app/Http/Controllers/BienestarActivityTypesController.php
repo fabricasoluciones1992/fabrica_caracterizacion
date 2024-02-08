@@ -22,6 +22,7 @@ class BienestarActivityTypesController extends Controller
     }
     public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
 
         session_start();
         if ($_SESSION['acc_administrator'] == 1) {
