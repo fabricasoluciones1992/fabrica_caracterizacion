@@ -11,8 +11,7 @@ class action extends Model
     protected $primaryKey = "act_id";
     protected $fillable = [
         'act_name',
-
+        'act_status',
     ];
     public $timestamps = false;
-
 }

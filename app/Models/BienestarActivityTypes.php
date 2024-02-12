@@ -11,6 +11,7 @@ class BienestarActivityTypes extends Model
     protected $primaryKey = "bie_act_typ_id";
     protected $fillable = [
         'bie_act_typ_name',
+        'bie_act_typ_status',
     ];
     public $timestamps = false;
 }

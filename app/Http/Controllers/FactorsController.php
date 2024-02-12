@@ -40,7 +40,8 @@ class FactorsController extends Controller
         
         if ($_SESSION['acc_administrator'] == 1) {
             $rules = [
-                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/'
+                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+                'fac_status' => 'required|integer|min:0|max:1'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -76,22 +77,22 @@ class FactorsController extends Controller
             'status' => False,
             'message' => 'Token not found, please login and try again.'
             ],400);
-    }else{
-        $factor = factor::find($id);
-        if ($factor == null) {
-            return response()->json([
-                'status' => false,
-                'data' => ['message' => 'The requested factor was not found']
-            ], 400);
-        } else {
-            Controller::NewRegisterTrigger("A search was performed in the factors table", 4, $proj_id, 1);
+        }else{
+            $factor = factor::find($id);
+            if ($factor == null) {
+                return response()->json([
+                    'status' => false,
+                    'data' => ['message' => 'The requested factor was not found']
+                ], 400);
+            } else {
+                Controller::NewRegisterTrigger("A search was performed in the factors table", 4, $proj_id, 1);
 
-            return response()->json([
-                'status' => true,
-                'data' => $factor
-            ]);
+                return response()->json([
+                    'status' => true,
+                    'data' => $factor
+                ]);
+            }
         }
-    }
     }
     public function update($proj_id,Request $request, $id)
     {
@@ -113,8 +114,8 @@ class FactorsController extends Controller
                 ], 400);
             } else {
                 $rules = [
-                    'fac_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/'
-
+                    'fac_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+                    'fac_status' => 'required|integer|min:0|max:1'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -141,14 +142,32 @@ class FactorsController extends Controller
         }
     }
 }
-    public function destroy(factor $factors)
+    public function destroy($proj_id, string $id)
     {
-        return response()->json([
-            'status' => false,
-            'message' => "Function not available"
+        $token = Controller::auth();
 
-        ], 400);
-
+        $factor = factor::find($id);
+        if ($factor == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'The requested Action was not found']
+            ],400);
+        } else {
+            if ($factor->fac_status == 1){
+                $factor->fac_status = 0;
+                $factor->save();
+                Controller::NewRegisterTrigger("An delete was made in the actions table",1,$proj_id, $token['use_id']);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested Factor has been disabled successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The requested Factor has already been disabled previously'
+                ]);
+            }  
+        }
     }
     
 }
