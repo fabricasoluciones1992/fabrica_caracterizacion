@@ -68,11 +68,12 @@ class Controller extends BaseController
         if (isset($_SESSION['api_token'])) {
             $token = $_SESSION['api_token'];
             $use_id = $_SESSION['use_id'];
-            $proj_id = $_SESSION['proj_id'];
+            $responseData['acc_administrator']=$_SESSION['acc_administrator'];
+
             return [
                 "token" => $token,
                 "use_id" => $use_id,
-                "proj_id" => $proj_id
+                "acc_administrator" => $responseData
             ];
         } else {
             return  'Token not found in session';
@@ -80,7 +81,7 @@ class Controller extends BaseController
     }
 
     public function login(Request $request){
-        $response = Http::post(env('APP_URL_GENERAL')."login/".env('APP_ID'), [
+        $response = Http::post('http://127.0.0.1:8088/api/login/2', [
             "use_mail" => $request->use_mail,
             "use_password" => $request->use_password
         ]);

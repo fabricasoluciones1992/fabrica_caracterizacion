@@ -16,6 +16,8 @@ use App\Http\Controllers\solicitudesTypesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+define("URL", "/{proj_id}/");
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,19 +32,19 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::resource('actions', ActionsController::class)->names('actions');
-Route::resource('types/solicitudes', solicitudesTypesController::class)->names('types/solicitudes');
-Route::resource('permanences', PermanencesController::class)->names('permanences');
+Route::resource('actions'.URL, ActionsController::class)->names('actions')->parameter('', 'actions');
+Route::resource('types/solicitudes'.URL, solicitudesTypesController::class)->names('types/solicitudes')->parameter('', 'types/solicitudes');
+Route::resource('permanences'.URL, PermanencesController::class)->names('permanences')->parameter('', 'permanences');
 
-Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes');
+Route::resource('solicitudes'.URL, SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
 
-Route::resource('bienestarActTypes', BienestarActivityTypesController::class)->names('bienestarActTypes');
-Route::resource('bienestar/activities', BienestarActivitiesController::class)->names('bienestarActivities');
-Route::resource('assistances', AssistancesController::class)->names('assistances');
+Route::resource('bienestarActTypes'.URL, BienestarActivityTypesController::class)->names('bienestarActTypes')->parameter('', 'bienestarActTypes');
+Route::resource('bienestar/activities'.URL, BienestarActivitiesController::class)->names('bienestarActivities')->parameter('', 'bienestarActivities');
+Route::resource('assistances'.URL, AssistancesController::class)->names('assistances')->parameter('', 'assistances');
 
-Route::resource('monetaryStates', MonetaryStatesController::class)->names('monetaryStates');
+Route::resource('monetaryStates'.URL, MonetaryStatesController::class)->names('monetaryStates')->parameter('', 'monetaryStates');
 
-Route::resource('factors', FactorsController::class)->names('factors');
+Route::resource('factors'.URL, FactorsController::class)->names('factors')->parameter('', 'factors');
 
 Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
 Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');

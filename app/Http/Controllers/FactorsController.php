@@ -13,23 +13,34 @@ class FactorsController extends Controller
     {
         $token = Controller::auth();
         // $data = Controller::genders($token);
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $factors = factor::all();
-        Controller::NewRegisterTrigger("A search was performed in the factors table", 4, $proj_id, $token['use_id']);
+        Controller::NewRegisterTrigger("A search was performed in the factors table", 4, $proj_id, 1);
         return response()->json([
             'status' => true,
             'data' => $factors,
         ], 200);
 
     }
+}
     public function store($proj_id,Request $request)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         
-        session_start();
         if ($_SESSION['acc_administrator'] == 1) {
             $rules = [
-                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
+                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -41,7 +52,7 @@ class FactorsController extends Controller
             } else {
                 $factor = new factor($request->input());
                 $factor->save();
-                Controller::NewRegisterTrigger("An insertion was made in the factors table", 3, $proj_id, $token['use_id']);
+                Controller::NewRegisterTrigger("An insertion was made in the factors table", 3, $proj_id, 1);
 
                 return response()->json([
                 'status' => True,
@@ -56,10 +67,16 @@ class FactorsController extends Controller
             ], 403); 
         }
     }
+}
     public function show($proj_id,$id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $factor = factor::find($id);
         if ($factor == null) {
             return response()->json([
@@ -67,22 +84,26 @@ class FactorsController extends Controller
                 'data' => ['message' => 'The requested factor was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the factors table", 4, $proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("A search was performed in the factors table", 4, $proj_id, 1);
 
             return response()->json([
                 'status' => true,
                 'data' => $factor
             ]);
         }
-
+    }
     }
     public function update($proj_id,Request $request, $id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $factor = factor::find($id);
         
-        session_start();
         if ($_SESSION['acc_administrator'] == 1) {
             $factor = factor::find($id);
             if ($factor == null) {
@@ -92,7 +113,7 @@ class FactorsController extends Controller
                 ], 400);
             } else {
                 $rules = [
-                    'fac_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/'
+                    'fac_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/'
 
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -104,7 +125,7 @@ class FactorsController extends Controller
                 } else {
                     $factor->fac_name = $request->fac_name;
                     $factor->save();
-                    Controller::NewRegisterTrigger("An update was made in the factors table", 1, $proj_id, $token['use_id']);
+                    Controller::NewRegisterTrigger("An update was made in the factors table", 1, $proj_id, 1);
 
                     return response()->json([
                 'status' => True,
@@ -119,6 +140,7 @@ class FactorsController extends Controller
             ], 403); 
         }
     }
+}
     public function destroy(factor $factors)
     {
         return response()->json([

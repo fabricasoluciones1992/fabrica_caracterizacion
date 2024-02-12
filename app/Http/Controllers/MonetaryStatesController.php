@@ -11,25 +11,35 @@ class MonetaryStatesController extends Controller
     public function index($proj_id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $monState = MonetaryState::all();
-        Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, $proj_id, $token['use_id']);
+        Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, $proj_id, 1);
 
         return response()->json([
             'status' => true,
             'data' => $monState
         ], 200);
     }
+}
 
     public function store($proj_id,Request $request)
     {
         $token = Controller::auth();
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
 
-
-        session_start();
         if ($_SESSION['acc_administrator'] == 1) {
             $rules = [
-                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -40,7 +50,7 @@ class MonetaryStatesController extends Controller
             } else {
                 $monState = new MonetaryState($request->input());
                 $monState->save();
-                Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3,$proj_id, $token['use_id']);
+                Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3,$proj_id, 1);
 
                 return response()->json([
                     'status' => True,
@@ -54,11 +64,17 @@ class MonetaryStatesController extends Controller
             ], 403); 
         }
     }
+}
 
     public function show($proj_id,$id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $monState = MonetaryState::find($id);
         if ($monState == null) {
             return response()->json([
@@ -66,7 +82,7 @@ class MonetaryStatesController extends Controller
                 'data' => ['message' => 'The requested economic state was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, $proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, $proj_id, 1);
 
             return response()->json([
                 'status' => true,
@@ -74,14 +90,19 @@ class MonetaryStatesController extends Controller
             ]);
         }
     }
+}
 
     public function update($proj_id,Request $request, $id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $monState = MonetaryState::find($id);
         
-        session_start();
         if ($_SESSION['acc_administrator'] == 1) {
             $monState = MonetaryState::find($id);
             if ($monState == null) {
@@ -91,7 +112,7 @@ class MonetaryStatesController extends Controller
                 ], 400);
             } else {
                 $rules = [
-                    'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                    'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -102,7 +123,7 @@ class MonetaryStatesController extends Controller
                 } else {
                     $monState->mon_sta_name = $request->mon_sta_name;
                     $monState->save();
-                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, $proj_id, $token['use_id']);
+                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, $proj_id, 1);
 
                     return response()->json([
                         'status' => True,
@@ -117,6 +138,7 @@ class MonetaryStatesController extends Controller
             ], 403); 
         }
     }
+}
 
     public function destroy(MonetaryState $monetaryState)
     {

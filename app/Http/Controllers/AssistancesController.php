@@ -12,27 +12,37 @@ class AssistancesController extends Controller
     public function index($proj_id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $assistances = DB::select("
             SELECT ass.ass_id, ass.ass_date, if(ass.ass_assistance=1,'Attended','Did not attend') ass_assistance, stu.stu_code, ba.bie_act_quotas
             FROM assistances ass
             INNER JOIN students stu ON stu.stu_id = ass.stu_id
             INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id 
         ");
-        Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $token['use_id']);
+        Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, 1);
 
         return response()->json([
             'status' => true,
             'data' => $assistances
         ],200);
+    }
 
     }
     public function store($proj_id,Request $request)
     {
         $token = Controller::auth();
 
-
-        session_start();
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+        }else{
         if ($_SESSION['acc_administrator'] == 1) {
             $rules = [
                 'ass_date' =>'date',
@@ -56,7 +66,7 @@ class AssistancesController extends Controller
                 $assistances = new assistance($request->input());
                 $assistances->save();
 
-                Controller::NewRegisterTrigger("An insertion was made in the assistences table",3,$proj_id, $token['use_id']);
+                Controller::NewRegisterTrigger("An insertion was made in the assistences table",3,$proj_id, 1);
 
                 return response()->json([
                     'status' => True,
@@ -72,11 +82,17 @@ class AssistancesController extends Controller
         }
 
     }
+}
 
     public function show($proj_id,$id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $assistances =  DB::select("
             SELECT ass.ass_id, ass.ass_date, if(ass.ass_assistance=1,'Attended','Did not attend') ass_assistance, stu.stu_code, ba.bie_act_quotas
             FROM assistances ass
@@ -92,7 +108,7 @@ class AssistancesController extends Controller
             ],400);
         }else{
             
-            Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, 1);
 
             return response()->json([
                 'status' => true,
@@ -101,13 +117,18 @@ class AssistancesController extends Controller
         }
 
     }
+}
     public function update($proj_id,Request $request, $id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $assistances = assistance::find($id);
         
-        session_start();
         if ($_SESSION['acc_administrator'] == 1) {
             $assistances = assistance::find($id);
             if ($assistances == null) {
@@ -138,7 +159,7 @@ class AssistancesController extends Controller
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;
                     $assistances->save();
-                    Controller::NewRegisterTrigger("An update was made in the assistences table",1,$proj_id, $token['use_id']);
+                    Controller::NewRegisterTrigger("An update was made in the assistences table",1,$proj_id, 1);
 
                     return response()->json([
                         'status' => True,
@@ -153,6 +174,7 @@ class AssistancesController extends Controller
             ], 403); 
         }
     }
+}
 
     public function destroy(Assistance $assitance)
     {

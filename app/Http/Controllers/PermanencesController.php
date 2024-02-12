@@ -12,12 +12,17 @@ class PermanencesController extends Controller
     public function index($proj_id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $permanences = DB::select("SELECT permanences.perm_id,permanences.perm_date,permanences.perm_description,solicitudes.sol_description,actions.act_name FROM permanences
         INNER JOIN requests ON permanences.req_id = requests.req_id
         INNER JOIN actions ON permanences.act_id = actions.act_id
         ");
-        Controller::NewRegisterTrigger("A search was performed in the permanences table", 4, $proj_id, $token['use_id']);
+        Controller::NewRegisterTrigger("A search was performed in the permanences table", 4, $proj_id, 1);
 
         return response()->json([
             'status' => true,
@@ -25,13 +30,18 @@ class PermanencesController extends Controller
         ], 200);
 
     }
+}
 
     public function store($proj_id,Request $request)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         
-        session_start();
         if ($_SESSION['acc_administrator'] == 1) {
             $rules = [
                 'perm_date' =>'required|date',
@@ -48,7 +58,7 @@ class PermanencesController extends Controller
             } else {
                 $permanences = new Permanence($request->input());
                 $permanences->save();
-                Controller::NewRegisterTrigger("An insertion was made in the permanences table", 3, $proj_id, $token['use_id']);
+                Controller::NewRegisterTrigger("An insertion was made in the permanences table", 3, $proj_id, 1);
 
                 return response()->json([
                     'status' => True,
@@ -62,11 +72,17 @@ class PermanencesController extends Controller
             ], 403); 
         }
     }
+}
 
     public function show($proj_id,$id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $permanences =  DB::select("SELECT permanences.perm_id,permanences.perm_date,permanences.perm_description,requests.req_description,actions.act_name FROM permanences
         INNER JOIN requests ON permanences.req_id = requests.req_id
         INNER JOIN actions ON permanences.act_id = actions.act_id
@@ -78,7 +94,7 @@ class PermanencesController extends Controller
                 "data" => ['message' => 'The searched permanences was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the permanences table", 4,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("A search was performed in the permanences table", 4,$proj_id, 1);
 
             return response()->json([
                 'status' => true,
@@ -87,14 +103,19 @@ class PermanencesController extends Controller
         }
 
     }
+}
 
     public function update($proj_id,Request $request, $id)
     {
         $token = Controller::auth();
-
+        if($token =='Token not found in session'){
+            return response()->json([
+            'status' => False,
+            'message' => 'Token not found, please login and try again.'
+            ],400);
+    }else{
         $permanences = Permanence::find($id);
         
-        session_start();
         if ($_SESSION['acc_administrator'] == 1) {
             $permanences = Permanence::find($id);
             if ($permanences == null) {
@@ -116,7 +137,7 @@ class PermanencesController extends Controller
                         'message' => $validator->errors()->all()
                     ]);
                 } else {
-                    Controller::NewRegisterTrigger("An update was made in the permanences table", 1, $proj_id, $token['use_id']);
+                    Controller::NewRegisterTrigger("An update was made in the permanences table", 1, $proj_id, 1);
 
                     $permanences->perm_date = $request->perm_date;
                     $permanences->perm_description = $request->perm_description;
@@ -136,6 +157,7 @@ class PermanencesController extends Controller
             ], 403); 
         }
     }
+}
 
     public function destroy(Permanence $permanences)
     {
