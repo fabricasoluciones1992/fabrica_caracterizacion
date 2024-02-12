@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SolicitudType;
+use App\Models\SolicitudeType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,18 +13,18 @@ class SolicitudesTypesController extends Controller
         $token = Controller::auth();
         if($token =='Token not found in session'){
             return response()->json([
-            'status' => False,
-            'message' => 'Token not found, please login and try again.'
+                'status' => False,
+                'message' => 'Token not found, please login and try again.'
             ],400);
-    }else{
-        $solicitudTypes = SolicitudType::all();
-        Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4, $proj_id, 1);
-        return response()->json([
-            'status' => true,
-            'data' => $solicitudTypes
-        ], 200);
+        }else{
+            $solicitudTypes = SolicitudeType::all();
+            Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4, $proj_id, 1);
+            return response()->json([
+                'status' => true,
+                'data' => $solicitudTypes
+            ], 200);
+        }
     }
-}
 
     public function store($proj_id,Request $request)
     {
@@ -35,59 +35,60 @@ class SolicitudesTypesController extends Controller
             'status' => False,
             'message' => 'Token not found, please login and try again.'
             ],400);
-    }else{
-        if ($_SESSION['acc_administrator'] == 1) {
-            $rules = [
-                'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑ\s]+$/',
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+        }else{
+            if ($_SESSION['acc_administrator'] == 1) {
+                $rules = [
+                    'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑ\s]+$/',
+                    'sol_typ_status' => 'required|integer|min:0|max:1'
+                ];
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => $validator->errors()->all()
+                    ]);
+                } else {
+                    $solicitudTypes = new SolicitudeType($request->input());
+                    $solicitudTypes->save();
+                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table", 3,  $proj_id, 1);
+                    return response()->json([
+                        'status' => true,
+                        'message' => "The reason type '".$solicitudTypes->sol_typ_name."' has been created successfully."
+                    ], 200);
+                }
+            } else {
                 return response()->json([
                     'status' => false,
-                    'message' => $validator->errors()->all()
-                ]);
-            } else {
-                $solicitudTypes = new SolicitudType($request->input());
-                $solicitudTypes->save();
-                Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table", 3,  $proj_id, 1);
-                return response()->json([
-                    'status' => true,
-                    'message' => "The reason type '".$solicitudTypes->sol_typ_name."' has been created successfully."
-                ], 200);
+                    'message' => 'Access denied. This action can only be performed by active administrators.'
+                ], 403); 
             }
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
-            ], 403); 
         }
     }
-}
 
     public function show($proj_id,$id)
     {
         $token = Controller::auth();
         if($token =='Token not found in session'){
             return response()->json([
-            'status' => False,
-            'message' => 'Token not found, please login and try again.'
+                'status' => False,
+                'message' => 'Token not found, please login and try again.'
             ],400);
-    }else{
-        $solicitudTypes = SolicitudType::find($id);
-        if ($solicitudTypes == null) {
-            return response()->json([
-                'status' => false,
-                'data' => ['message' => 'The requested reason was not found']
-            ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4,  $proj_id, 1);
-            return response()->json([
-                'status' => true,
-                'data' => $solicitudTypes
-            ]);
+            $solicitudTypes = SolicitudeType::find($id);
+            if ($solicitudTypes == null) {
+                return response()->json([
+                    'status' => false,
+                    'data' => ['message' => 'The requested solicitudes types was not found']
+                ], 400);
+            } else {
+                Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4, $proj_id, 1);
+                return response()->json([
+                    'status' => true,
+                    'data' => $solicitudTypes
+                ]);
+            }
         }
     }
-}
 
     public function update($proj_id,Request $request, $id)
     {
@@ -97,50 +98,71 @@ class SolicitudesTypesController extends Controller
             'status' => False,
             'message' => 'Token not found, please login and try again.'
             ],400);
-    }else{
-        
-        if ($_SESSION['acc_administrator'] == 1) {
-            $solicitudTypes = SolicitudType::find($id);
-            if ($solicitudTypes == null) {
-                return response()->json([
-                    'status' => false,
-                    'data' => ['message' => 'The requested reason was not found']
-                ], 400);
-            } else {
-
-                $rules = [
-                    'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑ\s]+$/',
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+        } else {
+            
+            if ($_SESSION['acc_administrator'] == 1) {
+                $solicitudTypes = SolicitudeType::find($id);
+                if ($solicitudTypes == null) {
                     return response()->json([
                         'status' => false,
-                        'message' => $validator->errors()->all()
-                    ]);
+                        'data' => ['message' => 'The requested solicitudes types was not found']
+                    ], 400);
                 } else {
-                    $solicitudTypes->sol_typ_name = $request->sol_typ_name;
-                    $solicitudTypes->save();
-                    Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 1,  $proj_id, 1);
-                    return response()->json([
-                        'status' => true,
-                        'message' => "The reason '".$solicitudTypes->sol_typ_name."' has been updated successfully."
-                    ], 200);
+
+                    $rules = [
+                        'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑ\s]+$/',
+                        'sol_typ_status' => 'required|integer|min:0|max:1'
+                    ];
+                    $validator = Validator::make($request->input(), $rules);
+                    if ($validator->fails()) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => $validator->errors()->all()
+                        ]);
+                    } else {
+                        $solicitudTypes->sol_typ_name = $request->sol_typ_name;
+                        $solicitudTypes->save();
+                        Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 1,  $proj_id, 1);
+                        return response()->json([
+                            'status' => true,
+                            'message' => "The reason '".$solicitudTypes->sol_typ_name."' has been updated successfully."
+                        ], 200);
+                    }
                 }
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Access denied. This action can only be performed by active administrators.'
+                ], 403); 
             }
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
-            ], 403); 
         }
     }
-}
 
-    public function destroy(SolicitudType $solicitudTypes)
+    public function destroy($proj_id, string $id)
     {
-        return response()->json([
-            'status' => false,
-            'message' => "Function not available"
-        ], 400);
+        $token = Controller::auth();
+
+        $solicitudTypes = SolicitudeType::find($id);
+        if ($solicitudTypes == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'The requested solicitudes types was not found']
+            ],400);
+        } else {
+            if ($solicitudTypes->sol_typ_status == 1){
+                $solicitudTypes->sol_typ_status = 0;
+                $solicitudTypes->save();
+                Controller::NewRegisterTrigger("An delete was made in the solicitudes types table",1,$proj_id, $token['use_id']);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested solicitudes types has been disabled successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The requested solicitudes types has already been disabled previously'
+                ]);
+            }  
+        }
     }
 }

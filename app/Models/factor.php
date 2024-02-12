@@ -12,7 +12,7 @@ class factor extends Model
     protected $primaryKey = "fac_id";
     protected $fillable = [
         'fac_name',
-
+        'fac_status',
     ];
     public $timestamps = false;
 }

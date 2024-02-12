@@ -33,7 +33,7 @@ define("URL", "/{proj_id}/");
 //     return $request->user();
 // });
 Route::resource('actions'.URL, ActionsController::class)->names('actions')->parameter('', 'actions');
-Route::resource('types/solicitudes'.URL, solicitudesTypesController::class)->names('types/solicitudes')->parameter('', 'types/solicitudes');
+Route::resource('typsolicitudes'.URL, SolicitudesTypesController::class)->names('typsolicitudes')->parameter('', 'typsolicitudes');
 Route::resource('permanences'.URL, PermanencesController::class)->names('permanences')->parameter('', 'permanences');
 
 Route::resource('solicitudes'.URL, SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
