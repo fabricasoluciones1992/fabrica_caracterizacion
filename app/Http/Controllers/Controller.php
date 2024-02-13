@@ -63,22 +63,22 @@ class Controller extends BaseController
     }
 
 
-    function auth(){
-        session_start();
-        if (isset($_SESSION['api_token'])) {
-            $token = $_SESSION['api_token'];
-            $use_id = $_SESSION['use_id'];
-            $responseData['acc_administrator']=$_SESSION['acc_administrator'];
+    // function auth(){
+    //     session_start();
+    //     if (isset($_SESSION['api_token'])) {
+    //         $token = $_SESSION['api_token'];
+    //         $use_id = $_SESSION['use_id'];
+    //         $responseData['acc_administrator']=$_SESSION['acc_administrator'];
 
-            return [
-                "token" => $token,
-                "use_id" => $use_id,
-                "acc_administrator" => $responseData
-            ];
-        } else {
-            return  'Token not found in session';
-        }
-    }
+    //         return [
+    //             "token" => $token,
+    //             "use_id" => $use_id,
+    //             "acc_administrator" => $responseData
+    //         ];
+    //     } else {
+    //         return  'Token not found in session';
+    //     }
+    // }
 
     public function login(Request $request){
         $response = Http::post('http://127.0.0.1:8088/api/login/2', [
@@ -97,10 +97,10 @@ class Controller extends BaseController
             // Check if a token was retrieved before storing it
             if ($token !== null) {
                 // Start the session and store the token
-                session_start();
-                $_SESSION['api_token'] = $token;
-                $_SESSION['use_id'] = $user->use_id;
-                $_SESSION['acc_administrator'] = $responseData['acc_administrator'];
+                // session_start();
+                // $_SESSION['api_token'] = $token;
+                // $_SESSION['use_id'] = $user->use_id;
+                // $_SESSION['acc_administrator'] = $responseData['acc_administrator'];
     
                 return response()->json([
                     'status' => true,

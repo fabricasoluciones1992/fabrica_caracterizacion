@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,11 +13,10 @@ class solicitud extends Model
     protected $table="solicitudes";
     protected $fillable = [
         'sol_date',
-        'sol_description',
+        'rea_id',
         'sol_typ_id',
-        'fac_id',
         'stu_id'
-
     ];
     public $timestamps = false;
 }
+

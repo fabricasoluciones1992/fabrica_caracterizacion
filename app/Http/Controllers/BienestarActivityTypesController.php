@@ -8,37 +8,24 @@ use Illuminate\Support\Facades\Validator;
 
 class BienestarActivityTypesController extends Controller
 {
-    public function index($proj_id)
+    public function index($proj_id,$use_id)
     {
-        $token = Controller::auth();
-        if($token =='Token not found in session'){
-            return response()->json([
-            'status' => False,
-            'message' => 'Token not found, please login and try again.'
-            ],400);
-        }else{
+        
             $bienestarActTypes = BienestarActivityTypes::all();
-            Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities Types table",4,$proj_id, 1);
+            Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities Types table",4,$proj_id, $use_id);
 
             return response()->json([
                 'status' => true,
                 'data' => $bienestarActTypes
             ],200);
-        }
+        
     }
-    public function store($proj_id,Request $request)
+    public function store($proj_id,$use_id,Request $request)
     {
-        $token = Controller::auth();
-        if($token =='Token not found in session'){
-            return response()->json([
-                'status' => False,
-                'message' => 'Token not found, please login and try again.'
-            ],400);
-        }else{
-            if ($_SESSION['acc_administrator'] == 1) {
+        
+            if ($request->acc_administrator == 1) {
                 $rules = [
-                    'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑ\s]+$/',
-                    'bie_act_typ_status' => 'required|integer|min:0|max:1'
+                    'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑ\s]+$/'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -48,8 +35,9 @@ class BienestarActivityTypesController extends Controller
                     ]);
                 } else {
                     $bienestarActTypes = new BienestarActivityTypes($request->input());
+                    $bienestarActTypes->bie_act_typ_status=1;
                     $bienestarActTypes->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities types table",4,$proj_id, 1);
+                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities types table",4,$proj_id, $use_id);
 
                     return response()->json([
                         'status' => true,
@@ -62,17 +50,11 @@ class BienestarActivityTypesController extends Controller
                     'message' => 'Access denied. This action can only be performed by active administrators.'
                 ], 403); 
             }
-        }
+        
     }
-    public function show($proj_id,$id)
+    public function show($proj_id,$use_id,$id)
     {
-        $token = Controller::auth();
-        if($token =='Token not found in session'){
-            return response()->json([
-            'status' => False,
-            'message' => 'Token not found, please login and try again.'
-            ],400);
-        }else{
+        
             $bienestarActTypes = BienestarActivityTypes::find($id);
             if ($bienestarActTypes == null) {
                 return response()->json([
@@ -80,27 +62,21 @@ class BienestarActivityTypesController extends Controller
                     'data' => ['message' => 'The requested bienestar activity type was not found']
                 ],400);
             } else {
-                Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities types table",4,$proj_id, 1);
+                Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities types table",4,$proj_id, $use_id);
 
                 return response()->json([
                     'status' => true,
                     'data' => $bienestarActTypes
                 ]);
             }
-        }
+        
     }
-    public function update($proj_id,Request $request, $id)
+    public function update($proj_id,$use_id,Request $request, $id)
     {
-        $token = Controller::auth();
-        if($token =='Token not found in session'){
-            return response()->json([
-            'status' => False,
-            'message' => 'Token not found, please login and try again.'
-            ],400);
-        }else{
+        
         $bienestarActTypes = BienestarActivityTypes::find($id);
  
-            if ($_SESSION['acc_administrator'] == 1) {
+            if ($request->acc_administrator == 1) {
                 $bienestarActTypes = BienestarActivityTypes::find($id);
                 if ($bienestarActTypes == null) {
                     return response()->json([
@@ -109,8 +85,8 @@ class BienestarActivityTypesController extends Controller
                     ],400);
                 } else {
                     $rules = [
-                        'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑ\s]+$/',
-                        'bie_act_typ_status' => 'required|integer|min:0|max:1'
+                        'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑ\s]+$/'
+
                     ];
                     $validator = Validator::make($request->input(), $rules);
                     if ($validator->fails()) {
@@ -120,8 +96,9 @@ class BienestarActivityTypesController extends Controller
                         ]);
                     } else {
                         $bienestarActTypes->bie_act_typ_name = $request->bie_act_typ_name;
+                        $bienestarActTypes->bie_act_typ_status=1;
                         $bienestarActTypes->save();
-                        Controller::NewRegisterTrigger("An update was made in the Bienestar Activities types table",1,2,1);
+                        Controller::NewRegisterTrigger("An update was made in the Bienestar Activities types table",1,2,$use_id);
 
                         return response()->json([
                         'status' => True,
@@ -135,23 +112,17 @@ class BienestarActivityTypesController extends Controller
                     'message' => 'Access denied. This action can only be performed by active administrators.'
                 ], 403); 
             }
-        }
+        
     }
-    public function destroy($proj_id, string $id)
+    public function destroy($proj_id,$use_id, $id)
     {
-        $token = Controller::auth();
 
         $bienestarActTypes = BienestarActivityTypes::find($id);
-        if ($bienestarActTypes == null) {
-            return response()->json([
-                'status' => false,
-                'data' => ['message' => 'The requested Action was not found']
-            ],400);
-        } else {
+        
             if ($bienestarActTypes->bie_act_typ_status == 1){
                 $bienestarActTypes->bie_act_typ_status = 0;
                 $bienestarActTypes->save();
-                Controller::NewRegisterTrigger("An delete was made in the bienestar activity type table",1,$proj_id, $token['use_id']);
+                Controller::NewRegisterTrigger("An delete was made in the bienestar activity type table",2,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested bienestar activity type has been disabled successfully'
@@ -162,6 +133,6 @@ class BienestarActivityTypesController extends Controller
                     'message' => 'The requested bienestar activity type has already been disabled previously'
                 ]);
             }  
-        }
+        
     }
 }
