@@ -12,10 +12,7 @@ class PermanencesController extends Controller
     public function index($proj_id,$use_id)
     {
         
-        $permanences = DB::select("SELECT permanences.perm_id,permanences.perm_date,permanences.perm_description,solicitudes.sol_name,actions.act_name FROM permanences
-        INNER JOIN solicitudes ON permanences.sol_id = solicitudes.sol_id
-        INNER JOIN actions ON permanences.act_id = actions.act_id
-        ");
+        $permanences = DB::select("SELECT * FROM viewPermanences");
         Controller::NewRegisterTrigger("A search was performed in the permanences table", 4, $proj_id, $use_id);
 
         return response()->json([
@@ -65,10 +62,8 @@ class PermanencesController extends Controller
     public function show($proj_id,$use_id,$id)
     {
         
-        $permanences =  DB::select("SELECT permanences.perm_id,permanences.perm_date,permanences.perm_description,requests.req_description,actions.act_name FROM permanences
-        INNER JOIN requests ON permanences.req_id = requests.req_id
-        INNER JOIN actions ON permanences.act_id = actions.act_id
-         WHERE permanences.perm_id = $id;
+        $permanences =  DB::select("SELECT * FROM viewPermanences
+        WHERE perm_id = $id;
         ");
         if ($permanences == null) {
             return response()->json([
