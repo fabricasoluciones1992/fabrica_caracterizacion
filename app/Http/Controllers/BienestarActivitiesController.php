@@ -13,7 +13,7 @@ class BienestarActivitiesController extends Controller
     {
         
             $bienestarActivity = DB::select("
-            SELECT ba.bie_act_id, ba.bie_act_date, ba.bie_act_quotas, bat.bie_act_typ_name
+            SELECT ba.bie_act_id, ba.bie_act_date, ba.bie_act_quotas,ba.bie_act_name, bat.bie_act_typ_name 
             FROM bienestar_activities ba
             INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
             ");
@@ -66,7 +66,7 @@ class BienestarActivitiesController extends Controller
     {
         
             $bienestarActivity = DB::select("
-            SELECT ba.bie_act_id, ba.bie_act_date, ba.bie_act_quotas, bat.bie_act_typ_name
+            SELECT ba.bie_act_id, ba.bie_act_date, ba.bie_act_quotas,ba.bie_act_name, bat.bie_act_typ_name 
             FROM bienestar_activities ba
             INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
             WHERE ba.bie_act_id = $id;
