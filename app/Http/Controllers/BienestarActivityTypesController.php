@@ -25,7 +25,7 @@ class BienestarActivityTypesController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑ\s]+$/'
+                    'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -85,7 +85,7 @@ class BienestarActivityTypesController extends Controller
                     ],400);
                 } else {
                     $rules = [
-                        'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑ\s]+$/'
+                        'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
 
                     ];
                     $validator = Validator::make($request->input(), $rules);

@@ -25,7 +25,7 @@ class SolicitudesTypesController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑ\s]+$/'
+                    'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -85,7 +85,7 @@ class SolicitudesTypesController extends Controller
                 } else {
 
                     $rules = [
-                        'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑ\s]+$/'
+                        'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     ];
                     $validator = Validator::make($request->input(), $rules);
                     if ($validator->fails()) {

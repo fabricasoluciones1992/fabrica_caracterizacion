@@ -25,7 +25,7 @@ class ActionsController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/'
+                    'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -80,7 +80,7 @@ class ActionsController extends Controller
         $action = action::find($id);
         if ($request->acc_administrator == 1) {
                 $rules = [
-                    'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/'
+                    'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {

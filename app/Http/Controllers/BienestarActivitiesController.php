@@ -13,7 +13,7 @@ class BienestarActivitiesController extends Controller
     {
         
             $bienestarActivity = DB::select("
-            SELECT ba.bie_act_id, ba.bie_act_date, ba.bie_act_quotas,ba.bie_act_name, bat.bie_act_typ_name 
+            SELECT ba.bie_act_id,ba.bie_act_status, ba.bie_act_date, ba.bie_act_quotas,ba.bie_act_name, bat.bie_act_typ_name 
             FROM bienestar_activities ba
             INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
             ");
@@ -33,8 +33,8 @@ class BienestarActivitiesController extends Controller
             if ($request->acc_administrator == 1) {
                 $rules = [
                     'bie_act_date' =>'required|date',
-                    'bie_act_quotas' =>'string|max:25|regex:/^[A-ZÑ\s]+$/',
-                    'bie_act_name' =>'required|string|max:255|/^[a-zA-Z0-9\s]+$/',
+                    'bie_act_quotas' => 'required|integer',
+                    'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                     'bie_act_typ_id' =>'required|integer|max:1'
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -45,6 +45,7 @@ class BienestarActivitiesController extends Controller
                     ]);
                 } else {
                     $bienestarActivity = new BienestarActivity($request->input());
+                    $bienestarActivity->bie_act_status=1;
                     $bienestarActivity->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table",3,$proj_id, $use_id);
 
@@ -66,9 +67,10 @@ class BienestarActivitiesController extends Controller
     {
         
             $bienestarActivity = DB::select("
-            SELECT ba.bie_act_id, ba.bie_act_date, ba.bie_act_quotas,ba.bie_act_name, bat.bie_act_typ_name 
+            SELECT ba.bie_act_id,ba.bie_act_status, ba.bie_act_date, ba.bie_act_quotas,ba.bie_act_name, bat.bie_act_typ_name 
             FROM bienestar_activities ba
             INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
+            
             WHERE ba.bie_act_id = $id;
             ");
             if ($bienestarActivity == null) {
@@ -102,9 +104,9 @@ class BienestarActivitiesController extends Controller
                 } else {
                     $rules = [
                         'bie_act_date' =>'required|date',
-                        'bie_act_quotas' =>'string|max:25|regex:/^[A-ZÑ\s]+$/',
-                        'bie_act_description' =>'string|max:255|/^[a-zA-Z0-9\s]+$/',
-                        'bie_act_typ_id' =>'required|integer|max:1'
+                    'bie_act_quotas' => 'required|integer',
+                    'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
+                    'bie_act_typ_id' =>'required|integer|max:1'
                     ];
                     $validator = Validator::make($request->input(), $rules);
                     if ($validator->fails()) {
@@ -115,7 +117,7 @@ class BienestarActivitiesController extends Controller
                     } else {
                         $bienestarActivity->bie_act_date = $request->bie_act_date;
                         $bienestarActivity->bie_act_quotas = $request->bie_act_quotas;
-                        $bienestarActivity->bie_act_description = $request->bie_act_description;
+                        $bienestarActivity->bie_act_name = $request->bie_act_name;
                         $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
                         $bienestarActivity->save();
                         Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table",1,$proj_id, $use_id);

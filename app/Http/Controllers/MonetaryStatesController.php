@@ -27,7 +27,7 @@ class MonetaryStatesController extends Controller
 
         if ($request->acc_administrator == 1) {
             $rules = [
-                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -88,7 +88,7 @@ class MonetaryStatesController extends Controller
                 ], 400);
             } else {
                 $rules = [
-                    'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+                    'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {

@@ -29,7 +29,7 @@ class SolicitudesController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
                 'sol_date' =>'date',
-                'sol_name'=>'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+                'sol_name'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'rea_id' =>'required|integer|max:1',
                 'sol_typ_id' =>'required|integer|max:1',
                 'stu_id' =>'required|integer|max:1',
@@ -99,7 +99,7 @@ class SolicitudesController extends Controller
             } else {
                 $rules = [
                     'sol_date' =>'date',
-                    'sol_name'=>'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+                    'sol_name'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'rea_id' =>'required|integer|max:1',
                     'sol_typ_id' =>'required|integer',
                     'stu_id' =>'required|integer'

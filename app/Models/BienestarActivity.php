@@ -13,7 +13,7 @@ class BienestarActivity extends Model
         'bie_act_id',
         'bie_act_date',
         'bie_act_quotas',
-        'bie_act_description',
+        'bie_act_name',
         'bie_act_typ_id'
     ];
     public $timestamps = false;

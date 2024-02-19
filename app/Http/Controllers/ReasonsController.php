@@ -26,7 +26,7 @@ class ReasonsController extends Controller
     {
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'rea_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/'
+                    'rea_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -81,7 +81,7 @@ class ReasonsController extends Controller
         $reason = reason::find($id);
         if ($request->acc_administrator == 1) {
                 $rules = [
-                    'rea_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/'
+                    'rea_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
