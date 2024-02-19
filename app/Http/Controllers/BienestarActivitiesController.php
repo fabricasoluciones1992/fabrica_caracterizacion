@@ -180,11 +180,23 @@ class BienestarActivitiesController extends Controller
             }
         
     }
-    public function destroy($use_id,BienestarActivity $bienestarActivity)
+    public function destroy($proj_id,$use_id, $id)
     {
-        return response()->json([
-            'status' => false,
-            'message' => "Function not available"
-        ],400);
+        $bienestarActivity = BienestarActivity::find($id);
+        
+            if ($bienestarActivity->bie_act_status == 1){
+                $bienestarActivity->bie_act_status = 0;
+                $bienestarActivity->save();
+                Controller::NewRegisterTrigger("An delete was made in the bienestar activity type table",2,$proj_id,$use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested bienestar activity type has been disabled successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The requested bienestar activity type has already been disabled previously'
+                ]);
+            } 
     }
 }
