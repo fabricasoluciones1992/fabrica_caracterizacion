@@ -38,6 +38,8 @@ Route::resource('reasons'.URL, ReasonsController::class)->names('reasons')->para
 
 Route::resource('type/solicitudes'.URL, SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
 Route::resource('permanences'.URL, PermanencesController::class)->names('permanences')->parameter('', 'permanences');
+Route::resource('assistences'.URL, AssistancesController::class)->names('assistences')->parameter('', 'assistences');
+
 
 Route::resource('solicitudes'.URL, SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
 

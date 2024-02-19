@@ -12,11 +12,15 @@ class AssistancesController extends Controller
     public function index($proj_id,$use_id)
     {
         
-        $assistances = DB::select("
-            SELECT ass.ass_id, ass.ass_date, if(ass.ass_assistance=1,'Attended','Did not attend') ass_assistance, stu.stu_code, ba.bie_act_quotas
+                $assistances = DB::select("
+            SELECT ass.ass_id, ass.ass_date, 
+                IF(ass.ass_assistance = 1, 'Attended', 'Did not attend') AS ass_assistance, 
+                stu.stu_code, ba.bie_act_quotas, ba.bie_act_name,
+                per.per_name
             FROM assistances ass
             INNER JOIN students stu ON stu.stu_id = ass.stu_id
-            INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id 
+            INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id
+            INNER JOIN persons per ON per.per_id = stu.per_id
         ");
         Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $use_id);
 

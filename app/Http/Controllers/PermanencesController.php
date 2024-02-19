@@ -12,8 +12,8 @@ class PermanencesController extends Controller
     public function index($proj_id,$use_id)
     {
         
-        $permanences = DB::select("SELECT permanences.perm_id,permanences.perm_date,permanences.perm_description,solicitudes.sol_description,actions.act_name FROM permanences
-        INNER JOIN requests ON permanences.req_id = requests.req_id
+        $permanences = DB::select("SELECT permanences.perm_id,permanences.perm_date,permanences.perm_description,solicitudes.sol_name,actions.act_name FROM permanences
+        INNER JOIN solicitudes ON permanences.sol_id = solicitudes.sol_id
         INNER JOIN actions ON permanences.act_id = actions.act_id
         ");
         Controller::NewRegisterTrigger("A search was performed in the permanences table", 4, $proj_id, $use_id);
@@ -34,7 +34,7 @@ class PermanencesController extends Controller
             $rules = [
                 'perm_date' =>'required|date',
                 'perm_description' =>'required|string|min:1|max:50|/^[a-zA-Z0-9\s]+$/',
-                'req_id' =>'required|integer|max:1',
+                'sol_id' =>'required|integer|max:1',
                 'act_id' =>'required|integer|max:1'
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -103,7 +103,7 @@ class PermanencesController extends Controller
                 $rules = [
                     'perm_date' =>'required|date',
                     'perm_description' =>'required|string|min:1|max:50|/^[a-zA-Z0-9\s]+$/',
-                    'req_id' =>'required|integer|max:1',
+                    'sol_id' =>'required|integer|max:1',
                     'act_id' =>'required|integer|max:1'
                 ];
                 $validator = Validator::make($request->input(), $rules);
