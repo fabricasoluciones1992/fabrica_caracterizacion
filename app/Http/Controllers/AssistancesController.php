@@ -39,6 +39,8 @@ class AssistancesController extends Controller
                 'ass_date' =>'date',
                 'ass_assistance' =>'required|integer|max:1',
                 'stu_id' =>'required|integer|max:1',
+                'per_id' =>'required|integer|max:1',
+
                 'bie_act_id' =>'required|integer|max:1'
             ];
 
@@ -79,11 +81,15 @@ class AssistancesController extends Controller
     {
         
         $assistances =  DB::select("
-            SELECT ass.ass_id, ass.ass_date, if(ass.ass_assistance=1,'Attended','Did not attend') ass_assistance, stu.stu_code, ba.bie_act_quotas
-            FROM assistances ass
-            INNER JOIN students stu ON stu.stu_id = ass.stu_id
-            INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id
-            WHERE ass.ass_id = $id;
+            SELECT ass.ass_id, ass.ass_date, 
+            IF(ass.ass_assistance = 1, 'Attended', 'Did not attend') AS ass_assistance, 
+            stu.stu_code, ba.bie_act_quotas, ba.bie_act_name,
+            per.per_name
+        FROM assistances ass
+        INNER JOIN students stu ON stu.stu_id = ass.stu_id
+        INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id
+        INNER JOIN persons per ON per.per_id = stu.per_id
+                WHERE ass.ass_id = $id;
         ");
         if ($assistances == null) {
 
@@ -120,7 +126,9 @@ class AssistancesController extends Controller
                     'ass_date' =>'date',
                     'ass_assistance' =>'required|integer|max:1',
                     'stu_id' =>'required|integer|max:1',
-                    'bie_act_id' =>'required|integer|max:1'
+                    'bie_act_id' =>'required|integer|max:1',
+                    'per_id' =>'required|integer|max:1'
+
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
