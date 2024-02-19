@@ -41,6 +41,9 @@ class PermanencesController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             } else {
+                $currentDate = now()->toDateString();
+                $request->merge(['perm_date' => $currentDate]);
+
                 $permanences = new Permanence($request->input());
                 $permanences->save();
                 Controller::NewRegisterTrigger("An insertion was made in the permanences table", 3, $proj_id, $use_id);
