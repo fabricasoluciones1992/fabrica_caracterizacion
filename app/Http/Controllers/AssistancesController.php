@@ -14,7 +14,7 @@ class AssistancesController extends Controller
         
                 $assistances = DB::select("
             SELECT ass.ass_id, ass.ass_date, 
-                IF(ass.ass_assistance = 1, 'Attended', 'Did not attend') AS ass_assistance, 
+                IF(ass.ass_status = 1, 'Attended', 'Did not attend') AS ass_status, 
                 stu.stu_code, ba.bie_act_quotas, ba.bie_act_name,
                 per.per_name
             FROM assistances ass
@@ -37,7 +37,7 @@ class AssistancesController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
                 'ass_date' =>'date',
-                'ass_assistance' =>'required|integer|max:1',
+                'ass_status' =>'required|integer|max:1',
                 'stu_id' =>'required|integer|max:1',
                 'per_id' =>'required|integer|max:1',
 
@@ -82,7 +82,7 @@ class AssistancesController extends Controller
         
         $assistances =  DB::select("
             SELECT ass.ass_id, ass.ass_date, 
-            IF(ass.ass_assistance = 1, 'Attended', 'Did not attend') AS ass_assistance, 
+            IF(ass.ass_status = 1, 'Attended', 'Did not attend') AS ass_status, 
             stu.stu_code, ba.bie_act_quotas, ba.bie_act_name,
             per.per_name
         FROM assistances ass
@@ -124,7 +124,7 @@ class AssistancesController extends Controller
             } else {
                 $rules = [
                     'ass_date' =>'date',
-                    'ass_assistance' =>'required|integer|max:1',
+                    'ass_status' =>'required|integer|max:1',
                     'stu_id' =>'required|integer|max:1',
                     'bie_act_id' =>'required|integer|max:1',
                     'per_id' =>'required|integer|max:1'
@@ -142,7 +142,7 @@ class AssistancesController extends Controller
                     $request->merge(['ass_date' => $currentDate]);
 
                     $assistances->ass_date = $request->ass_date;
-                    $assistances->ass_assistance = $request->ass_assistance;
+                    $assistances->ass_status = $request->ass_status;
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;
                     $assistances->save();

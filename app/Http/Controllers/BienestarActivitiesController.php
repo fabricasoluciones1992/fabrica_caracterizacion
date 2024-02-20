@@ -19,7 +19,7 @@ class BienestarActivitiesController extends Controller
 
     foreach ($bienestarActivity as $activity) {
         $availableQuotas = DB::table('assistances')
-            ->where('ass_assistance', 1)
+            ->where('ass_status', 1)
             ->where('bie_act_id', $activity->bie_act_id)
             ->count();
 
@@ -38,7 +38,7 @@ class BienestarActivitiesController extends Controller
     {
         
             if ($request->acc_administrator == 1) {
-                
+
                 $rules = [
                     'bie_act_date' =>'required|date',
                     'bie_act_quotas' => 'required|numeric',
@@ -88,7 +88,7 @@ class BienestarActivitiesController extends Controller
     }
 
     $availableQuotas = DB::table('assistances')
-        ->where('ass_assistance', 1)
+        ->where('ass_status', 1)
         ->where('bie_act_id', $id)
         ->count();
 
