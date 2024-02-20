@@ -11,7 +11,7 @@ class Assistance extends Model
     protected $primaryKey = "ass_id";
     protected $fillable = [
         'ass_date',
-        'ass_assistance',
+        'ass_status',
         'stu_id',
         'bie_act_id'
     ];

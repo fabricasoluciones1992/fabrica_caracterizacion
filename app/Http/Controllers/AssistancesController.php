@@ -12,6 +12,16 @@ class AssistancesController extends Controller
     public function index($proj_id,$use_id)
     {
         
+                $assistances = DB::select("
+            SELECT ass.ass_id, ass.ass_date, 
+                IF(ass.ass_status = 1, 'Attended', 'Did not attend') AS ass_status, 
+                stu.stu_code, ba.bie_act_quotas, ba.bie_act_name,
+                per.per_name
+            FROM assistances ass
+            INNER JOIN students stu ON stu.stu_id = ass.stu_id
+            INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id
+            INNER JOIN persons per ON per.per_id = stu.per_id
+        ");
         $assistances = DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante");
         Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $use_id);
 
@@ -28,7 +38,7 @@ class AssistancesController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
                 'ass_date' =>'date',
-                'ass_assistance' =>'required|integer|max:1',
+                'ass_status' =>'required|integer|max:1',
                 'stu_id' =>'required|integer|max:1',
                 'per_id' =>'required|integer|max:1',
 
@@ -71,6 +81,17 @@ class AssistancesController extends Controller
     public function show($proj_id,$use_id,$id)
     {
         
+        $assistances =  DB::select("
+            SELECT ass.ass_id, ass.ass_date, 
+            IF(ass.ass_status = 1, 'Attended', 'Did not attend') AS ass_status, 
+            stu.stu_code, ba.bie_act_quotas, ba.bie_act_name,
+            per.per_name
+        FROM assistances ass
+        INNER JOIN students stu ON stu.stu_id = ass.stu_id
+        INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id
+        INNER JOIN persons per ON per.per_id = stu.per_id
+                WHERE ass.ass_id = $id;
+        ");
         $assistances =  DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante WHERE ass_id = $id; ");
         if ($assistances == null) {
 
@@ -103,7 +124,7 @@ class AssistancesController extends Controller
             } else {
                 $rules = [
                     'ass_date' =>'date',
-                    'ass_assistance' =>'required|integer|max:1',
+                    'ass_status' =>'required|integer|max:1',
                     'stu_id' =>'required|integer|max:1',
                     'bie_act_id' =>'required|integer|max:1',
                     'per_id' =>'required|integer|max:1'
@@ -121,7 +142,7 @@ class AssistancesController extends Controller
                     $request->merge(['ass_date' => $currentDate]);
 
                     $assistances->ass_date = $request->ass_date;
-                    $assistances->ass_assistance = $request->ass_assistance;
+                    $assistances->ass_status = $request->ass_status;
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;
                     $assistances->save();
