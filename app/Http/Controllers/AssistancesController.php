@@ -12,16 +12,7 @@ class AssistancesController extends Controller
     public function index($proj_id,$use_id)
     {
         
-                $assistances = DB::select("
-            SELECT ass.ass_id, ass.ass_date, 
-                IF(ass.ass_status = 1, 'Attended', 'Did not attend') AS ass_status, 
-                stu.stu_code, ba.bie_act_quotas, ba.bie_act_name,
-                per.per_name
-            FROM assistances ass
-            INNER JOIN students stu ON stu.stu_id = ass.stu_id
-            INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id
-            INNER JOIN persons per ON per.per_id = stu.per_id
-        ");
+        $assistances = DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante");
         Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $use_id);
 
         return response()->json([
@@ -80,17 +71,7 @@ class AssistancesController extends Controller
     public function show($proj_id,$use_id,$id)
     {
         
-        $assistances =  DB::select("
-            SELECT ass.ass_id, ass.ass_date, 
-            IF(ass.ass_status = 1, 'Attended', 'Did not attend') AS ass_status, 
-            stu.stu_code, ba.bie_act_quotas, ba.bie_act_name,
-            per.per_name
-        FROM assistances ass
-        INNER JOIN students stu ON stu.stu_id = ass.stu_id
-        INNER JOIN bienestar_activities ba ON ba.bie_act_id = ass.bie_act_id
-        INNER JOIN persons per ON per.per_id = stu.per_id
-                WHERE ass.ass_id = $id;
-        ");
+        $assistances =  DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante WHERE ass_id = $id; ");
         if ($assistances == null) {
 
             return response()->json([
@@ -106,9 +87,7 @@ class AssistancesController extends Controller
                 'data' => $assistances
             ]);
         }
-
-    
-}
+    }
     public function update($proj_id,$use_id,Request $request, $id)
     {
         
@@ -163,12 +142,24 @@ class AssistancesController extends Controller
     
 }
 
-    public function destroy($proj_id,Assistance $assitance)
+    public function destroy($proj_id,$use_id, $id)
     {
-        return response()->json([
-            'status' => false,
-            'message' => "Function not available"
-        ],400);
+        $assistances = assistance::find($id);
+        
+            if ($assistances->ass_status == 1){
+                $assistances->ass_status = 0;
+                $assistances->save();
+                Controller::NewRegisterTrigger("An delete was made in the actions table",2,$proj_id, $use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested assistances has been disabled successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The requested assistances has already been disabled previously'
+                ]);
+            } 
 
     }
 }

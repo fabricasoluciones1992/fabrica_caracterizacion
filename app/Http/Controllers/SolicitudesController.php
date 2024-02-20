@@ -66,7 +66,7 @@ class SolicitudesController extends Controller
     public function show($proj_id,$use_id,$id)
     {
        
-        $solicitudes =  DB::select("SELECT * FROM ViewSolicitudes WHERE sol.sol_id = $id");
+        $solicitudes =  DB::select("SELECT * FROM ViewSolicitudes WHERE sol_id = $id");
 
         if ($solicitudes == null) {
             return response()->json([
@@ -135,11 +135,23 @@ class SolicitudesController extends Controller
         }
    
 }
-    public function destroy($use_id,Solicitud $solicitudes)
+    public function destroy($proj_id,$use_id, $id)
     {
-        return response()->json([
-            'status' => false,
-            'message' => "Function not available"
-        ], 400);
+        $solicitudes = Solicitud::find($id);
+        
+            if ($solicitudes->sol_status == 1){
+                $solicitudes->sol_status = 0;
+                $solicitudes->save();
+                Controller::NewRegisterTrigger("An delete was made in the permanences table",2,$proj_id, $use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested solicitudes has been disabled successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The requested solicitudes has already been disabled previously'
+                ]);
+            }
     }
 }
