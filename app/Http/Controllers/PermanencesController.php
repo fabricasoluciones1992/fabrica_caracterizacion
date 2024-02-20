@@ -133,13 +133,24 @@ class PermanencesController extends Controller
     
 }
 
-    public function destroy($use_id,Permanence $permanences)
+    public function destroy($proj_id,$use_id, $id)
     {
-        return response()->json([
-            'status' => false,
-            'message' => "Function not available"
-        ], 400);
-
+        $permanences = Permanence::find($id);
+        
+            if ($permanences->perm_status == 1){
+                $permanences->perm_status = 0;
+                $permanences->save();
+                Controller::NewRegisterTrigger("An delete was made in the permanences table",2,$proj_id, $use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested permanence has been disabled successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The requested permanence has already been disabled previously'
+                ]);
+            } 
     }
 
 }

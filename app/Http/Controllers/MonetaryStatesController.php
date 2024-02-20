@@ -116,11 +116,23 @@ class MonetaryStatesController extends Controller
     
 }
 
-    public function destroy($use_id,MonetaryState $monetaryState)
+    public function destroy($proj_id,$use_id, $id)
     {
-        return response()->json([
-            'status' => false,
-            'message' => "Function not available"
-        ], 400);
+        $monState = MonetaryState::find($id);
+        
+            if ($monState->mon_sta_status == 1){
+                $monState->mon_sta_status = 0;
+                $monState->save();
+                Controller::NewRegisterTrigger("An delete was made in the permanences table",2,$proj_id, $use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested economic state has been disabled successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The requested economic state has already been disabled previously'
+                ]);
+            }
     }
 }
