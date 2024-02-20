@@ -36,27 +36,14 @@ class BienestarActivitiesController extends Controller
 
     public function store($proj_id,$use_id,Request $request)
     {
-        $availableQuotas = DB::table('assistances')
-        ->where('ass_assistance', 1)
-        ->where('bie_act_id', $request->bie_act_id)
-        ->count();
-
-    $totalQuotas = $request->bie_act_quotas;
-
-    $remainingQuotas = $totalQuotas - $availableQuotas;
-
-    if ($request->bie_act_quotas > $remainingQuotas) {
-        return response()->json([
-            'status' => false,
-            'message' => 'There are not enough quotas available for this activity.'
-        ], 400);
-    }
+        
             if ($request->acc_administrator == 1) {
+                
                 $rules = [
                     'bie_act_date' =>'required|date',
-                    'bie_act_quotas' => 'required|integer',
+                    'bie_act_quotas' => 'required|numeric',
                     'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                    'bie_act_typ_id' =>'required|integer|max:1'
+                    'bie_act_typ_id' =>'required|numeric'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -122,18 +109,13 @@ class BienestarActivitiesController extends Controller
     public function update($proj_id,$use_id,Request $request, $id)
     {
             $availableQuotas = DB::table('assistances')
-            ->where('ass_assistance', 1)
             ->where('bie_act_id', $id)
             ->count();
 
-        $totalQuotas = $request->bie_act_quotas;
-
-        $remainingQuotas = $totalQuotas - $availableQuotas;
-
-        if ($request->bie_act_quotas > $remainingQuotas) {
+        if ($request->bie_act_quotas <= $availableQuotas) {
             return response()->json([
                 'status' => false,
-                'message' => 'There are not enough quotas available for this activity.'
+                'message' => 'Full quotas cannot be updated, for a total of pre-registrations of'.$availableQuotas
             ], 400);
         }
             $bienestarActivity = BienestarActivity::find($id);
@@ -148,13 +130,15 @@ class BienestarActivitiesController extends Controller
                 } else {
                     $rules = [
                         'bie_act_date' =>'required|date',
-                    'bie_act_quotas' => 'required|integer',
+                    'bie_act_quotas' => 'required|numeric',
                     'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                    'bie_act_typ_id' =>'required|integer|max:1'
+                    'bie_act_typ_id' =>'required|numeric'
                     ];
+
+
                     $validator = Validator::make($request->input(), $rules);
                     if ($validator->fails()) {
-                        return response()->json()([
+                        return response()->json([
                             'status' => False,
                             'message' => $validator->errors()->all()
                         ]);
