@@ -12,8 +12,6 @@ class AssistancesController extends Controller
     public function index($proj_id,$use_id)
     {
         
-                $assistances = DB::select("SELECT * FROM viewAssitances
-        ");
         $assistances = DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante");
         Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $use_id);
 
@@ -73,9 +71,6 @@ class AssistancesController extends Controller
     public function show($proj_id,$use_id,$id)
     {
         
-        $assistances =  DB::select("SELECT * FROM viewAssitances
-                WHERE ass_id = $id;
-        ");
         $assistances =  DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante WHERE ass_id = $id; ");
         if ($assistances == null) {
 
