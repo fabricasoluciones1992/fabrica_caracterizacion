@@ -12,6 +12,8 @@ class permanence extends Model
     protected $fillable = [
         'perm_date',
         'perm_description',
+        'perm_responsible',
+        'perm_status',
         'sol_id',
         'act_id'
 
