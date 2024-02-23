@@ -36,6 +36,7 @@ define("URL", "/{proj_id}/{use_id}/");
 Route::resource('actions'.URL, ActionsController::class)->names('actions')->parameter('', 'actions');
 Route::resource('reasons'.URL, ReasonsController::class)->names('reasons')->parameter('', 'reasons');
 
+
 Route::resource('type/solicitudes'.URL, SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
 Route::resource('permanences'.URL, PermanencesController::class)->names('permanences')->parameter('', 'permanences');
 Route::resource('assistences'.URL, AssistancesController::class)->names('assistences')->parameter('', 'assistences');
@@ -49,7 +50,7 @@ Route::resource('assistances'.URL, AssistancesController::class)->names('assista
 
 Route::resource('monetary/states'.URL, MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
 
-// Route::resource('factors'.URL, FactorsController::class)->names('factors')->parameter('', 'factors');
+Route::resource('factors'.URL, FactorsController::class)->names('factors')->parameter('', 'factors');
 
 Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
 Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
