@@ -9,12 +9,14 @@ use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\FactorsController;
 use App\Http\Controllers\GenderController;
+use App\Http\Controllers\GymAssitancesController;
 use App\Http\Controllers\HistoryConsultationsController;
 use App\Http\Controllers\MonetaryStatesController;
 use App\Http\Controllers\PermanencesController;
 use App\Http\Controllers\ReasonsController;
 use App\Http\Controllers\SolicitudesController;
 use App\Http\Controllers\solicitudesTypesController;
+use App\Models\Gym_assitance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +51,7 @@ Route::resource('bienestar/activities/types'.URL, BienestarActivityTypesControll
 Route::resource('history/consultation'.URL, HistoryConsultationsController::class)->names('history.consultation')->parameter('', 'history_consultation');
 Route::resource('bienestar/activities'.URL, BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
 Route::resource('assistances'.URL, AssistancesController::class)->names('assistances')->parameter('', 'assistances');
+Route::resource('gym/assistances'.URL, GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
 
 Route::resource('monetary/states'.URL, MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
 
