@@ -10,6 +10,7 @@ use App\Http\Controllers\EpsController;
 use App\Http\Controllers\FactorsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\GymAssitancesController;
+use App\Http\Controllers\GymInscriptionsController;
 use App\Http\Controllers\HistoryConsultationsController;
 use App\Http\Controllers\MonetaryStatesController;
 use App\Http\Controllers\PermanencesController;
@@ -52,6 +53,8 @@ Route::resource('history/consultation'.URL, HistoryConsultationsController::clas
 Route::resource('bienestar/activities'.URL, BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
 Route::resource('assistances'.URL, AssistancesController::class)->names('assistances')->parameter('', 'assistances');
 Route::resource('gym/assistances'.URL, GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
+Route::resource('gym/inscriptions'.URL, GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
+
 
 Route::resource('monetary/states'.URL, MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
 
