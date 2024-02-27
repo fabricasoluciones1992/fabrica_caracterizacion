@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\action;
+use App\Models\Allergie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ActionsController extends Controller
+
+class AllergiesController extends Controller
 {
     public function index($proj_id,$use_id)
     {
 
-        $action = action::all();
+        $allergie = Allergie::all();
               
-        Controller::NewRegisterTrigger("A search was performed on the actions table",4,$proj_id, $use_id);
+        Controller::NewRegisterTrigger("A search was performed on the Allergies table",4,$proj_id, $use_id);
         return response()->json([
                 'status' => true,
-                'data' => $action
+                'data' => $allergie
          ],200);
         
     }
@@ -25,7 +26,7 @@ class ActionsController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
+                    'all_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -35,20 +36,19 @@ class ActionsController extends Controller
                         'message' => $validator->errors()->all()
                     ]);
                 }else{
-                    $action = new action($request->input());
-                    $action->act_status=1;
-                    $action->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the actions table",3,$proj_id, $use_id);
+                    $allergie = new Allergie($request->input());
+                    $allergie->save();
+                    Controller::NewRegisterTrigger("An insertion was made in the Allergies table",3,$proj_id, $use_id);
         
                     return response()->json([
                         'status' => True,
-                        'message' => "The Action type ".$action->act_name." has been successfully created."
+                        'message' => "The Allergie type ".$allergie->all_name." has been successfully created."
                     ],200);
                 }
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Access denied. This action can only be performed by active administrators.'
+                    'message' => 'Access denied. This Allergie can only be performed by active administrators.'
                 ], 403); 
             }
         
@@ -56,20 +56,20 @@ class ActionsController extends Controller
     public function show($proj_id,$use_id,$id)
     {
 
-        $action = action::find($id);
+        $allergie = Allergie::find($id);
         
             
-            if ($action == null) {
+            if ($allergie == null) {
                 return response()->json([
                     'status' => false,
-                    'data' => ['message' => 'The requested Action was not found']
+                    'data' => ['message' => 'The requested Allergie was not found']
                 ],400);
             }else{
-                Controller::NewRegisterTrigger("A search was performed on the actions table",4,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("A search was performed on the Allergies table",4,$proj_id, $use_id);
 
                 return response()->json([
                     'status' => true,
-                    'data' => $action
+                    'data' => $allergie
                 ]);
             }
         
@@ -77,10 +77,10 @@ class ActionsController extends Controller
     public function update($proj_id,$use_id,Request $request, $id)
     {
 
-        $action = action::find($id);
+        $allergie = Allergie::find($id);
         if ($request->acc_administrator == 1) {
                 $rules = [
-                    'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
+                    'all_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -89,19 +89,19 @@ class ActionsController extends Controller
                         'message' => $validator->errors()->all()
                     ]);
                 }else{
-                    $action->act_name = $request->act_name;
-                    $action->save();
-                    Controller::NewRegisterTrigger("An update was made in the actions table",1,$proj_id, $use_id);
+                    $allergie->all_name = $request->all_name;
+                    $allergie->save();
+                    Controller::NewRegisterTrigger("An update was made in the Allergies table",1,$proj_id, $use_id);
 
                     return response()->json([
                         'status' => True,
-                        'data' => "The Action ".$action->act_name." has been successfully updated."
+                        'data' => "The Allergie ".$allergie->all_name." has been successfully updated."
                     ],200);
                 }
      }else {
         return response()->json([
             'status' => false,
-            'message' => 'Access denied. This action can only be performed by active administrators.'
+            'message' => 'Access denied. This Allergie can only be performed by active administrators.'
         ], 403); 
     }
     }
@@ -110,22 +110,13 @@ class ActionsController extends Controller
     public function destroy($proj_id,$use_id, $id)
     {
 
-        $action = action::find($id);
+        $allergie = Allergie::find($id);
         
-            if ($action->act_status == 1){
-                $action->act_status = 0;
-                $action->save();
-                Controller::NewRegisterTrigger("An delete was made in the actions table",2,$proj_id, $use_id);
-                return response()->json([
-                    'status' => True,
-                    'message' => 'The requested Action has been disabled successfully'
-                ]);
-            } else {
+            
                 return response()->json([
                     'status' => false,
-                    'message' => 'The requested Action has already been disabled previously'
+                    'message' => 'The requested Allergie has already been disabled previously'
                 ]);
-            }  
+             
     }
 }
-    

@@ -1,17 +1,20 @@
 <?php
 
 use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\AllergiesController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AssistancesController;
 use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
+use App\Http\Controllers\DiseasesController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\FactorsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\GymAssitancesController;
 use App\Http\Controllers\GymInscriptionsController;
 use App\Http\Controllers\HistoryConsultationsController;
+use App\Http\Controllers\MedicalHistoriesController;
 use App\Http\Controllers\MonetaryStatesController;
 use App\Http\Controllers\PermanencesController;
 use App\Http\Controllers\ReasonsController;
@@ -39,6 +42,10 @@ define("URL", "/{proj_id}/{use_id}/");
 // });
 Route::resource('actions'.URL, ActionsController::class)->names('actions')->parameter('', 'actions');
 Route::resource('reasons'.URL, ReasonsController::class)->names('reasons')->parameter('', 'reasons');
+Route::resource('allergies'.URL, AllergiesController::class)->names('allergies')->parameter('', 'allergies');
+Route::resource('diseases'.URL, DiseasesController::class)->names('diseases')->parameter('', 'diseases');
+Route::resource('medical/histories'.URL, MedicalHistoriesController::class)->names('medical.histories')->parameter('', 'medical_histories');
+
 
 
 Route::resource('type/solicitudes'.URL, SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
