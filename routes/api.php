@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActionsController;
 use App\Http\Controllers\AllergiesController;
+use App\Http\Controllers\AllergyHistoriesController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AssistancesController;
@@ -45,6 +46,7 @@ Route::resource('reasons'.URL, ReasonsController::class)->names('reasons')->para
 Route::resource('allergies'.URL, AllergiesController::class)->names('allergies')->parameter('', 'allergies');
 Route::resource('diseases'.URL, DiseasesController::class)->names('diseases')->parameter('', 'diseases');
 Route::resource('medical/histories'.URL, MedicalHistoriesController::class)->names('medical.histories')->parameter('', 'medical_histories');
+Route::resource('allergy/histories'.URL, AllergyHistoriesController::class)->names('allergy.histories')->parameter('', 'allergy_histories');
 
 
 
