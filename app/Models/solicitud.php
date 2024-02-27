@@ -13,7 +13,10 @@ class solicitud extends Model
     protected $table="solicitudes";
     protected $fillable = [
         'sol_date',
+        'sol_responsible',
+        'sol_status',
         'rea_id',
+        'fac_id',
         'sol_typ_id',
         'stu_id'
     ];

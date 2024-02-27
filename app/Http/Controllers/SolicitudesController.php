@@ -29,11 +29,12 @@ class SolicitudesController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
                 'sol_date' =>'date',
-                'sol_name'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                'rea_id' =>'required|integer|max:1',
-                'sol_typ_id' =>'required|integer|max:1',
-                'stu_id' =>'required|integer|max:1',
- 
+                'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'sol_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'rea_id' =>'required|integer',
+                'fac_id' =>'required|integer',
+                'sol_typ_id' =>'required|integer',
+                'stu_id' =>'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -99,8 +100,10 @@ class SolicitudesController extends Controller
             } else {
                 $rules = [
                     'sol_date' =>'date',
-                    'sol_name'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                    'rea_id' =>'required|integer|max:1',
+                    'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'sol_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'rea_id' =>'required|integer',
+                    'fac_id' =>'required|integer',
                     'sol_typ_id' =>'required|integer',
                     'stu_id' =>'required|integer'
                 ];
