@@ -2,7 +2,7 @@
  
 namespace App\Http\Controllers;
  
-use App\Models\Solicitud;
+use App\Models\Solicitudes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +46,7 @@ class SolicitudesController extends Controller
                    $currentDate = now()->toDateString();
        
                    $request->merge(['sol_date' => $currentDate]);
-                   $solicitudes = new Solicitud($request->input());
+                   $solicitudes = new Solicitudes($request->input());
                    $solicitudes->save();
                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes table", 3,  $proj_id, $use_id);
        
@@ -88,10 +88,10 @@ class SolicitudesController extends Controller
     public function update($proj_id,$use_id,Request $request, $id)
     {
        
-        $solicitudes = Solicitud::find($id);
+        $solicitudes = Solicitudes::find($id);
  
         if ($request->acc_administrator == 1) {
-            $solicitudes = Solicitud::find($id);
+            $solicitudes = Solicitudes::find($id);
             if ($solicitudes == null) {
                 return response()->json([
                     'status' => false,
@@ -119,8 +119,12 @@ class SolicitudesController extends Controller
                     $request->merge(['sol_date' => $currentDate]);
  
                     $solicitudes->sol_date = $request->sol_date;
-                    $solicitudes->sol_description = $request->sol_description;
+                    $solicitudes->sol_responsible = $request->sol_responsible;
+                    $solicitudes->sol_status = $request->sol_status;
+                    $solicitudes->rea_id = $request->rea_id;
+                    $solicitudes->fac_id = $request->fac_id;
                     $solicitudes->sol_typ_id = $request->sol_typ_id;
+                    $solicitudes->stu_id = $request->stu_id;
                     $solicitudes->save();
                 Controller::NewRegisterTrigger("An update was made in the solicitudes table", 1, $proj_id, $use_id);
  
@@ -140,7 +144,7 @@ class SolicitudesController extends Controller
 }
     public function destroy($proj_id,$use_id, $id)
     {
-        $solicitudes = Solicitud::find($id);
+        $solicitudes = Solicitudes::find($id);
         
             if ($solicitudes->sol_status == 1){
                 $solicitudes->sol_status = 0;
