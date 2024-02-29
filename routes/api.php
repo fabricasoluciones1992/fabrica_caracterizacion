@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AssistancesController;
 use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
+use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\DiseasesController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\FactorsController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\PermanencesController;
 use App\Http\Controllers\ReasonsController;
 use App\Http\Controllers\SolicitudesController;
 use App\Http\Controllers\solicitudesTypesController;
+use App\Models\Consultation;
 use App\Models\Gym_assitance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +60,7 @@ Route::resource('assistences'.URL, AssistancesController::class)->names('assiste
 Route::resource('solicitudes'.URL, SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
 
 Route::resource('bienestar/activities/types'.URL, BienestarActivityTypesController::class)->names('bienestar.activities.types')->parameter('', 'bienestar_activities_types');
+Route::resource('consultation'.URL, ConsultationController::class)->names('consultation')->parameter('', 'consultation');
 Route::resource('history/consultation'.URL, HistoryConsultationsController::class)->names('history.consultation')->parameter('', 'history_consultation');
 Route::resource('bienestar/activities'.URL, BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
 Route::resource('assistances'.URL, AssistancesController::class)->names('assistances')->parameter('', 'assistances');
