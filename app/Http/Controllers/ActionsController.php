@@ -12,7 +12,6 @@ class ActionsController extends Controller
     {
 
         $action = action::all();
-              
         Controller::NewRegisterTrigger("A search was performed on the actions table",4,$proj_id, $use_id);
         return response()->json([
                 'status' => true,
