@@ -45,7 +45,7 @@ class BienestarActivitiesController extends Controller
                     'bie_act_quotas' => 'required|numeric',
                     'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                     'bie_act_typ_id' =>'required|numeric',
-                    'bie_act_hour' => 'required|date_format:H:i:s',
+                    'bie_act_hour' => 'required',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -129,11 +129,12 @@ public function update($proj_id, $use_id, Request $request, $id)
             ], 400);
         } else {
             $rules = [
-                'bie_act_date' => 'required|date',
-                'bie_act_quotas' => 'required|numeric',
-                'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                 'bie_act_typ_id' => 'required|numeric',
-                'bie_act_hour' => 'required|date_format:H:i:s',
+                
+                'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
+                'bie_act_quotas' => 'required|numeric',
+                'bie_act_date' => 'required|date',
+                'bie_act_hour' => 'required',
             ];
 
             $validator = Validator::make($request->input(), $rules);
@@ -143,11 +144,11 @@ public function update($proj_id, $use_id, Request $request, $id)
                     'message' => $validator->errors()->all()
                 ]);
             } else {
+                $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
+                $bienestarActivity->bie_act_name = $request->bie_act_name;
+                $bienestarActivity->bie_act_quotas = $request->bie_act_quotas;
                 $bienestarActivity->bie_act_date = $request->bie_act_date;
                 $bienestarActivity->bie_act_hour = $request->bie_act_hour;
-                $bienestarActivity->bie_act_quotas = $request->bie_act_quotas;
-                $bienestarActivity->bie_act_name = $request->bie_act_name;
-                $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
                 $bienestarActivity->save();
                 Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table", 1, $proj_id, $use_id);
 

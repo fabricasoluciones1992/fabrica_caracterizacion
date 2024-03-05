@@ -40,7 +40,7 @@ define("URL", "/{proj_id}/{use_id}/");
 |
 */
 
-Route::middleware(['auth:sanctum'])->group(function() {
+// Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('actions'.URL, ActionsController::class)->names('actions')->parameter('', 'actions');
     Route::resource('reasons'.URL, ReasonsController::class)->names('reasons')->parameter('', 'reasons');
     Route::resource('allergies'.URL, AllergiesController::class)->names('allergies')->parameter('', 'allergies');
@@ -78,7 +78,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/genders', [AuthController::class, 'genders']);
     
     
- });
+//  });
 Route::post('/login', [Controller::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
