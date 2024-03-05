@@ -12,6 +12,7 @@ class BienestarActivity extends Model
     protected $fillable = [
         'bie_act_id',
         'bie_act_date',
+        'bie_act_hour',
         'bie_act_quotas',
         'bie_act_name',
         'bie_act_typ_id'

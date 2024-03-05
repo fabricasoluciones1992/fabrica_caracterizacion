@@ -12,7 +12,7 @@ class BienestarActivitiesController extends Controller
     public function index($proj_id, $use_id)
 {
     $bienestarActivity = DB::select("
-        SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name, bat.bie_act_typ_id 
+        SELECT ba.bie_act_id, ba.bie_act_status,ba.bie_act_hour, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name, bat.bie_act_typ_id 
         FROM bienestar_activities ba
         INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
     ");
@@ -44,7 +44,8 @@ class BienestarActivitiesController extends Controller
                     'bie_act_date' =>'required|date',
                     'bie_act_quotas' => 'required|numeric',
                     'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                    'bie_act_typ_id' =>'required|numeric'
+                    'bie_act_typ_id' =>'required|numeric',
+                    'bie_act_hour' => 'required|date_format:H:i:s',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -75,7 +76,7 @@ class BienestarActivitiesController extends Controller
     public function show($proj_id, $use_id, $id)
 {
     $bienestarActivity = DB::select("
-        SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name 
+        SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date,ba.bie_act_hour, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name 
         FROM bienestar_activities ba
         INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
         WHERE ba.bie_act_id = $id
@@ -131,7 +132,8 @@ public function update($proj_id, $use_id, Request $request, $id)
                 'bie_act_date' => 'required|date',
                 'bie_act_quotas' => 'required|numeric',
                 'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                'bie_act_typ_id' => 'required|numeric'
+                'bie_act_typ_id' => 'required|numeric',
+                'bie_act_hour' => 'required|date_format:H:i:s',
             ];
 
             $validator = Validator::make($request->input(), $rules);
@@ -142,6 +144,7 @@ public function update($proj_id, $use_id, Request $request, $id)
                 ]);
             } else {
                 $bienestarActivity->bie_act_date = $request->bie_act_date;
+                $bienestarActivity->bie_act_hour = $request->bie_act_hour;
                 $bienestarActivity->bie_act_quotas = $request->bie_act_quotas;
                 $bienestarActivity->bie_act_name = $request->bie_act_name;
                 $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
