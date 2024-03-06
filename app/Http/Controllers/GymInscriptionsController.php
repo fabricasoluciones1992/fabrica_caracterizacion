@@ -11,11 +11,7 @@ class GymInscriptionsController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $gymIns = DB::select("
-        SELECT gi.gym_ins_id, gi.gym_ins_date,gi.gym_ins_status, pe.per_name 
-        FROM gym_inscriptions gi
-        INNER JOIN persons pe ON pe.per_id = gi.gym_ins_id
-    ");
+    $gymIns = GymInscription::select();
 
     Controller::NewRegisterTrigger("A search was performed on the Gym inscriptions table", 4, $proj_id, $use_id);
 
@@ -63,12 +59,7 @@ class GymInscriptionsController extends Controller
 
     public function show($proj_id, $use_id, $id)
 {
-    $gymIns = DB::select("
-    SELECT gi.gym_ins_id, gi.gym_ins_date,gi.gym_ins_status, pe.per_name 
-        FROM gym_inscriptions gi
-        INNER JOIN persons pe ON pe.per_id = gi.per_id
-        WHERE gi.gym_ins_id = $id
-    ");
+    $gymIns = GymInscription::find($id);
 
     if (empty($gymIns)) {
         return response()->json([
