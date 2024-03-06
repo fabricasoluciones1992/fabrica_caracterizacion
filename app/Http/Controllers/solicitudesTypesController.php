@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Validator;
 class SolicitudesTypesController extends Controller
 {
     public function index($proj_id,$use_id)
-    {
-        
+    {        
             $solicitudTypes = SolicitudeType::all();
             Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4, $proj_id, $use_id);
             return response()->json([

@@ -6,6 +6,7 @@ use App\Models\BienestarActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class BienestarActivitiesController extends Controller
 {
@@ -68,6 +69,7 @@ class BienestarActivitiesController extends Controller
             }
         
     }
+
 
     public function show($proj_id, $use_id, $id)
 {

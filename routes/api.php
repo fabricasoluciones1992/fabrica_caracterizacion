@@ -40,7 +40,7 @@ define("URL", "/{proj_id}/{use_id}/");
 |
 */
 
-// Route::middleware(['auth:sanctum'])->group(function() {
+Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('actions'.URL, ActionsController::class)->names('actions')->parameter('', 'actions');
     Route::resource('reasons'.URL, ReasonsController::class)->names('reasons')->parameter('', 'reasons');
     Route::resource('allergies'.URL, AllergiesController::class)->names('allergies')->parameter('', 'allergies');
@@ -65,7 +65,6 @@ define("URL", "/{proj_id}/{use_id}/");
     Route::resource('gym/assistances'.URL, GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
     Route::resource('gym/inscriptions'.URL, GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
     
-    
     Route::resource('monetary/states'.URL, MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
     
     Route::resource('factors'.URL, FactorsController::class)->names('factors')->parameter('', 'factors');
@@ -78,7 +77,7 @@ define("URL", "/{proj_id}/{use_id}/");
     Route::get('/genders', [AuthController::class, 'genders']);
     
     
-//  });
+ });
 Route::post('/login', [Controller::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
