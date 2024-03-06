@@ -11,11 +11,7 @@ class BienestarActivitiesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $bienestarActivity = DB::select("
-        SELECT ba.bie_act_id, ba.bie_act_status,ba.bie_act_hour, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name, bat.bie_act_typ_id 
-        FROM bienestar_activities ba
-        INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
-    ");
+    $bienestarActivity = BienestarActivity::select();
 
     foreach ($bienestarActivity as $activity) {
         $occupiedQuotas = DB::table('assistances')
@@ -75,12 +71,7 @@ class BienestarActivitiesController extends Controller
 
     public function show($proj_id, $use_id, $id)
 {
-    $bienestarActivity = DB::select("
-        SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date,ba.bie_act_hour, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name 
-        FROM bienestar_activities ba
-        INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
-        WHERE ba.bie_act_id = $id
-    ");
+    $bienestarActivity = BienestarActivity::find($id);
 
     if (empty($bienestarActivity)) {
         return response()->json([
@@ -94,7 +85,7 @@ class BienestarActivitiesController extends Controller
         ->where('bie_act_id', $id)
         ->count();
 
-    $bienestarActivity[0]->occupied_quotas = $occupiedQuotas;
+    $bienestarActivity->occupied_quotas = $occupiedQuotas;
 
     Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table", 4, $proj_id, $use_id);
 

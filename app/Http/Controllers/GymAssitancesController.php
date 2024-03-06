@@ -11,11 +11,7 @@ class GymAssitancesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $gymAss = DB::select("
-        SELECT ga.gym_ass_id, ga.gym_ass_date,pe.per_name 
-        FROM gym_assistances ga
-        INNER JOIN persons pe ON pe.per_id = ga.gym_ass_id
-    ");
+    $gymAss = Gym_assistance::select();
 
     Controller::NewRegisterTrigger("A search was performed on the Gym assistances table", 4, $proj_id, $use_id);
 
@@ -62,12 +58,7 @@ class GymAssitancesController extends Controller
 
     public function show($proj_id, $use_id, $id)
 {
-    $gymAss = DB::select("
-    SELECT ga.gym_ass_id, ga.gym_ass_date,pe.per_name 
-        FROM gym_assistances ga
-        INNER JOIN persons pe ON pe.per_id = ga.per_id
-        WHERE ga.gym_ass_id = $id
-    ");
+    $gymAss = Gym_assistance::find($id);
 
     if (empty($gymAss)) {
         return response()->json([
@@ -134,22 +125,11 @@ public function update($proj_id, $use_id, Request $request, $id)
 
     public function destroy($proj_id,$use_id, $id)
     {
-        // $gymAss = Gym_assistance::find($id);
         
-        //     if ($gymAss->bie_act_status == 1){
-        //         $gymAss->bie_act_status = 0;
-        //         $gymAss->save();
-        //         Controller::NewRegisterTrigger("An delete was made in the bienestar activity type table",2,$proj_id,$use_id);
-        //         return response()->json([
-        //             'status' => True,
-        //             'message' => 'The requested bienestar activity type has been disabled successfully'
-        //         ]);
-        //     } else {
                 return response()->json([
                     'status' => false,
                     'message' => 'The requested Gym assistances type has already been disabled previously'
                 ]);
-            // } 
     }
 }
 

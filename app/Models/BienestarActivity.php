@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,4 +18,21 @@ class BienestarActivity extends Model
         'bie_act_typ_id'
     ];
     public $timestamps = false;
+    public static function select(){
+        $bienestarActivity = DB::select("
+        SELECT ba.bie_act_id, ba.bie_act_status,ba.bie_act_hour, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name, bat.bie_act_typ_id 
+        FROM bienestar_activities ba
+        INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
+    ");
+    return $bienestarActivity;
+    }
+    public static function find($id){
+        $bienestarActivity = DB::select("
+        SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date,ba.bie_act_hour, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name 
+        FROM bienestar_activities ba
+        INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
+        WHERE ba.bie_act_id = $id
+    ");
+    return $bienestarActivity[0];
+    }
 }

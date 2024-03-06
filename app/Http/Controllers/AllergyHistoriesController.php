@@ -10,36 +10,19 @@ class AllergyHistoriesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $aHistory = DB::select("
-        SELECT ah.all_his_id, pe.per_name, al.all_name
-        FROM allergy_histories ah
-        INNER JOIN persons pe ON pe.per_id = ah.per_id
-        INNER JOIN allergies al ON al.all_id = ah.all_id
-
-    ");
-
-    
-
+    $aHistory = AllergyHistory::select();
     Controller::NewRegisterTrigger("A search was performed on the Allergies Histories table", 4, $proj_id, $use_id);
-
     return response()->json([
         'status' => true,
         'data' => $aHistory
     ], 200);
 }
-
-
     public function store($proj_id,$use_id,Request $request)
     {
-        
             if ($request->acc_administrator == 1) {
-
                 $rules = [
-                    
                     'per_id' =>'required|numeric',
                     'all_id' =>'required|numeric',
-
-
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -65,18 +48,9 @@ class AllergyHistoriesController extends Controller
             }
         
     }
-
     public function show($proj_id, $use_id, $id)
 {
-    $aHistory = DB::select("
-    SELECT ah.all_his_id, pe.per_name, al.all_name
-        FROM allergy_histories ah
-        INNER JOIN persons pe ON pe.per_id = ah.per_id
-        INNER JOIN allergies al ON al.all_id = ah.all_id
-        WHERE ah.all_his_id = $id
-    ");
-
-
+    $aHistory = AllergyHistory::find($id);
     Controller::NewRegisterTrigger("A search was performed on the Allergies Histories table", 4, $proj_id, $use_id);
 
     return response()->json([
@@ -84,11 +58,8 @@ class AllergyHistoriesController extends Controller
         'data' => $aHistory
     ]);
 }
-
-
 public function update($proj_id, $use_id, Request $request, $id)
 {
-
     $aHistory = AllergyHistory::find($id);
 
     if ($request->acc_administrator == 1) {
@@ -129,7 +100,6 @@ public function update($proj_id, $use_id, Request $request, $id)
         ], 403);
     }
 }
-
     public function destroy($proj_id,$use_id, $id)
     {
         

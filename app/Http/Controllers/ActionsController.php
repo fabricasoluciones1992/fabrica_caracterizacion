@@ -104,11 +104,9 @@ class ActionsController extends Controller
         ], 403); 
     }
     }
-        
-    
+
     public function destroy($proj_id,$use_id, $id)
     {
-
         $action = action::find($id);
         
             if ($action->act_status == 1){
