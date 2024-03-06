@@ -125,22 +125,7 @@ class ConsultationController extends Controller
         }
     }
     public function destroy($proj_id,$use_id, $id)
-    {/*
-        $consultation = Consultation::find($id);
-        if ($consultation->cons_status == 1){
-            $consultation->cons_status = 0;
-            $consultation->save();
-            Controller::NewRegisterTrigger("An delete was made in the permanences table",2,$proj_id, $use_id);
-            return response()->json([
-                'status' => True,
-                'message' => 'The requested solicitudes has been disabled successfully'
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'The requested solicitudes has already been disabled previously'
-            ]);
-        }*/
+    {
         return response()->json([
             'status' => false,
             'message' => 'no existe la opcion de eliminar'

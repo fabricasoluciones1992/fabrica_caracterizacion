@@ -61,7 +61,7 @@ define("URL", "/{proj_id}/{use_id}/");
     Route::resource('consultation'.URL, ConsultationController::class)->names('consultation')->parameter('', 'consultation');
     Route::resource('history/consultation'.URL, HistoryConsultationsController::class)->names('history.consultation')->parameter('', 'history_consultation');
     Route::resource('bienestar/activities'.URL, BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
-    Route::resource('assistances'.URL, AssistancesController::class)->names('assistances')->parameter('', 'assistances');
+    // Route::resource('assistances'.URL, AssistancesController::class)->names('assistances')->parameter('', 'assistances');
     Route::resource('gym/assistances'.URL, GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
     Route::resource('gym/inscriptions'.URL, GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
     
