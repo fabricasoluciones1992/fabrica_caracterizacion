@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
  
 use App\Models\Solicitudes;
+use Facade\IgnitionContracts\Solution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,7 @@ class SolicitudesController extends Controller
     public function index($proj_id,$use_id)
     {
        
-        $solicitudes = DB::select("SELECT * FROM ViewSolicitudes");
+        $solicitudes = Solicitudes::select();
         Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4,  $proj_id, $use_id);
  
         return response()->json([
@@ -67,7 +68,7 @@ class SolicitudesController extends Controller
     public function show($proj_id,$use_id,$id)
     {
        
-        $solicitudes =  DB::select("SELECT * FROM ViewSolicitudes WHERE sol_id = $id");
+        $solicitudes =  Solicitudes::find($id);
 
         if ($solicitudes == null) {
             return response()->json([

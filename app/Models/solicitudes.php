@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class solicitudes extends Model
 {
@@ -20,5 +21,13 @@ class solicitudes extends Model
         'stu_id'
     ];
     public $timestamps = false;
+    public static function select(){
+        $solicitudes = DB::select("SELECT * FROM ViewSolicitudes");
+        return $solicitudes;
+    }
+    public static function find($id){
+        $solicitudes = DB::select("SELECT * FROM ViewSolicitudes");
+        return $solicitudes[0];
+    }
 }
 

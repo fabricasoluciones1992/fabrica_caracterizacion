@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class HistoryConsultation extends Model
 {
@@ -14,4 +15,12 @@ class HistoryConsultation extends Model
         'stu_id',
     ];
     public $timestamp = false;
+    public static function select(){
+        $histcon = DB::select("SELECT * FROM viewHistorialConsultas");
+        return $histcon;
+    }
+    public static function find($id){
+        $histcon = DB::select("SELECT * FROM viewHistorialConsultas WHERE his_con_id = $id");
+        return $histcon[0];
+    }
 }

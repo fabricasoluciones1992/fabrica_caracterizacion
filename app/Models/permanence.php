@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class permanence extends Model
 {
@@ -16,7 +17,14 @@ class permanence extends Model
         'perm_status',
         'sol_id',
         'act_id'
-
     ];
     public $timestamps = false;
+    public static function select(){
+        $permanences = DB::select("SELECT * FROM viewPermanences");
+        return $permanences;
+    }
+    public static function find($id){
+        $permanence = DB::select("SELECT * FROM viewPermanences WHERE perm_id = $id");
+        return $permanence[0];
+    }
 }

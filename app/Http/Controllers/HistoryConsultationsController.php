@@ -11,9 +11,8 @@ class HistoryConsultationsController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $histcon = DB::select("SELECT * FROM viewHistorialConsultas");
+        $histcon = HistoryConsultation::select();
         Controller::NewRegisterTrigger("A search was performed in the History consultations table", 4, $proj_id, $use_id);
-
         return response()->json([
             'status' => true,
             'data' => $histcon
