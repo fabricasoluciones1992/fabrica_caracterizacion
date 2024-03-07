@@ -150,7 +150,7 @@ class SolicitudesController extends Controller
             if ($solicitudes->sol_status == 1){
                 $solicitudes->sol_status = 0;
                 $solicitudes->save();
-                Controller::NewRegisterTrigger("An delete was made in the permanences table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An delete was made in the solicitudes table",2,$proj_id, $use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested solicitudes has been disabled successfully'
@@ -161,5 +161,22 @@ class SolicitudesController extends Controller
                     'message' => 'The requested solicitudes has already been disabled previously'
                 ]);
             }
+    }
+    public function filtredforSolicitudes($proj_id,$use_id,$column,$data,Request $request)
+    {
+        try {
+            
+            $solicitudes = ($column == 'sol_date') ? DB::table('ViewSolicitudes')->OrderBy($column, 'DESC')->where($column, 'like', '%'.$data.'%')->take(100)->get() : DB::table('ViewSolicitudes')->OrderBy($column, 'DESC')->where($column, '=', $data)->take(100)->get();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla solicitudes",1,$proj_id,$use_id);
+            return response()->json([
+               'status' => true,
+                'data' => $solicitudes
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'status' => false,
+              'message' => "Error occurred while found elements"
+            ],500);
+        }
     }
 }

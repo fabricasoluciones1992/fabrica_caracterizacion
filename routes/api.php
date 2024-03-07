@@ -73,7 +73,9 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
     Route::get('/student/activities/{code}', [Controller::class, 'viewStudentBie'])->name('student.viewStudentBie');
     
-    
+    Route::get('permanencesFiltred'.URL.'{column}/{data}', [PermanencesController::class, 'filtredforPermanence'])->name('filtredforPermanence');   
+    Route::get('solicitudesFiltred'.URL.'{column}/{data}', [SolicitudesController::class, 'filtredforSolicitudes'])->name('filtredforSolicitudes');   
+
     Route::get('/genders', [AuthController::class, 'genders']);
     
     
