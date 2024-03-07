@@ -11,16 +11,7 @@ class MedicalHistoriesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $mHistory = DB::select("
-        SELECT mh.med_his_id, pe.per_name, di.dis_name
-        FROM medical_histories mh
-        INNER JOIN persons pe ON pe.per_id = mh.per_id
-        INNER JOIN diseases di ON di.dis_id = mh.dis_id
-
-    ");
-
-    
-
+    $mHistory = MedicalHistory::select();
     Controller::NewRegisterTrigger("A search was performed on the Medical Histories table", 4, $proj_id, $use_id);
 
     return response()->json([
@@ -69,17 +60,8 @@ class MedicalHistoriesController extends Controller
 
     public function show($proj_id, $use_id, $id)
 {
-    $mHistory = DB::select("
-    SELECT mh.med_his_id, pe.per_name, di.dis_name
-    FROM medical_histories mh
-    INNER JOIN persons pe ON pe.per_id = mh.per_id
-    INNER JOIN diseases di ON di.dis_id = mh.dis_id
-        WHERE mh.med_his_id = $id
-    ");
-
-
+    $mHistory = MedicalHistory::find($id);
     Controller::NewRegisterTrigger("A search was performed on the Medical Histories table", 4, $proj_id, $use_id);
-
     return response()->json([
         'status' => true,
         'data' => $mHistory

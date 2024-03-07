@@ -11,8 +11,7 @@ class PermanencesController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        
-        $permanences = DB::select("SELECT * FROM viewPermanences");
+        $permanences = Permanence::select();
         Controller::NewRegisterTrigger("A search was performed in the permanences table", 4, $proj_id, $use_id);
 
         return response()->json([
@@ -20,7 +19,6 @@ class PermanencesController extends Controller
             'data' => $permanences
         ], 200);
 
-    
 }
 
     public function store($proj_id,$use_id,Request $request)
@@ -65,9 +63,7 @@ class PermanencesController extends Controller
     public function show($proj_id,$use_id,$id)
     {
         
-        $permanences =  DB::select("SELECT * FROM viewPermanences
-        WHERE perm_id = $id;
-        ");
+        $permanences =  Permanence::find($id);
         if ($permanences == null) {
             return response()->json([
                 'status' => false,
