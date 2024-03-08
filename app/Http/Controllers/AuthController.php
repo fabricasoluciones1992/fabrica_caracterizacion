@@ -26,8 +26,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function genders($token) {
-        $data = Controller::genders($token);
+    public function persons($token) {
+        $data = Controller::persons($token);
         return response()->json($data);
     }
 

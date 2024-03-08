@@ -22,11 +22,49 @@ class Controller extends BaseController
         DB::statement("CALL new_register('" . addslashes($new_description) . "', $new_typ_id, $proj_id, $use_id)");
     }
     
+    public function persons($token) {
+        if ($token == "Token not found in session") {
+            return $token;
+        }else{
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $token['token'],
+                
+            ])->get('http://127.0.0.1:8088/api/persons');
+            if ($response->successful()) {
+                return response()->json([
+                    'data' => $response->json()
+                ],200);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'HTTP request failed'.$response
+                ],400);
+            }
+        }
+    }
 
+    public function person($id) {
+        $token = Controller::auth();
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->get('http://127.0.0.1:8088/api/persons/'.$id);
+
+        if ($response->successful()) {
+            return response()->json([
+                'status' => true,
+                'data' => $response->json()
+            ],200);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'HTTP request failed'
+            ],400);
+        }
+    }
     public function login(Request $request){
         $response = Http::post('http://127.0.0.1:8088/api/login/2', [
             "use_mail" => $request->use_mail,
-            "use_password" => $request->use_password
+            "use_password" => $request->use_password,
         ]);
         $user=DB::table('users')->where("use_mail",'=',$request->use_mail)->first();
         $user = User::find($user->use_id);
@@ -50,7 +88,8 @@ class Controller extends BaseController
                     'data' => [
                         "token" => $token,
                         "use_id" => $user->use_id,
-                        "acc_administrator" => $responseData['acc_administrator']
+                        "acc_administrator" => $responseData['acc_administrator'],
+                        "per_document"=>$responseData['per_document']
                     ]
                 ]);
             } else {
