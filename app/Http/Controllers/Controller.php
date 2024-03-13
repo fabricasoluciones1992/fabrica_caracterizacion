@@ -22,43 +22,54 @@ class Controller extends BaseController
         DB::statement("CALL new_register('" . addslashes($new_description) . "', $new_typ_id, $proj_id, $use_id)");
     }
     
-    public function persons($token) {
+    public function students($proj_id,$use_id,Request $request) {
+        $token = $request->header('Authorization');
+
         if ($token == "Token not found in session") {
             return $token;
-        }else{
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $token['token'],
-                
-            ])->get('http://127.0.0.1:8088/api/persons');
+        } else {
+
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $token,
+                ])->get('http://127.0.0.1:8088/api/persons/' . $proj_id . '/' . $use_id);
+                    
             if ($response->successful()) {
                 return response()->json([
+                    'status' => true,
                     'data' => $response->json()
-                ],200);
+                ], 200);
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'HTTP request failed'.$response
-                ],400);
+                    'message' => 'HTTP request failed: ' . $response->body()
+                ], 400);
             }
         }
     }
+    
 
-    public function person($id) {
-        $token = Controller::auth();
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->get('http://127.0.0.1:8088/api/persons/'.$id);
+    public function student($proj_id,$use_id,$id,Request $request) {
+        $token = $request->header('Authorization');
 
-        if ($response->successful()) {
-            return response()->json([
-                'status' => true,
-                'data' => $response->json()
-            ],200);
-        }else{
-            return response()->json([
-                'status' => false,
-                'message' => 'HTTP request failed'
-            ],400);
+        if ($token == "Token not found in session") {
+            return $token;
+        } else {
+
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $token,
+                ])->get('http://127.0.0.1:8088/api/persons/' . $proj_id . '/' . $use_id . '/' . $id);
+                    
+            if ($response->successful()) {
+                return response()->json([
+                    'status' => true,
+                    'data' => $response->json()
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'HTTP request failed: ' . $response->body()
+                ], 400);
+            }
         }
     }
     public function login(Request $request){
