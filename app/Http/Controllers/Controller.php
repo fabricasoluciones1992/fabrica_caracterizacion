@@ -100,9 +100,8 @@ class Controller extends BaseController
                         "token" => $token,
                         "use_id" => $user->use_id,
                         "acc_administrator" => $responseData['acc_administrator'],
-                        "per_document"=>$responseData['per_document']
-                    ]
-                ]);
+                        'per_document' => $responseData['per_document']                    ]
+                ],200);
             } else {
                 // Handle the case where 'token' is not present in the response
                 return response()->json([

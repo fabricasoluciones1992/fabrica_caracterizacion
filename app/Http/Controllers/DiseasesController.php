@@ -1,121 +1,100 @@
 <?php
-
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Validator;
-
 use App\Models\Disease;
 use Illuminate\Http\Request;
-
-class DiseasesController extends Controller
+use Illuminate\Support\Facades\Validator;
+class DiseaseController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index($proj_id, $use_id)
     {
-
-        $disease = Disease::all();
-              
-        Controller::NewRegisterTrigger("A search was performed on the Diseases table",4,$proj_id, $use_id);
-        return response()->json([
+        try {
+            $disease = Disease::all();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Disease", 4, $proj_id, $use_id);
+            return response()->json([
+                'status' => true,
+                'data' => $disease,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => "Error in index, not found elements"
+            ], 500);
+        }
+    }
+    public function store($proj_id, $use_id, Request $request)
+    {
+        $rules = [
+            'dis_name' => 'required|string|min:1|max:50|unique:Disease|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+        ];
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+            ]);
+        } else {
+            $disease = new Disease(($request->input()));
+            $disease->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Disease: $request->dis_name", 3, $proj_id, $use_id);
+            return response()->json([
+                'status' => true,
+                'message' => "The Disease: " . $disease->dis_name . " has been created."
+            ], 200);
+        }
+    }
+    public function show($proj_id, $use_id, $id)
+    {
+        $disease = Disease::find($id);
+        if ($disease == null) {
+            return response()->json([
+                'status' => False,
+                'data' => ['message' => 'The disease requested not found'],
+            ], 400);
+        } else {
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Doctypes por dato especifico: $id", 4, $proj_id, $use_id);
+            return response()->json([
                 'status' => true,
                 'data' => $disease
-         ],200);
-        
+            ]);
+        }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function update($proj_id, $use_id, Request $request, $id)
     {
-        
-            if ($request->acc_administrator == 1) {
-                $rules = [
-                    'dis_name' => 'required|string|min:1|max:50|regex:/^[a-zA-Z-ÁÉÍÓÚÜáéíóúü\s]+$/'
-                    
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => False,
-                        'message' => $validator->errors()->all()
-                    ]);
-                }else{
-                    $disease = new Disease($request->input());
-                    $disease->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Diseases table",3,$proj_id, $use_id);
-        
-                    return response()->json([
-                        'status' => True,
-                        'message' => "The Disease type ".$disease->dis_name." has been successfully created."
-                    ],200);
-                }
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Access denied. This Disease can only be performed by active administrators.'
-                ], 403); 
-            }
-        
-    }
-    public function show($proj_id,$use_id,$id)
-    {
-
         $disease = Disease::find($id);
-        
-            
-            if ($disease == null) {
+        if ($disease == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'The disease requested not found'],
+            ], 400);
+        } else {
+            $rules = [
+                'dis_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            $validate = Controller::validate_exists($request->dis_name, 'Disease', 'dis_name', 'dis_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
-                    'status' => false,
-                    'data' => ['message' => 'The requested Disease was not found']
-                ],400);
-            }else{
-                Controller::NewRegisterTrigger("A search was performed on the Diseases table",4,$proj_id, $use_id);
-
+                    'status' => False,
+                    'message' => $msg
+                ]);
+            } else {
+                $disease = Disease::find($id);
+                $disease->dis_name = $request->dis_name;
+                $disease->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Disease del dato: id->$id", 1, $proj_id, $use_id);
                 return response()->json([
                     'status' => true,
-                    'data' => $disease
-                ]);
+                    'data' => "The Disease: " . $disease->dis_name . " has been update."
+                ], 200);
             }
-        
+        }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function destroy(Disease $Disease)
     {
-
-        $disease = Disease::find($id);
-        if ($request->acc_administrator == 1) {
-                $rules = [
-                    'dis_name' => 'required|string|min:1|max:50|regex:/^[a-zA-Z-ÁÉÍÓÚÜáéíóúü\s]+$/'
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => False,
-                        'message' => $validator->errors()->all()
-                    ]);
-                }else{
-                    $disease->dis_name = $request->dis_name;
-                    $disease->save();
-                    Controller::NewRegisterTrigger("An update was made in the Diseases table",1,$proj_id, $use_id);
-
-                    return response()->json([
-                        'status' => True,
-                        'data' => "The Disease ".$disease->dis_name." has been successfully updated."
-                    ],200);
-                }
-     }else {
         return response()->json([
             'status' => false,
-            'message' => 'Access denied. This Disease can only be performed by active administrators.'
-        ], 403); 
-    }
-    }
-        
-    
-    public function destroy($proj_id,$use_id, $id)
-    {
-
-        $disease = Disease::find($id);
-        
-            
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested Disease has already been disabled previously'
-                ]);
-             
+            'message' => "Functions not available"
+        ], 400);
     }
 }
