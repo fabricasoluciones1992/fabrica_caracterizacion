@@ -10,7 +10,6 @@ use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\DiseasesController;
-use App\Http\Controllers\EpsController;
 use App\Http\Controllers\FactorsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\GymAssitancesController;
@@ -73,7 +72,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
     Route::get('/student/activities/{code}', [Controller::class, 'viewStudentBie'])->name('student.viewStudentBie');
     
-    Route::get('permanencesFiltred'.URL.'{column}/{data}', [PermanencesController::class, 'filtredforPermanence'])->name('filtredforPermanence');   
+    Route::get('permanencesFiltred'.URL.'{id}', [PermanencesController::class, 'filtredforPermanence'])->name('filtredforPermanence');   
     Route::get('solicitudesFiltred'.URL.'{column}/{data}', [SolicitudesController::class, 'filtredforSolicitudes'])->name('filtredforSolicitudes');  
     Route::get('/students'.URL, [Controller::class, 'students'])->name('students'); 
     Route::get('/students'.URL.'{id}', [Controller::class, 'student'])->name('studentById');

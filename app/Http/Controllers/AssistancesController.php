@@ -31,7 +31,6 @@ class AssistancesController extends Controller
                 'ass_status' =>'required|integer|max:1',
                 'stu_id' =>'required|integer|max:1',
                 'per_id' =>'required|integer|max:1',
-
                 'bie_act_id' =>'required|integer|max:1'
             ];
 

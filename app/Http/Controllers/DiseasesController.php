@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 use App\Models\Disease;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-class DiseaseController extends Controller
+class DiseasesController extends Controller
 {
     public function index($proj_id, $use_id)
     {

@@ -149,22 +149,24 @@ class PermanencesController extends Controller
             } 
     }
 
-    public function filtredforPermanence($proj_id,$use_id,$column,$data,Request $request)
-    {
-        try {
-            
-            $permanences = ($column == 'perm_date') ? DB::table('viewPermanences')->OrderBy($column, 'DESC')->where($column, 'like', '%'.$data.'%')->take(100)->get() : DB::table('viewPermanences')->OrderBy($column, 'DESC')->where($column, '=', $data)->take(100)->get();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla permanences",1,$proj_id,$use_id);
-            return response()->json([
-               'status' => true,
-                'data' => $permanences
-            ],200);
-        } catch (\Throwable $th) {
-            return response()->json([
-              'status' => false,
-              'message' => "Error occurred while found elements"
-            ],500);
-        }
+    public function filtredforPermanence($proj_id, $use_id, $id)
+{
+    try {
+        $permanences = Permanence::findByDocument($id);
+        
+        Controller::NewRegisterTrigger("Se realizó una búsqueda en la tabla permanences", 1, $proj_id, $use_id);
+        
+        return response()->json([
+            'status' => true,
+            'data' => $permanences
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
     }
+}
+
 
 }
