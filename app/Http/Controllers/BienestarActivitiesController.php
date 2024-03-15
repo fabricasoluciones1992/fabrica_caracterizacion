@@ -12,15 +12,19 @@ class BienestarActivitiesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $bienestarActivity = BienestarActivity::select();
+    $bienestarActivity = BienestarActivity::all();
 
     foreach ($bienestarActivity as $activity) {
         $occupiedQuotas = DB::table('assistances')
-            ->where('ass_status', 1)
-            ->where('bie_act_id', $activity->bie_act_id)
-            ->count();
+            ->select('assistances.*', 'persons.per_name')
+            ->join('students', 'assistances.stu_id', '=', 'students.stu_id')
+            ->leftJoin('persons', 'students.stu_code', '=', 'persons.per_document')
+            ->where('assistances.ass_status', 1)
+            ->where('assistances.bie_act_id', $activity->bie_act_id)
+            ->get();
 
-        $activity->occupied_quotas = $occupiedQuotas;
+        $activity->occupied_quotas = $occupiedQuotas->count();
+        $activity->person_names = $occupiedQuotas->pluck('per_name')->toArray();
     }
 
     Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table", 4, $proj_id, $use_id);
@@ -30,6 +34,8 @@ class BienestarActivitiesController extends Controller
         'data' => $bienestarActivity
     ], 200);
 }
+
+
 
 
     public function store($proj_id,$use_id,Request $request)
@@ -82,12 +88,17 @@ class BienestarActivitiesController extends Controller
         ], 404);
     }
 
+    
     $occupiedQuotas = DB::table('assistances')
-        ->where('ass_status', 1)
-        ->where('bie_act_id', $id)
-        ->count();
+        ->select('assistances.*', 'persons.per_name')
+        ->join('students', 'assistances.stu_id', '=', 'students.stu_id')
+        ->leftJoin('persons', 'students.stu_code', '=', 'persons.per_document')
+        ->where('assistances.ass_status', 1)
+        ->where('assistances.bie_act_id', $id)
+        ->get();
 
-    $bienestarActivity->occupied_quotas = $occupiedQuotas;
+    $bienestarActivity->occupied_quotas = $occupiedQuotas->count();
+    $bienestarActivity->person_names = $occupiedQuotas->pluck('per_name')->toArray();
 
     Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table", 4, $proj_id, $use_id);
 
@@ -96,6 +107,7 @@ class BienestarActivitiesController extends Controller
         'data' => $bienestarActivity
     ]);
 }
+
 
 
 public function update($proj_id, $use_id, Request $request, $id)
