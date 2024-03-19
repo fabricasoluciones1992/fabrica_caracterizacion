@@ -14,4 +14,5 @@ class action extends Model
         'act_status',
     ];
     public $timestamps = false;
+    
 }

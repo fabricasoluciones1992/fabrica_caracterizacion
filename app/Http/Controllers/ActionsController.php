@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\action;
 use Illuminate\Http\Request;
@@ -8,17 +9,24 @@ use Illuminate\Support\Facades\Validator;
 
 class ActionsController extends Controller
 {
-    public function index($proj_id,$use_id)
-    {
+    public function index($proj_id, $use_id)
+{
+    $actions = action::all();
 
-        $action = action::all();
-        Controller::NewRegisterTrigger("A search was performed on the actions table",4,$proj_id, $use_id);
-        return response()->json([
-                'status' => true,
-                'data' => $action
-         ],200);
+    // foreach ($actions as $action) {
+    //     $news = $this->GetNews($action->act_id);
+    //     $action->new_date = ($news->new_date === null) ? null : $news->new_date;
+    //     $action->per_name = ($news->per_name === null)? null : $news->per_name;
         
-    }
+    // }
+
+    Controller::NewRegisterTrigger("A search was performed on the actions table", 4, $proj_id, $use_id);
+
+    return response()->json([
+        'status' => true,
+        'data' => $actions
+    ], 200);
+}
     public function store($proj_id,$use_id,Request $request)
     {
         
@@ -37,11 +45,14 @@ class ActionsController extends Controller
                     $action = new action($request->input());
                     $action->act_status=1;
                     $action->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the actions table",3,$proj_id, $use_id);
-        
+
+                    Controller::NewRegisterTrigger("An insertion was made in the Action table '$action->act_id'",3,$proj_id, $use_id);
+                    $id = $action->act_id;
+                    $news=ActionsController::GetNews($id);
                     return response()->json([
                         'status' => True,
-                        'message' => "The Action type ".$action->act_name." has been successfully created."
+                        'message' => "The Action type ".$action->act_name." has been successfully created.",
+                        'data' => $news
                     ],200);
                 }
             } else {
@@ -52,12 +63,22 @@ class ActionsController extends Controller
             }
         
     }
+    public function GetNews($id){
+        $act_id = $id;
+
+        $news = DB::table('ViewNews')
+            ->select('new_date', 'per_name')
+            ->whereRaw("TRIM(new_description) LIKE 'An insertion was made in the Action table \'$act_id\''")
+            ->get();
+        
+            return $news[0];
+    }
     public function show($proj_id,$use_id,$id)
     {
 
         $action = action::find($id);
         
-            
+        $news=ActionsController::GetNews($id);
             if ($action == null) {
                 return response()->json([
                     'status' => false,
@@ -65,7 +86,8 @@ class ActionsController extends Controller
                 ],400);
             }else{
                 Controller::NewRegisterTrigger("A search was performed on the actions table",4,$proj_id, $use_id);
-
+                $action->new_date = $news->new_date;
+                $action->per_name = $news->per_name;
                 return response()->json([
                     'status' => true,
                     'data' => $action
