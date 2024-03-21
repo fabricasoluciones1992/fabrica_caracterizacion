@@ -11,14 +11,7 @@ class ActionsController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $actions = action::all();
-
-    // foreach ($actions as $action) {
-    //     $news = $this->GetNews($action->act_id);
-    //     $action->new_date = ($news->new_date === null) ? null : $news->new_date;
-    //     $action->per_name = ($news->per_name === null)? null : $news->per_name;
-        
-    // }
+    $actions = action::getNews();
 
     Controller::NewRegisterTrigger("A search was performed on the actions table", 4, $proj_id, $use_id);
 
@@ -27,6 +20,11 @@ class ActionsController extends Controller
         'data' => $actions
     ], 200);
 }
+
+
+
+
+
     public function store($proj_id,$use_id,Request $request)
     {
         
@@ -46,7 +44,7 @@ class ActionsController extends Controller
                     $action->act_status=1;
                     $action->save();
 
-                    Controller::NewRegisterTrigger("An insertion was made in the Action table '$action->act_id'",3,$proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Action table'$action->act_id'",3,$proj_id, $use_id);
                     $id = $action->act_id;
                     $news=ActionsController::GetNews($id);
                     return response()->json([
@@ -65,14 +63,19 @@ class ActionsController extends Controller
     }
     public function GetNews($id){
         $act_id = $id;
-
+    
         $news = DB::table('ViewNews')
             ->select('new_date', 'per_name')
             ->whereRaw("TRIM(new_description) LIKE 'An insertion was made in the Action table \'$act_id\''")
             ->get();
-        
+    
+        if ($news->count() > 0) {
             return $news[0];
+        } else {
+            return null;
+        }
     }
+    
     public function show($proj_id,$use_id,$id)
     {
 

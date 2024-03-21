@@ -29,6 +29,6 @@ class permanence extends Model
     }
     public static function findByDocument($id){
         $permanence = DB::select("SELECT * FROM viewPermanences WHERE stu_code = $id");
-        return $permanence;
+        return $permanence[0];
     }
 }
