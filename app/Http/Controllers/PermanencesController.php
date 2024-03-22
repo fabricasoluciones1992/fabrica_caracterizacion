@@ -29,6 +29,7 @@ class PermanencesController extends Controller
             $rules = [
                 'perm_date' =>'required|date',
                 'perm_description' =>'required|string|min:1|max:50|/^[a-zA-Z0-9\s]+$/',
+                'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'sol_id' =>'required|integer|max:1',
                 'act_id' =>'required|integer|max:1'
             ];
