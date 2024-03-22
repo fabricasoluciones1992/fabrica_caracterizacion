@@ -167,6 +167,24 @@ class PermanencesController extends Controller
         ], 500);
     }
 }
+public function filtredforTSolicitud($proj_id, $use_id, $id)
+{
+    try {
+        $permanences = Permanence::findBySolTyp($id);
+        
+        Controller::NewRegisterTrigger("Se realizó una búsqueda en la tabla permanences", 1, $proj_id, $use_id);
+        
+        return response()->json([
+            'status' => true,
+            'data' => $permanences
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
+    }
+}
 
 
 }
