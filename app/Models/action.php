@@ -18,16 +18,27 @@ class Action extends Model
     public $timestamps = false;
 
     public static function getNews()
-    {
-        $actions = Action::all();
-        // foreach ($actions as $action) {
-        //     $news = DB::table('ViewNews')->where('new_description','=',"An insertion was made in the actions table'$action->act_id'");
-        //     $action->per_name = $news[0]->per_name;
-        //     $action->new_date = $news[0]->new_date;
-        // }
+{
+    $actions = Action::all();
+    foreach ($actions as $action) {
+        $news = DB::table('ViewNews')
+                    ->where('new_description', "An insertion was made in the actions table'$action->act_id'")
+                    ->get();
+
         
-        return $actions;
+        if ($news->isNotEmpty()) {
+            $action->per_name = $news[0]->per_name;
+            $action->new_date = $news[0]->new_date;
+        } else {
+
+            $action->per_name = null;
+            $action->new_date = null;
+        }
     }
+    
+    return $actions;
+}
+
 }
 
     

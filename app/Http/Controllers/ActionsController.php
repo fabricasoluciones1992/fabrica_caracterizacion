@@ -44,7 +44,7 @@ class ActionsController extends Controller
                     $action->act_status=1;
                     $action->save();
 
-                    Controller::NewRegisterTrigger("An insertion was made in the Action table'$action->act_id'",3,$proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Actions table'$action->act_id'",3,$proj_id, $use_id);
                     $id = $action->act_id;
                     $news=ActionsController::GetNews($id);
                     return response()->json([
@@ -66,7 +66,7 @@ class ActionsController extends Controller
     
         $news = DB::table('ViewNews')
             ->select('new_date', 'per_name')
-            ->whereRaw("TRIM(new_description) LIKE 'An insertion was made in the Action table \'$act_id\''")
+            ->whereRaw("TRIM(new_description) LIKE 'An insertion was made in the Actions table\'$act_id\''")
             ->get();
     
         if ($news->count() > 0) {

@@ -12,29 +12,36 @@ class BienestarActivitiesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $bienestarActivity = BienestarActivity::all();
+    $bienestarActivities = BienestarActivity::all();
 
-    foreach ($bienestarActivity as $activity) {
-        $occupiedQuotas = DB::table('assistances')
-            ->select('assistances.*', 'persons.per_name')
-            ->join('students', 'assistances.stu_id', '=', 'students.stu_id')
-            ->leftJoin('persons', 'students.stu_code', '=', 'persons.per_document')
-            ->where('assistances.ass_status', 1)
-            ->where('assistances.bie_act_id', $activity->bie_act_id)
-            ->get();
+    $assistances = DB::table('assistances')
+        ->select('assistances.*', 'persons.per_name')
+        ->join('students', 'assistances.stu_id', '=', 'students.stu_id')
+        ->leftJoin('persons', 'students.stu_code', '=', 'persons.per_document')
+        ->whereIn('assistances.bie_act_id', $bienestarActivities->pluck('bie_act_id'))
+        ->where('assistances.ass_status', 1)
+        ->get()
+        ->groupBy('bie_act_id');
 
+    foreach ($bienestarActivities as $activity) {
+        $occupiedQuotas = $assistances->get($activity->bie_act_id) ?? collect();
         $activity->occupied_quotas = $occupiedQuotas->count();
-        $activity->person_names = $occupiedQuotas->pluck('per_name')->toArray();
+        
+        $viewStudentsData = DB::table('ViewStudents')
+            ->select('per_name','per_lastname', 'stu_code', 'car_name', 'pro_name', 'pro_group', 'stu_enr_semester')
+            ->whereIn('per_name', $occupiedQuotas->pluck('per_name')->toArray())
+            ->get();
+        
+        $activity->view_students_data = $viewStudentsData;
     }
 
-    Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table", 4, $proj_id, $use_id);
+    Controller::NewRegisterTrigger("Se realizó una búsqueda en la tabla de actividades de bienestar", 4, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,
-        'data' => $bienestarActivity
+        'data' => $bienestarActivities
     ], 200);
 }
-
 
 
 
