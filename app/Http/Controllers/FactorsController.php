@@ -13,7 +13,7 @@ class FactorsController extends Controller
         
         
         $factors = factor::all();
-        Controller::NewRegisterTrigger("A search was performed in the factors table", 4, $proj_id, $use_id);
+        Controller::NewRegisterTrigger("A search was performed in the factors table", 1, $proj_id, $use_id);
         return response()->json([
             'status' => true,
             'data' => $factors,

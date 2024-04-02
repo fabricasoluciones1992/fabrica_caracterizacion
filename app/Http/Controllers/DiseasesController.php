@@ -9,7 +9,7 @@ class DiseasesController extends Controller
     {
         try {
             $disease = Disease::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Disease", 4, $proj_id, $use_id);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Disease", 1, $proj_id, $use_id);
             return response()->json([
                 'status' => true,
                 'data' => $disease,
@@ -51,7 +51,7 @@ class DiseasesController extends Controller
                 'data' => ['message' => 'The disease requested not found'],
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Doctypes por dato especifico: $id", 4, $proj_id, $use_id);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Doctypes por dato especifico: $id", 1, $proj_id, $use_id);
             return response()->json([
                 'status' => true,
                 'data' => $disease

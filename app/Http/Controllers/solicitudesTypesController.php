@@ -11,7 +11,7 @@ class SolicitudesTypesController extends Controller
     public function index($proj_id,$use_id)
     {        
             $solicitudTypes = SolicitudeType::all();
-            Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4, $proj_id, $use_id);
+            Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 1, $proj_id, $use_id);
             return response()->json([
                 'status' => true,
                 'data' => $solicitudTypes
@@ -61,7 +61,7 @@ class SolicitudesTypesController extends Controller
                     'data' => ['message' => 'The requested solicitudes types was not found']
                 ], 400);
             } else {
-                Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 4, $proj_id, $use_id);
+                Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 1, $proj_id, $use_id);
                 return response()->json([
                     'status' => true,
                     'data' => $solicitudTypes

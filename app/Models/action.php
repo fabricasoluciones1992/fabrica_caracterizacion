@@ -17,18 +17,18 @@ class Action extends Model
     ];
     public $timestamps = false;
 
-    public static function getNews()
+    public static function getbienestar_news()
 {
     $actions = Action::all();
     foreach ($actions as $action) {
-        $news = DB::table('ViewNews')
+        $bienestar_news = DB::table('Viewbienestar_news')
                     ->where('new_description', "An insertion was made in the actions table'$action->act_id'")
                     ->get();
 
         
-        if ($news->isNotEmpty()) {
-            $action->per_name = $news[0]->per_name;
-            $action->new_date = $news[0]->new_date;
+        if ($bienestar_news->isNotEmpty()) {
+            $action->per_name = $bienestar_news[0]->per_name;
+            $action->new_date = $bienestar_news[0]->new_date;
         } else {
 
             $action->per_name = null;

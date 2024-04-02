@@ -11,9 +11,9 @@ class ActionsController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $actions = action::getNews();
+    $actions = action::getbienestar_news();
 
-    Controller::NewRegisterTrigger("A search was performed on the actions table", 4, $proj_id, $use_id);
+    Controller::NewRegisterTrigger("A search was performed on the actions table", 1, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,
@@ -46,11 +46,11 @@ class ActionsController extends Controller
 
                     Controller::NewRegisterTrigger("An insertion was made in the Actions table'$action->act_id'",3,$proj_id, $use_id);
                     $id = $action->act_id;
-                    $news=ActionsController::GetNews($id);
+                    $bienestar_news=ActionsController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
                         'message' => "The Action type ".$action->act_name." has been successfully created.",
-                        'data' => $news
+                        'data' => $bienestar_news
                     ],200);
                 }
             } else {
@@ -61,16 +61,16 @@ class ActionsController extends Controller
             }
         
     }
-    public function GetNews($id){
+    public function Getbienestar_news($id){
         $act_id = $id;
     
-        $news = DB::table('ViewNews')
+        $bienestar_news = DB::table('bienestar_news')
             ->select('new_date', 'per_name')
             ->whereRaw("TRIM(new_description) LIKE 'An insertion was made in the Actions table\'$act_id\''")
             ->get();
     
-        if ($news->count() > 0) {
-            return $news[0];
+        if ($bienestar_news->count() > 0) {
+            return $bienestar_news[0];
         } else {
             return null;
         }
@@ -81,16 +81,15 @@ class ActionsController extends Controller
 
         $action = action::find($id);
         
-        $news=ActionsController::GetNews($id);
+        $bienestar_news=ActionsController::Getbienestar_news($id);
             if ($action == null) {
                 return response()->json([
                     'status' => false,
                     'data' => ['message' => 'The requested Action was not found']
                 ],400);
             }else{
-                Controller::NewRegisterTrigger("A search was performed on the actions table",4,$proj_id, $use_id);
-                $action->new_date = $news->new_date;
-                $action->per_name = $news->per_name;
+                $action->new_date = $bienestar_news->new_date;
+                $action->per_name = $bienestar_news->per_name;
                 return response()->json([
                     'status' => true,
                     'data' => $action
@@ -115,7 +114,7 @@ class ActionsController extends Controller
                 }else{
                     $action->act_name = $request->act_name;
                     $action->save();
-                    Controller::NewRegisterTrigger("An update was made in the actions table",1,$proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the actions table",4,$proj_id, $use_id);
 
                     return response()->json([
                         'status' => True,

@@ -14,7 +14,7 @@ class AllergiesController extends Controller
 
         $allergie = Allergie::all();
               
-        Controller::NewRegisterTrigger("A search was performed on the Allergies table",4,$proj_id, $use_id);
+        Controller::NewRegisterTrigger("A search was performed on the Allergies table",1,$proj_id, $use_id);
         return response()->json([
                 'status' => true,
                 'data' => $allergie

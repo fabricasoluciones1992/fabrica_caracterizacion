@@ -11,7 +11,7 @@ class AllergyHistoriesController extends Controller
     public function index($proj_id, $use_id)
 {
     $aHistory = AllergyHistory::select();
-    Controller::NewRegisterTrigger("A search was performed on the Allergies Histories table", 4, $proj_id, $use_id);
+    Controller::NewRegisterTrigger("A search was performed on the Allergies Histories table", 1, $proj_id, $use_id);
     return response()->json([
         'status' => true,
         'data' => $aHistory
@@ -51,7 +51,7 @@ class AllergyHistoriesController extends Controller
     public function show($proj_id, $use_id, $id)
 {
     $aHistory = AllergyHistory::find($id);
-    Controller::NewRegisterTrigger("A search was performed on the Allergies Histories table", 4, $proj_id, $use_id);
+    Controller::NewRegisterTrigger("A search was performed on the Allergies Histories table", 1, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,

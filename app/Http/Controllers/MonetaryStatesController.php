@@ -12,7 +12,7 @@ class MonetaryStatesController extends Controller
     {
         
         $monState = MonetaryState::all();
-        Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, $proj_id, $use_id);
+        Controller::NewRegisterTrigger("A search was performed in the monetary states table", 1, $proj_id, $use_id);
 
         return response()->json([
             'status' => true,
@@ -64,7 +64,7 @@ class MonetaryStatesController extends Controller
                 'data' => ['message' => 'The requested economic state was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the monetary states table", 4, $proj_id, $use_id);
+            Controller::NewRegisterTrigger("A search was performed in the monetary states table", 1, $proj_id, $use_id);
 
             return response()->json([
                 'status' => true,

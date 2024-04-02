@@ -13,7 +13,7 @@ class GymInscriptionsController extends Controller
 {
     $gymIns = GymInscription::select();
 
-    Controller::NewRegisterTrigger("A search was performed on the Gym inscriptions table", 4, $proj_id, $use_id);
+    Controller::NewRegisterTrigger("A search was performed on the Gym inscriptions table", 1, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,
@@ -69,7 +69,7 @@ class GymInscriptionsController extends Controller
     }
 
 
-    Controller::NewRegisterTrigger("A search was performed on the Gym inscriptions table", 4, $proj_id, $use_id);
+    Controller::NewRegisterTrigger("A search was performed on the Gym inscriptions table", 1, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,

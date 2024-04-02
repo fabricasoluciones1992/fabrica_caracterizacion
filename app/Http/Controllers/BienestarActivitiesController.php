@@ -35,7 +35,7 @@ class BienestarActivitiesController extends Controller
         $activity->view_students_data = $viewStudentsData;
     }
 
-    Controller::NewRegisterTrigger("Se realizó una búsqueda en la tabla de actividades de bienestar", 4, $proj_id, $use_id);
+    Controller::NewRegisterTrigger("Se realizó una búsqueda en la tabla de actividades de bienestar", 1, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,
@@ -107,7 +107,7 @@ class BienestarActivitiesController extends Controller
     $bienestarActivity->occupied_quotas = $occupiedQuotas->count();
     $bienestarActivity->person_names = $occupiedQuotas->pluck('per_name')->toArray();
 
-    Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table", 4, $proj_id, $use_id);
+    Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table", 1, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,
