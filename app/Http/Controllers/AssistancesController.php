@@ -12,8 +12,8 @@ class AssistancesController extends Controller
     public function index($proj_id,$use_id)
     {
         
-        $assistances = Assistance::select();
-        Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $use_id);
+        $assistances = Assistance::getbienestar_news();
+        Controller::NewRegisterTrigger("A search was performed on the assistences table",4, $use_id);
 
         return response()->json([
             'status' => true,
@@ -28,10 +28,9 @@ class AssistancesController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
                 'ass_date' =>'date',
-                'ass_status' =>'required|integer|max:1',
-                'stu_id' =>'required|integer|max:1',
-                'per_id' =>'required|integer|max:1',
-                'bie_act_id' =>'required|integer|max:1'
+                'stu_id' =>'required|integer',
+                'per_id' =>'required|integer',
+                'bie_act_id' =>'required|integer'
             ];
 
             $validator = Validator::make($request->input(), $rules);
@@ -47,13 +46,19 @@ class AssistancesController extends Controller
                 $request->merge(['ass_date' => $currentDate]);
 
                 $assistances = new assistance($request->input());
+                $assistances->ass_status=1;
+
                 $assistances->save();
 
-                Controller::NewRegisterTrigger("An insertion was made in the assistences table",3,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An insertion was made in the assistences table'$assistances->ass_id'",3, $use_id);
+                $id = $assistances->ass_id;
+                $bienestar_news=AssistancesController::Getbienestar_news($id);
 
                 return response()->json([
                     'status' => True,
-                    'message' => "The assistance has been created successfully."
+                    'message' => "The assistance has been created successfully.",
+                    'data' => $bienestar_news
+
                 ], 200);
             }
         } else {
@@ -66,11 +71,28 @@ class AssistancesController extends Controller
 
     
 }
+public function Getbienestar_news($id)
+{
+    $ass_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Actions table\'$ass_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
 
     public function show($proj_id,$use_id,$id)
     {
         
         $assistances =  Assistance::find($id);
+        $bienestar_news=AssistancesController::Getbienestar_news($id);
+
         if ($assistances == null) {
 
             return response()->json([
@@ -78,9 +100,8 @@ class AssistancesController extends Controller
                 'data' => ['message' => 'The searched assistance was not found']
             ],400);
         }else{
-            
-            Controller::NewRegisterTrigger("A search was performed on the assistences table",4,$proj_id, $use_id);
-
+            $assistances->new_date = $bienestar_news->bie_new_date;
+            $assistances->createdBy = $bienestar_news->per_name;
             return response()->json([
                 'status' => true,
                 'data' => $assistances
@@ -124,7 +145,7 @@ class AssistancesController extends Controller
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;
                     $assistances->save();
-                    Controller::NewRegisterTrigger("An update was made in the assistences table",1,$proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the assistences table",4,$use_id);
 
                     return response()->json([
                         'status' => True,
@@ -148,7 +169,7 @@ class AssistancesController extends Controller
             if ($assistances->ass_status == 1){
                 $assistances->ass_status = 0;
                 $assistances->save();
-                Controller::NewRegisterTrigger("An delete was made in the actions table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An delete was made in the actions table",2,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested assistances has been disabled successfully'

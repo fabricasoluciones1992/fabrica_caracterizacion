@@ -162,7 +162,7 @@ public function update($proj_id, $use_id, Request $request, $id)
                 $bienestarActivity->bie_act_date = $request->bie_act_date;
                 $bienestarActivity->bie_act_hour = $request->bie_act_hour;
                 $bienestarActivity->save();
-                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table", 1, $proj_id, $use_id);
+                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table", 4, $use_id);
 
                 return response()->json([
                     'status' => true,

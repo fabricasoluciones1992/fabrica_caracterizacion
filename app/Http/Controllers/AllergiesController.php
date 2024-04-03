@@ -112,7 +112,7 @@ class AllergiesController extends Controller
                 }else{
                     $allergie->all_name = $request->all_name;
                     $allergie->save();
-                    Controller::NewRegisterTrigger("An update was made in the Allergies table",1, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the Allergies table",4,$use_id);
 
                     return response()->json([
                         'status' => True,
