@@ -13,7 +13,6 @@ class ActionsController extends Controller
 {
     $actions = action::getbienestar_news();
 
-    Controller::NewRegisterTrigger("A search was performed on the actions table", 1, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,
@@ -43,8 +42,7 @@ class ActionsController extends Controller
                     $action = new action($request->input());
                     $action->act_status=1;
                     $action->save();
-
-                    Controller::NewRegisterTrigger("An insertion was made in the Actions table'$action->act_id'",3,$proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Actions table'$action->act_id'",3,$use_id);
                     $id = $action->act_id;
                     $bienestar_news=ActionsController::Getbienestar_news($id);
                     return response()->json([
@@ -61,20 +59,22 @@ class ActionsController extends Controller
             }
         
     }
-    public function Getbienestar_news($id){
-        $act_id = $id;
-    
-        $bienestar_news = DB::table('bienestar_news')
-            ->select('new_date', 'per_name')
-            ->whereRaw("TRIM(new_description) LIKE 'An insertion was made in the Actions table\'$act_id\''")
-            ->get();
-    
-        if ($bienestar_news->count() > 0) {
-            return $bienestar_news[0];
-        } else {
-            return null;
-        }
+    public function Getbienestar_news($id)
+{
+    $act_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Actions table\'$act_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
     }
+}
+
     
     public function show($proj_id,$use_id,$id)
     {
@@ -88,7 +88,7 @@ class ActionsController extends Controller
                     'data' => ['message' => 'The requested Action was not found']
                 ],400);
             }else{
-                $action->new_date = $bienestar_news->new_date;
+                $action->new_date = $bienestar_news->bie_new_date;
                 $action->per_name = $bienestar_news->per_name;
                 return response()->json([
                     'status' => true,
@@ -136,7 +136,7 @@ class ActionsController extends Controller
             if ($action->act_status == 1){
                 $action->act_status = 0;
                 $action->save();
-                Controller::NewRegisterTrigger("An delete was made in the actions table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An delete was made in the actions table",2,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested Action has been disabled successfully'
