@@ -114,7 +114,7 @@ class ActionsController extends Controller
                 }else{
                     $action->act_name = $request->act_name;
                     $action->save();
-                    Controller::NewRegisterTrigger("An update was made in the actions table",4,$proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the actions table",4,$use_id);
 
                     return response()->json([
                         'status' => True,

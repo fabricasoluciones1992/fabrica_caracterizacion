@@ -10,11 +10,11 @@ class AllergyHistoriesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $aHistory = AllergyHistory::select();
-    Controller::NewRegisterTrigger("A search was performed on the Allergies Histories table", 1, $proj_id, $use_id);
+    $aHistories=AllergyHistory::select();
+    $aHistories = AllergyHistory::getbienestar_news();
     return response()->json([
         'status' => true,
-        'data' => $aHistory
+        'data' => $aHistories
     ], 200);
 }
     public function store($proj_id,$use_id,Request $request)
@@ -33,30 +33,58 @@ class AllergyHistoriesController extends Controller
                 } else {
                     $aHistory = new AllergyHistory($request->input());
                     $aHistory->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Allergies Histories table",3,$proj_id, $use_id);
-
+                    Controller::NewRegisterTrigger("An insertion was made in the Allergies Histories table'$aHistory->all_his_id'",3,$use_id);
+                    $id = $aHistory->all_his_id;
+                    $bienestar_news=AllergyHistoriesController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
-                        'message' => "The Allergy History has been created successfully."
+                        'message' => "The Allergy History has been created successfully.",
+                        'data' => $bienestar_news
+
                     ],200);
                 }
             } else {
                 return response()->json([
                     'status' => false,
                     'message' => 'Access denied. This action can only be performed by active administrators.'
+                    
                 ], 403); 
             }
         
     }
+    public function Getbienestar_news($id)
+{
+    $all_his_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Allergies Histories table\'$all_his_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
     public function show($proj_id, $use_id, $id)
 {
     $aHistory = AllergyHistory::find($id);
-    Controller::NewRegisterTrigger("A search was performed on the Allergies Histories table", 1, $proj_id, $use_id);
+    $bienestar_news=AllergyHistoriesController::Getbienestar_news($id);
 
-    return response()->json([
-        'status' => true,
-        'data' => $aHistory
-    ]);
+    if ($aHistory == null) {
+        return response()->json([
+            'status' => false,
+            'data' => ['message' => 'The requested Allergies Histories was not found']
+        ],400);
+    }else{
+        $aHistory->new_date = $bienestar_news->bie_new_date;
+        $aHistory->createdBy = $bienestar_news->per_name;
+        return response()->json([
+            'status' => true,
+            'data' => $aHistory
+        ]);
+    }
 }
 public function update($proj_id, $use_id, Request $request, $id)
 {
@@ -85,7 +113,7 @@ public function update($proj_id, $use_id, Request $request, $id)
                 $aHistory->per_id = $request->per_id;
                 $aHistory->all_id = $request->all_id;
                 $aHistory->save();
-                Controller::NewRegisterTrigger("An update was made in the Allergies Histories table", 1, $proj_id, $use_id);
+                Controller::NewRegisterTrigger("An update was made in the Allergies Histories table", 4, $use_id);
 
                 return response()->json([
                     'status' => true,
