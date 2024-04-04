@@ -10,9 +10,10 @@ use Illuminate\Validation\Rule;
 
 class BienestarActivitiesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index($proj_id, $use_id)//falta get 
 {
-    $bienestarActivities = BienestarActivity::all();
+    $bienestarActivities = BienestarActivity::select();
+    $bienestarActivities = BienestarActivity::getbienestar_news();
 
     $assistances = DB::table('assistances')
         ->select('assistances.*', 'persons.per_name')
@@ -34,9 +35,6 @@ class BienestarActivitiesController extends Controller
         
         $activity->view_students_data = $viewStudentsData;
     }
-
-    Controller::NewRegisterTrigger("Se realizó una búsqueda en la tabla de actividades de bienestar", 1, $proj_id, $use_id);
-
     return response()->json([
         'status' => true,
         'data' => $bienestarActivities
@@ -67,11 +65,14 @@ class BienestarActivitiesController extends Controller
                     $bienestarActivity = new BienestarActivity($request->input());
                     $bienestarActivity->bie_act_status=1;
                     $bienestarActivity->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table",3,$proj_id, $use_id);
-
+                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table'$bienestarActivity->bie_act_id'",3,$use_id);
+                    $id = $bienestarActivity->bie_act_id;
+                    $bienestar_news=BienestarActivitiesController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
-                        'message' => "The bienestar activity has been created successfully."
+                        'message' => "The bienestar activity has been created successfully.",
+                        'data' => $bienestar_news
+
                     ],200);
                 }
             } else {
@@ -83,10 +84,25 @@ class BienestarActivitiesController extends Controller
         
     }
 
-
+    public function Getbienestar_news($id)
+    {
+        $bie_act_id = $id;
+        $bienestar_news = DB::table('bienestar_news')
+            ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+            ->select('bie_new_date', 'persons.per_name')
+            ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Bienestar Activities table\'$bie_act_id\''")
+            ->get();
+    
+        if ($bienestar_news->count() > 0) {
+            return $bienestar_news[0];
+        } else {
+            return null;
+        }
+    }
     public function show($proj_id, $use_id, $id)
 {
     $bienestarActivity = BienestarActivity::find($id);
+    $bienestar_news = BienestarActivitiesController::Getbienestar_news($id);
 
     if (empty($bienestarActivity)) {
         return response()->json([
@@ -95,7 +111,6 @@ class BienestarActivitiesController extends Controller
         ], 404);
     }
 
-    
     $occupiedQuotas = DB::table('assistances')
         ->select('assistances.*', 'persons.per_name')
         ->join('students', 'assistances.stu_id', '=', 'students.stu_id')
@@ -106,14 +121,15 @@ class BienestarActivitiesController extends Controller
 
     $bienestarActivity->occupied_quotas = $occupiedQuotas->count();
     $bienestarActivity->person_names = $occupiedQuotas->pluck('per_name')->toArray();
-
-    Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table", 1, $proj_id, $use_id);
+    $bienestarActivity->new_date = $bienestar_news->bie_new_date;
+    $bienestarActivity->createdBy = $bienestar_news->per_name;
 
     return response()->json([
         'status' => true,
         'data' => $bienestarActivity
     ]);
 }
+
 
 
 
@@ -162,7 +178,7 @@ public function update($proj_id, $use_id, Request $request, $id)
                 $bienestarActivity->bie_act_date = $request->bie_act_date;
                 $bienestarActivity->bie_act_hour = $request->bie_act_hour;
                 $bienestarActivity->save();
-                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table", 4, $use_id);
+                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table", 4,$use_id);
 
                 return response()->json([
                     'status' => true,
@@ -185,7 +201,7 @@ public function update($proj_id, $use_id, Request $request, $id)
             if ($bienestarActivity->bie_act_status == 1){
                 $bienestarActivity->bie_act_status = 0;
                 $bienestarActivity->save();
-                Controller::NewRegisterTrigger("An delete was made in the bienestar activity type table",2,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("An delete was made in the bienestar activity type table",2,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested bienestar activity type has been disabled successfully'

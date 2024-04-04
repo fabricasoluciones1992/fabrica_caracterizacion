@@ -29,10 +29,10 @@ class Action extends Model
 
         if ($news->isNotEmpty()) {
             $action->new_date = $news[0]->bie_new_date;
-            $action->per_name = $news[0]->per_name;
+            $action->createdBy = $news[0]->per_name;
         } else {
             $action->new_date = null;
-            $action->per_name = null;
+            $action->createdBy = null;
         }
     }
     

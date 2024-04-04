@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
  
 class SolicitudesController extends Controller
 {
-//  agregar reasons id y corregir esta vista
     public function index($proj_id,$use_id)
     {
        

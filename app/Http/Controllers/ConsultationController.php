@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Consultation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 
 class ConsultationController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $consultation = Consultation::all();
-        Controller::NewRegisterTrigger("A search was performed on the reasons table",4,$proj_id, $use_id);
+        $consultations = Consultation::getbienestar_news();
         return response()->json([
             'status' => true,
-            'data' => $consultation
+            'data' => $consultations
         ],200);
     }
     public function store($proj_id,$use_id,Request $request)
@@ -22,12 +23,12 @@ class ConsultationController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
                 'cons_date' => 'date',
-                'cons_reason' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                'cons_description' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
+                'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                 'cons_weight' => 'required|integer',
                 'cons_height' => 'required|integer',
                 'cons_imc' => 'required|integer',
-                'cons_vaccination' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'cons_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -41,11 +42,13 @@ class ConsultationController extends Controller
 
                 $consultation = new Consultation($request->input());
                 $consultation->save();
-                Controller::NewRegisterTrigger("An insertion was made in the consultations table",3,$proj_id, $use_id);
-    
+                Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->cons_id'",3,$use_id);
+                $id = $consultation->cons_id;
+                $bienestar_news=ConsultationController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
-                    'message' => "The consultations has been created successfully."
+                    'message' => "The consultations has been created successfully.",
+                    'data' => $bienestar_news
                 ],200);
             }
         } else {
@@ -55,9 +58,25 @@ class ConsultationController extends Controller
             ], 403); 
         }
     }
+    public function Getbienestar_news($id)
+{
+    $cons_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the consultations table\'$cons_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
     public function show($proj_id,$use_id,$id)
     {
         $consultation = Consultation::find($id);
+        $bienestar_news=ConsultationController::Getbienestar_news($id);
 
         if ($consultation == null) {
             return response()->json([
@@ -65,7 +84,8 @@ class ConsultationController extends Controller
                 "data" => ['message' => 'The searched consultations was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the consultations table", 4,  $proj_id, $use_id);
+            $consultation->new_date = $bienestar_news->bie_new_date;
+            $consultation->createdBy = $bienestar_news->per_name;
             return response()->json([
                 'status' => true,
                 'data' => $consultation
@@ -84,12 +104,12 @@ class ConsultationController extends Controller
             } else {
                 $rules = [
                     'cons_date' => 'date',
-                    'cons_reason' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                    'cons_description' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
+                    'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                     'cons_weight' => 'required|integer',
                     'cons_height' => 'required|integer',
                     'cons_imc' => 'required|integer',
-                    'cons_vaccination' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'cons_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -110,7 +130,7 @@ class ConsultationController extends Controller
                     $consultation->cons_vaccination = $request->cons_vaccination;
                     $consultation->save();
                     
-                    Controller::NewRegisterTrigger("An update was made in the consultations table", 1, $proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the consultations table", 4, $use_id);
                     return response()->json([
                     'status' => True,
                     'message' => "The consultations has been updated successfully."

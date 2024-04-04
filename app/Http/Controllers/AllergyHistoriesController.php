@@ -10,7 +10,6 @@ class AllergyHistoriesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $aHistories=AllergyHistory::select();
     $aHistories = AllergyHistory::getbienestar_news();
     return response()->json([
         'status' => true,

@@ -89,7 +89,7 @@ class ActionsController extends Controller
                 ],400);
             }else{
                 $action->new_date = $bienestar_news->bie_new_date;
-                $action->per_name = $bienestar_news->per_name;
+                $action->createdBy = $bienestar_news->per_name;
                 return response()->json([
                     'status' => true,
                     'data' => $action

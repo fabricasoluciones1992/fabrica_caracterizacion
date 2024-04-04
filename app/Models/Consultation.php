@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Consultation extends Model
 {
@@ -19,4 +20,25 @@ class Consultation extends Model
         'cons_vaccination',
     ];
     public $timestamps = false;
+    public static function Getbienestar_news()
+{
+    $consultations = Consultation::all();
+    foreach ($consultations as $consultation) {
+        $news = DB::table('bienestar_news')
+                    ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+                    ->where('bie_new_description', "An insertion was made in the consultations table'$consultation->cons_id'")
+                    ->select('bie_new_date', 'per_name')
+                    ->get();
+
+        if ($news->isNotEmpty()) {
+            $consultation->new_date = $news[0]->bie_new_date;
+            $consultation->createdBy = $news[0]->per_name;
+        } else {
+            $consultation->new_date = null;
+            $consultation->createdBy = null;
+        }
+    }
+    
+    return $consultations;
+}
 }
