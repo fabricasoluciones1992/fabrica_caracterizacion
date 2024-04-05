@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\factor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class FactorsController extends Controller
 {
@@ -12,8 +13,7 @@ class FactorsController extends Controller
     {
         
         
-        $factors = factor::all();
-        Controller::NewRegisterTrigger("A search was performed in the factors table", 1, $proj_id, $use_id);
+        $factors = factor::getbienestar_news();
         return response()->json([
             'status' => true,
             'data' => $factors,
@@ -40,11 +40,14 @@ class FactorsController extends Controller
                 $factor = new factor($request->input());
                 $factor->fac_status=1;
                 $factor->save();
-                Controller::NewRegisterTrigger("An insertion was made in the factors table", 3 ,$proj_id, $use_id);
-
+                Controller::NewRegisterTrigger("An insertion was made in the factors table'$factor->fac_id'", 3 ,$use_id);
+                $id = $factor->fac_id;
+                $bienestar_news=FactorsController::Getbienestar_news($id);
                 return response()->json([
                 'status' => True,
-                'message' => "The factor type '".$factor->fac_name."' has been created successfully."
+                'message' => "The factor type '".$factor->fac_name."' has been created successfully.",
+                'data' => $bienestar_news
+
                 ], 200);
             }
         } else {
@@ -56,18 +59,36 @@ class FactorsController extends Controller
         }
     
 }
+public function Getbienestar_news($id)
+{
+    $fac_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the factors table\'$fac_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
+
     public function show($proj_id,$use_id,$id)
     {
         
             $factor = factor::find($id);
+            $bienestar_news=FactorsController::Getbienestar_news($id);
+
             if ($factor == null) {
                 return response()->json([
                     'status' => false,
                     'data' => ['message' => 'The requested factor was not found']
                 ], 400);
             } else {
-                Controller::NewRegisterTrigger("A search was performed in the factors table", 4 ,$proj_id, $use_id);
-
+                $factor->new_date = $bienestar_news->bie_new_date;
+                $factor->createdBy = $bienestar_news->per_name;
                 return response()->json([
                     'status' => true,
                     'data' => $factor
@@ -100,7 +121,7 @@ class FactorsController extends Controller
                 } else {
                     $factor->fac_name = $request->fac_name;
                     $factor->save();
-                    Controller::NewRegisterTrigger("An update was made in the factors table", 1 ,$proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the factors table", 4 ,$proj_id, $use_id);
 
                     return response()->json([
                 'status' => True,

@@ -22,8 +22,7 @@ class BienestarActivity extends Model
         $bienestarActivity = DB::select("
         SELECT ba.bie_act_id, ba.bie_act_status,ba.bie_act_hour, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name, bat.bie_act_typ_id 
         FROM bienestar_activities ba
-        INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
-    ");
+        INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id");
     return $bienestarActivity;
     }
     public static function find($id){
@@ -41,7 +40,7 @@ class BienestarActivity extends Model
     foreach ($bienestarActivities as $bienestarActivity) {
         $news = DB::table('bienestar_news')
                     ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-                    ->where('bie_new_description', "An insertion was made in the bienestarActivity table'$bienestarActivity->bie_act_id'")
+                    ->where('bie_new_description', "An insertion was made in the Bienestar Activities table'$bienestarActivity->bie_act_id'")
                     ->select('bie_new_date', 'per_name')
                     ->get();
 
@@ -54,6 +53,6 @@ class BienestarActivity extends Model
         }
     }
     
-    return $bienestarActivity;
+    return $bienestarActivities;
 }
 }

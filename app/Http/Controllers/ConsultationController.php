@@ -23,12 +23,12 @@ class ConsultationController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
                 'cons_date' => 'date',
-                'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
+                'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s]+$/',
+                'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s]+$/',
                 'cons_weight' => 'required|integer',
                 'cons_height' => 'required|integer',
                 'cons_imc' => 'required|integer',
-                'cons_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
+                'cons_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -42,8 +42,8 @@ class ConsultationController extends Controller
 
                 $consultation = new Consultation($request->input());
                 $consultation->save();
-                Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->cons_id'",3,$use_id);
-                $id = $consultation->cons_id;
+                Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$use_id);
+                $id = $consultation->id;
                 $bienestar_news=ConsultationController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,

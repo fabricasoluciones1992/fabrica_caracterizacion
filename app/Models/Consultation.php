@@ -41,4 +41,12 @@ class Consultation extends Model
     
     return $consultations;
 }
+
+public static function find($id)
+{
+    $consultations=DB::select("SELECT cons_id,cons_date,cons_reason,cons_description,cons_weight,cons_height,cons_imc,cons_vaccination 
+    FROM consultations 
+    WHERE cons_id=$id");
+    return $consultations[0];
+}
 }
