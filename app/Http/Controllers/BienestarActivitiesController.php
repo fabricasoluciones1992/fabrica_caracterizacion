@@ -17,6 +17,7 @@ class BienestarActivitiesController extends Controller
     $assistances = Assistance::select();
 
     foreach ($bienestarActivities as $activity) {
+        $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
         $assistancesStudents = array();
         foreach ($assistances as $assistance) {
             $date = date('Y-m-d');
@@ -32,15 +33,6 @@ class BienestarActivitiesController extends Controller
             }
         }
         $activity->assistances = $assistancesStudents;
-        // $occupiedQuotas = $assistances->get($activity->bie_act_id) ?? collect();
-        // $activity->occupied_quotas = $occupiedQuotas->count();
-        
-        // $viewStudentsData = DB::table('ViewStudents')
-        //     ->select('per_name','per_lastname', 'stu_code', 'car_name', 'pro_name', 'pro_group', 'stu_enr_semester')
-        //     ->whereIn('per_name', $occupiedQuotas->pluck('per_name')->toArray())
-        //     ->get();
-        
-        // $activity->view_students_data = $viewStudentsData;
     }
     return response()->json([
         'status' => true,
