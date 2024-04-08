@@ -11,9 +11,8 @@ class GymInscriptionsController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $gymIns = GymInscription::select();
+    $gymIns = GymInscription::getbienestar_news();
 
-    Controller::NewRegisterTrigger("A search was performed on the Gym inscriptions table", 1, $proj_id, $use_id);
 
     return response()->json([
         'status' => true,
@@ -38,14 +37,17 @@ class GymInscriptionsController extends Controller
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
-                    $gymIns = new GymInscription($request->input());
-                    $gymIns->gym_ins_status=1;
-                    $gymIns->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Gym inscriptions table",3,$proj_id, $use_id);
-
+                    $gymIn = new GymInscription($request->input());
+                    $gymIn->gym_ins_status=1;
+                    $gymIn->save();
+                    Controller::NewRegisterTrigger("An insertion was made in the Gym inscriptions table'$gymIn->gym_ins_id'",3,$use_id);
+                    $id = $gymIn->gym_ins_id;
+                    $bienestar_news=GymInscriptionsController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
-                        'message' => "The Gym inscriptions has been created successfully."
+                        'message' => "The Gym inscriptions has been created successfully.",
+                        'data' => $bienestar_news
+
                     ],200);
                 }
             } else {
@@ -56,25 +58,45 @@ class GymInscriptionsController extends Controller
             }
         
     }
+    public function Getbienestar_news($id)
+{
+    $gym_ins_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Gym inscriptions table\'$gym_ins_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
 
     public function show($proj_id, $use_id, $id)
 {
-    $gymIns = GymInscription::find($id);
+    $gymIn = GymInscription::find($id);
+    $bienestar_news=GymInscriptionsController::Getbienestar_news($id);
 
-    if (empty($gymIns)) {
+    if ($gymIn == null) {
         return response()->json([
             'status' => false,
             'message' => 'The requested Gym inscriptions was not found.'
         ], 404);
+    }else{
+        $gymIn->new_date = $bienestar_news->bie_new_date;
+        $gymIn->createdBy = $bienestar_news->per_name;
+
+        return response()->json([
+            'status' => true,
+            'data' => $gymIn
+        ]);
     }
 
 
-    Controller::NewRegisterTrigger("A search was performed on the Gym inscriptions table", 1, $proj_id, $use_id);
 
-    return response()->json([
-        'status' => true,
-        'data' => $gymIns
-    ]);
+   
 }
 
 
@@ -108,7 +130,7 @@ public function update($proj_id, $use_id, Request $request, $id)
                 $gymIns->gym_ins_date = $request->gym_ins_date;
                 $gymIns->per_id = $request->per_id;
                 $gymIns->save();
-                Controller::NewRegisterTrigger("An update was made in the Gym inscriptions table", 1, $proj_id, $use_id);
+                Controller::NewRegisterTrigger("An update was made in the Gym inscriptions table", 4, $use_id);
 
                 return response()->json([
                     'status' => true,
@@ -131,7 +153,7 @@ public function update($proj_id, $use_id, Request $request, $id)
             if ($gymIns->gym_ins_status == 1){
                 $gymIns->gym_ins_status = 0;
                 $gymIns->save();
-                Controller::NewRegisterTrigger("An delete was made in the Gym inscriptions type table",2,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("An delete was made in the Gym inscriptions type table",2,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested Gym inscriptions type has been disabled successfully'

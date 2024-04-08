@@ -25,8 +25,8 @@ class solicitudes extends Model
         $solicitudes = DB::select("SELECT * FROM ViewSolicitudes");
         return $solicitudes;
     }
-    public static function find($id){
-        $solicitudes = DB::select("SELECT * FROM ViewSolicitudes");
+    public static function search($id){
+        $solicitudes = DB::select("SELECT * FROM ViewSolicitudes WHERE sol_id = $id");
         return $solicitudes[0];
     }
 }

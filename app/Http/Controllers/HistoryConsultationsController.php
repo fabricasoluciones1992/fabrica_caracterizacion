@@ -12,7 +12,6 @@ class HistoryConsultationsController extends Controller
     public function index($proj_id,$use_id)
     {
         $histcon = HistoryConsultation::select();
-        Controller::NewRegisterTrigger("A search was performed in the History consultations table", 1, $proj_id, $use_id);
         return response()->json([
             'status' => true,
             'data' => $histcon
@@ -88,7 +87,7 @@ class HistoryConsultationsController extends Controller
                         'message' => $validator->errors()->all()
                     ]);
                 } else {
-                    Controller::NewRegisterTrigger("An update was made in the permanences table", 1, $proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the permanences table", 4, $use_id);
 
                     $histcon->cons_id = $request->cons_id;
                     $histcon->stu_id = $request->stu_id;

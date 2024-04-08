@@ -1,5 +1,5 @@
 <?php
-
+    
 namespace App\Models;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +20,7 @@ class Gym_assistance extends Model
         $gymAss = DB::select("
         SELECT ga.gym_ass_id, ga.gym_ass_date,pe.per_name 
         FROM gym_assistances ga
-        INNER JOIN persons pe ON pe.per_id = ga.gym_ass_id
+        INNER JOIN persons pe ON pe.per_id = ga.per_id
     ");
     return $gymAss;
     }
@@ -33,4 +33,26 @@ class Gym_assistance extends Model
     ");
     return $gymAss[0];
     }
+    public static function Getbienestar_news()
+{
+    $gymAss = Gym_assistance::select();
+    foreach ($gymAss as $gymAs) {
+        $news = DB::table('bienestar_news')
+                    ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+                    ->where('bie_new_description', "An insertion was made in the Gym assistances table'$gymAs->gym_ass_id'")
+                    ->select('bie_new_date', 'per_name')
+                    ->get();
+
+        if ($news->isNotEmpty()) {
+            $gymAs->new_date = $news[0]->bie_new_date;
+            $gymAs->createdBy = $news[0]->per_name;
+        } else {
+            $gymAs->new_date = null;
+            $gymAs->createdBy = null;
+        }
+    }
+    
+    return $gymAss;
+}
+
 }
