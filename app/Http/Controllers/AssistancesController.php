@@ -46,7 +46,7 @@ class AssistancesController extends Controller
                 $request->merge(['ass_date' => $currentDate]);
 
                 $assistances = new assistance($request->input());
-                $assistances->ass_status=1;
+                $assistances->ass_status=0;
 
                 $assistances->save();
 

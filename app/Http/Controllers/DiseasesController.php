@@ -2,29 +2,24 @@
 namespace App\Http\Controllers;
 use App\Models\Disease;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Validator;
 class DiseasesController extends Controller
 {
     public function index($proj_id, $use_id)
     {
-        try {
-            $disease = Disease::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Disease", 1, $proj_id, $use_id);
-            return response()->json([
+        $diseases = Disease::getbienestar_news();
+        return response()->json([
                 'status' => true,
-                'data' => $disease,
+                'data' => $diseases
             ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => "Error in index, not found elements"
-            ], 500);
-        }
+        
     }
     public function store($proj_id, $use_id, Request $request)
     {
         $rules = [
-            'dis_name' => 'required|string|min:1|max:50|unique:Disease|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'dis_name' => 'required|string|min:1|max:50|unique:diseases|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -35,23 +30,45 @@ class DiseasesController extends Controller
         } else {
             $disease = new Disease(($request->input()));
             $disease->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Disease: $request->dis_name", 3, $proj_id, $use_id);
+            Controller::NewRegisterTrigger("An insertion was made in the Diseases table'$disease->dis_id'", 3, $use_id);
+            $id = $disease->dis_id;
+            $bienestar_news=DiseasesController::Getbienestar_news($id);
             return response()->json([
                 'status' => true,
-                'message' => "The Disease: " . $disease->dis_name . " has been created."
+                'message' => "The Disease: " . $disease->dis_name . " has been created.",
+                'data' => $bienestar_news
+
             ], 200);
         }
     }
+    public function Getbienestar_news($id)
+{
+    $dis_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Diseases table\'$dis_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
     public function show($proj_id, $use_id, $id)
     {
         $disease = Disease::find($id);
+        $bienestar_news=DiseasesController::Getbienestar_news($id);
+
         if ($disease == null) {
             return response()->json([
                 'status' => False,
                 'data' => ['message' => 'The disease requested not found'],
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Doctypes por dato especifico: $id", 1, $proj_id, $use_id);
+            $disease->new_date = $bienestar_news->bie_new_date;
+            $disease->createdBy = $bienestar_news->per_name;
             return response()->json([
                 'status' => true,
                 'data' => $disease
@@ -82,7 +99,7 @@ class DiseasesController extends Controller
                 $disease = Disease::find($id);
                 $disease->dis_name = $request->dis_name;
                 $disease->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Disease del dato: id->$id", 1, $proj_id, $use_id);
+                Controller::NewRegisterTrigger("An update was made in the diseases table: id->$id", 4, $use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The Disease: " . $disease->dis_name . " has been update."

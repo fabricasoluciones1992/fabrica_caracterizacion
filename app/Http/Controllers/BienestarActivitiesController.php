@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assistance;
 use App\Models\BienestarActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,28 +13,26 @@ class BienestarActivitiesController extends Controller
 {
     public function index($proj_id, $use_id)//falta get 
 {
-    $bienestarActivities = BienestarActivity::select();
     $bienestarActivities = BienestarActivity::getbienestar_news();
-
-    $assistances = DB::table('assistances')
-        ->select('assistances.*', 'persons.per_name')
-        ->join('students', 'assistances.stu_id', '=', 'students.stu_id')
-        ->leftJoin('persons', 'students.stu_code', '=', 'persons.per_document')
-        ->whereIn('assistances.bie_act_id', $bienestarActivities->pluck('bie_act_id'))
-        ->where('assistances.ass_status', 1)
-        ->get()
-        ->groupBy('bie_act_id');
+    $assistances = Assistance::select();
 
     foreach ($bienestarActivities as $activity) {
-        $occupiedQuotas = $assistances->get($activity->bie_act_id) ?? collect();
-        $activity->occupied_quotas = $occupiedQuotas->count();
-        
-        $viewStudentsData = DB::table('ViewStudents')
-            ->select('per_name','per_lastname', 'stu_code', 'car_name', 'pro_name', 'pro_group', 'stu_enr_semester')
-            ->whereIn('per_name', $occupiedQuotas->pluck('per_name')->toArray())
-            ->get();
-        
-        $activity->view_students_data = $viewStudentsData;
+        $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
+        $assistancesStudents = array();
+        foreach ($assistances as $assistance) {
+            $date = date('Y-m-d');
+            if ($assistance->ass_status == 1 || $activity->bie_act_date < $date) {
+                $assistance->ass_status = 'ASISTIO';
+            }else if($assistance->ass_status == 0 || $activity->bie_act_date > $date){
+                $assistance->ass_status = 'NO ASISTIO';
+            }else{
+                $assistance->ass_status = 'PRE-REGISTRADO';
+            }
+            if ($assistance->bie_act_id == $activity->bie_act_id) {
+                array_push($assistancesStudents,$assistance);
+            }
+        }
+        $activity->assistances = $assistancesStudents;
     }
     return response()->json([
         'status' => true,
@@ -45,7 +44,6 @@ class BienestarActivitiesController extends Controller
 
     public function store($proj_id,$use_id,Request $request)
     {
-        
             if ($request->acc_administrator == 1) {
 
                 $rules = [
