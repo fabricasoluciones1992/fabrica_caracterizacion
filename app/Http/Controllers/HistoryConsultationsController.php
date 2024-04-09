@@ -11,7 +11,7 @@ class HistoryConsultationsController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $histcon = HistoryConsultation::select();
+        $histcon = HistoryConsultation::getbienestar_news();
         return response()->json([
             'status' => true,
             'data' => $histcon
@@ -31,13 +31,14 @@ class HistoryConsultationsController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             } else {
-                $histcon = new HistoryConsultation($request->input());
-                $histcon->save();
-                Controller::NewRegisterTrigger("An insertion was made in the History consultations table", 3,$proj_id, $use_id);
-
+                $hitcon = new HistoryConsultation($request->input());
+                $hitcon->save();
+                Controller::NewRegisterTrigger("An insertion was made in the History consultations table'$hitcon->his_con_id'", 3,$use_id);
+                $id = $hitcon->his_con_id;
+                $bienestar_news=HistoryConsultationsController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
-                    'message' => "The History consultations for the student id: '".$histcon->cons_id."' has been created successfully."
+                    'message' => "The History consultations for the student id: '".$hitcon->cons_id."' has been created successfully."
                 ], 200);
             }
         } else {
@@ -47,85 +48,53 @@ class HistoryConsultationsController extends Controller
             ], 403); 
         }
     }
+    public function Getbienestar_news($id)
+    {
+        $his_con_id = $id;
+        $bienestar_news = DB::table('bienestar_news')
+            ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+            ->select('bie_new_date', 'persons.per_name')
+            ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the History consultations table\'$his_con_id\''")
+            ->get();
+    
+        if ($bienestar_news->count() > 0) {
+            return $bienestar_news[0];
+        } else {
+            return null;
+        }
+    }
+
     public function show($proj_id,$use_id,$id)
     {
-        $histcon = HistoryConsultation::find($id);
-        if ($histcon == null) {
+        $hitcon = HistoryConsultation::find($id);
+        $bienestar_news=HistoryConsultationsController::Getbienestar_news($id);
+
+        if ($hitcon == null) {
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'The requested History consultations was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the History consultations table table", 1, $proj_id, $use_id);
-
+            $hitcon->new_date = $bienestar_news->bie_new_date;
+            $hitcon->createdBy = $bienestar_news->per_name;
             return response()->json([
                 'status' => true,
-                'data' => $histcon
+                'data' => $hitcon
             ]);
         }
     }
     public function update($proj_id,$use_id,Request $request, $id)
     {
-        $histcon = HistoryConsultation::find($id);
-        
-        if ($request->acc_administrator == 1) {
-            $histcon = HistoryConsultation::find($id);
-            if ($histcon == null) {
-                return response()->json([
-                    'status' => false,
-                    'data' => ['message' => 'The requested economic state was not found']
-                ], 400);
-            } else {
-                $rules = [
-                    'cons_id' =>'required|integer|min:1|max:999999',
-                    'stu_id' =>'required|integer|min:1|max:999999',
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => False,
-                        'message' => $validator->errors()->all()
-                    ]);
-                } else {
-                    Controller::NewRegisterTrigger("An update was made in the permanences table", 4, $use_id);
-
-                    $histcon->cons_id = $request->cons_id;
-                    $histcon->stu_id = $request->stu_id;
-                    $histcon->save();
-                    return response()->json([
-                        'status' => True,
-                        'message' => "The history consultations has been updated successfully."
-                    ], 200);
-                }
-            }
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
-            ], 403); 
-        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Function not available'
+        ]);
     }
     public function destroy($proj_id,$use_id, $id)
     {
         return response()->json([
             'status' => false,
-            'message' => 'No existe la funcion...aun'
+            'message' => 'Function not available'
         ]);
-        /*$histcon = HistoryConsultation::find($id);
-        
-        if ($histcon->perm_status == 1){
-            $histcon->perm_status = 0;
-            $histcon->save();
-            Controller::NewRegisterTrigger("An delete was made in the history consultations table",2,$proj_id, $use_id);
-            return response()->json([
-                'status' => True,
-                'message' => 'The requested history consultations has been disabled successfully'
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'The requested history consultations has already been disabled previously'
-            ]);
-        }*/
     }
 }

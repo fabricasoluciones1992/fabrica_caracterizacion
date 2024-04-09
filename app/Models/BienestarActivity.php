@@ -25,7 +25,7 @@ class BienestarActivity extends Model
         INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id");
     return $bienestarActivity;
     }
-    public static function find($id){
+    public static function search($id){
         $bienestarActivity = DB::select("
         SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date,ba.bie_act_hour, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name 
         FROM bienestar_activities ba

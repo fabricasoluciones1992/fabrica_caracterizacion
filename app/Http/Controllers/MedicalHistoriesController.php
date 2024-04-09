@@ -11,8 +11,7 @@ class MedicalHistoriesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $mHistory = MedicalHistory::select();
-    Controller::NewRegisterTrigger("A search was performed on the Medical Histories table", 1, $proj_id, $use_id);
+    $mHistory = MedicalHistory::getbienestar_news();
 
     return response()->json([
         'status' => true,
@@ -41,12 +40,16 @@ class MedicalHistoriesController extends Controller
                     ]);
                 } else {
                     $mHistory = new MedicalHistory($request->input());
+                    $mHistory->med_his_status=1;
                     $mHistory->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Medical Histories table",3,$proj_id, $use_id);
-
+                    Controller::NewRegisterTrigger("An insertion was made in the Medical Histories table'$mHistory->med_his_id'",3, $use_id);
+                    $id = $mHistory->med_his_id;
+                    $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
-                        'message' => "The Medical history has been created successfully."
+                        'message' => "The Medical history has been created successfully.",
+                        'data' => $bienestar_news
+
                     ],200);
                 }
             } else {
@@ -57,69 +60,59 @@ class MedicalHistoriesController extends Controller
             }
         
     }
+    public function Getbienestar_news($id)
+{
+    $med_his_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Medical Histories table\'$med_his_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
 
     public function show($proj_id, $use_id, $id)
 {
     $mHistory = MedicalHistory::find($id);
-    Controller::NewRegisterTrigger("A search was performed on the Medical Histories table", 1, $proj_id, $use_id);
-    return response()->json([
-        'status' => true,
-        'data' => $mHistory
-    ]);
+    $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
+    if ($mHistory == null) {
+        return response()->json([
+            'status' => false,
+            'data' => ['message' => 'The requested Medical Histories was not found']
+        ],400);
+    }else{
+        $mHistory->new_date = $bienestar_news->bie_new_date;
+        $mHistory->createdBy = $bienestar_news->per_name;
+        return response()->json([
+            'status' => true,
+            'data' => $mHistory
+        ]);
+    }
+    
 }
 
 
 public function update($proj_id, $use_id, Request $request, $id)
 {
 
-    $mHistory = MedicalHistory::find($id);
-
-    if ($request->acc_administrator == 1) {
-        $mHistory = MedicalHistory::find($id);
-        if ($mHistory == null) {
-            return response()->json([
-                'status' => false,
-                'data' => ['message' => 'The searched Medical history was not found']
-            ], 400);
-        } else {
-            $rules = [
-                'per_id' =>'required|numeric',
-                'dis_id' =>'required|numeric',
-            ];
-
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => $validator->errors()->all()
-                ]);
-            } else {
-                $mHistory->per_id = $request->per_id;
-                $mHistory->dis_id = $request->dis_id;
-                $mHistory->save();
-                Controller::NewRegisterTrigger("An update was made in the Medical Histories table", 1, $proj_id, $use_id);
-
-                return response()->json([
-                    'status' => true,
-                    'message' => "The Medical history has been updated."
-                ], 200);
-            }
-        }
-    } else {
-        return response()->json([
-            'status' => false,
-            'message' => 'Access denied. This action can only be performed by active administrators.'
-        ], 403);
-    }
+    return response()->json([
+        'status' => false,
+        'message' => 'Function not available'
+    ]);
 }
 
     public function destroy($proj_id,$use_id, $id)
     {
         
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested Medical history type has already been disabled previously'
-                ]);
+        return response()->json([
+            'status' => false,
+            'message' => 'Function not available'
+        ]);
             
     }
 }

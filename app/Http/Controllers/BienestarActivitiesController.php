@@ -118,16 +118,9 @@ class BienestarActivitiesController extends Controller
         ->get();
 
     $bienestarActivity->occupied_quotas = $occupiedQuotas->count();
-<<<<<<< Updated upstream
     $bienestarActivity->person_names = $occupiedQuotas->pluck('per_name')->toArray();
     $bienestarActivity->new_date = $bienestar_news->bie_new_date;
     $bienestarActivity->createdBy = $bienestar_news->per_name;
-=======
-    $bienestarActivity->person_names = $occupiedQuotas->pluck('
-    ')->toArray();
-
-    Controller::NewRegisterTrigger("A search was performed on the Bienestar Activities table", 4, $proj_id, $use_id);
->>>>>>> Stashed changes
 
     return response()->json([
         'status' => true,
