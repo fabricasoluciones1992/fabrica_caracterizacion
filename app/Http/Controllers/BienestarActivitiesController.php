@@ -156,7 +156,6 @@ public function update($proj_id, $use_id, Request $request, $id)
         } else {
             $rules = [
                 'bie_act_typ_id' => 'required|numeric',
-                
                 'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                 'bie_act_quotas' => 'required|numeric',
                 'bie_act_date' => 'required|date',
