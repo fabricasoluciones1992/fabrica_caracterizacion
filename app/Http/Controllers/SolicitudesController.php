@@ -30,7 +30,6 @@ class SolicitudesController extends Controller
                 'sol_date' =>'date',
                 'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'sol_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                'rea_id' =>'required|integer',
                 'fac_id' =>'required|integer',
                 'sol_typ_id' =>'required|integer',
                 'stu_id' =>'required|integer'
@@ -121,7 +120,6 @@ public function Getbienestar_news($id)
                     'sol_date' =>'date',
                     'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'sol_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                    'rea_id' =>'required|integer',
                     'fac_id' =>'required|integer',
                     'sol_typ_id' =>'required|integer',
                     'stu_id' =>'required|integer'
@@ -140,7 +138,6 @@ public function Getbienestar_news($id)
                     $solicitudes->sol_date = $request->sol_date;
                     $solicitudes->sol_responsible = $request->sol_responsible;
                     $solicitudes->sol_status = $request->sol_status;
-                    $solicitudes->rea_id = $request->rea_id;
                     $solicitudes->fac_id = $request->fac_id;
                     $solicitudes->sol_typ_id = $request->sol_typ_id;
                     $solicitudes->stu_id = $request->stu_id;

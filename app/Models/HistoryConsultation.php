@@ -19,7 +19,7 @@ class HistoryConsultation extends Model
         $histcon = DB::select("SELECT * FROM viewHistorialConsultas");
         return $histcon;
     }
-    public static function find($id){
+    public static function search($id){
         $histcon = DB::select("SELECT * FROM viewHistorialConsultas WHERE his_con_id = $id");
         return $histcon[0];
     }
