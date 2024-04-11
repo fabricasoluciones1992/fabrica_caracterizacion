@@ -27,7 +27,8 @@ class PermanencesController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
                 'perm_date' =>'required|date',
-                'perm_description' =>'required|string|min:1|max:50|regex:/^[a-zA-Z0-9ÑñÁÉÍÓÚÜáéíóúü\s]+$/u',                'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'perm_description' =>'required|string|min:1|max:50|regex:/^[a-zA-Z0-9ÑñÁÉÍÓÚÜáéíóúü\s]+$/u',                
+                'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'sol_id' =>'required|integer|max:1',
                 'act_id' =>'required|integer|max:1'
             ];            

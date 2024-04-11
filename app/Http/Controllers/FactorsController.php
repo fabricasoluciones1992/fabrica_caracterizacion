@@ -27,7 +27,7 @@ class FactorsController extends Controller
         
         if ($request->acc_administrator == 1) {
             $rules = [
-                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/'
+                'fac_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u|unique:factors'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

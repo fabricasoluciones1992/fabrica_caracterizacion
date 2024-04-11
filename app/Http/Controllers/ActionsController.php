@@ -29,7 +29,7 @@ class ActionsController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
+                    'act_name' => 'required|string|min:1|max:50|unique:actions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     
                 ];
                 $validator = Validator::make($request->input(), $rules);

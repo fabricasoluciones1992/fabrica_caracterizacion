@@ -28,7 +28,7 @@ class MonetaryStatesController extends Controller
 
         if ($request->acc_administrator == 1) {
             $rules = [
-                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'mon_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u|unique:monetary_states'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
