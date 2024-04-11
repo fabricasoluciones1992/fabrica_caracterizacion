@@ -132,21 +132,16 @@ class ActionsController extends Controller
     public function destroy($proj_id,$use_id, $id)
     {
         $action = action::find($id);
-        
-            if ($action->act_status == 1){
-                $action->act_status = 0;
+        $newAction=($action->act_status == 1)?0:1;
+                $action->act_status = $newAction;
                 $action->save();
-                Controller::NewRegisterTrigger("An delete was made in the actions table",2,$use_id);
+                Controller::NewRegisterTrigger("An changes status was made in the actions table",2,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested Action has been disabled successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested Action has already been disabled previously'
-                ]);
-            }  
-    }
+
+               
+}
 }
     
