@@ -51,6 +51,7 @@ class AllergyHistoriesController extends Controller
             }
         
     }
+    
     public function Getbienestar_news($id)
 {
     $all_his_id = $id;

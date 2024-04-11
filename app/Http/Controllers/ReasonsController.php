@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\reason;
 use Illuminate\Http\Request;
@@ -12,9 +13,7 @@ class ReasonsController extends Controller
     public function index($proj_id,$use_id)
     {
 
-        $reasons = reason::all();
-              
-        Controller::NewRegisterTrigger("A search was performed on the reasons table",4,$proj_id, $use_id);
+        $reasons = reason::getbienestar_news(); 
         return response()->json([
                 'status' => true,
                 'data' => $reasons
@@ -39,11 +38,14 @@ class ReasonsController extends Controller
                     $reason = new reason($request->input());
                     $reason->rea_status=1;
                     $reason->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the reasons table",3,$proj_id, $use_id);
-        
+                    Controller::NewRegisterTrigger("An insertion was made in the reasons table'$reason->rea_id'",3,$use_id);
+                    $id = $reason->rea_id;
+                    $bienestar_news=ReasonsController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
-                        'message' => "The reason type ".$reason->rea_name." has been successfully created."
+                        'message' => "The reason type ".$reason->rea_name." has been successfully created.",
+                        'data' => $bienestar_news
+
                     ],200);
                 }
             } else {
@@ -54,11 +56,27 @@ class ReasonsController extends Controller
             }
         
     }
+    public function Getbienestar_news($id)
+{
+    $rea_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the reasons table\'$rea_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
     public function show($proj_id,$use_id,$id)
     {
 
         $reason = reason::find($id);
-        
+        $bienestar_news=ReasonsController::Getbienestar_news($id);
+
             
             if ($reason == null) {
                 return response()->json([
@@ -66,8 +84,8 @@ class ReasonsController extends Controller
                     'data' => ['message' => 'The requested reason was not found']
                 ],400);
             }else{
-                Controller::NewRegisterTrigger("A search was performed on the reasons table",4,$proj_id, $use_id);
-
+                $reason->new_date = $bienestar_news->bie_new_date;
+                $reason->createdBy = $bienestar_news->per_name;
                 return response()->json([
                     'status' => true,
                     'data' => $reason
@@ -92,7 +110,7 @@ class ReasonsController extends Controller
                 }else{
                     $reason->rea_name = $request->rea_name;
                     $reason->save();
-                    Controller::NewRegisterTrigger("An update was made in the reasons table",1,$proj_id, 1);
+                    Controller::NewRegisterTrigger("An update was made in the reasons table",4,$use_id);
 
                     return response()->json([
                         'status' => True,

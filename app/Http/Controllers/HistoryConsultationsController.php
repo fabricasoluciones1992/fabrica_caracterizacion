@@ -24,7 +24,7 @@ class HistoryConsultationsController extends Controller
                 'cons_id' =>'required|integer|min:1|max:999999',
                 'stu_id' =>'required|integer|min:1|max:999999',
             ];
-            $validator = HistoryConsultation::make($request->input(), $rules);
+            $validator = HistoryConsultation::make($request->input(),$rules);
             if ($validator->fails()) {
                 return response()->json([
                     'status' => False,
@@ -38,7 +38,9 @@ class HistoryConsultationsController extends Controller
                 $bienestar_news=HistoryConsultationsController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
-                    'message' => "The History consultations for the student id: '".$hitcon->cons_id."' has been created successfully."
+                    'message' => "The History consultations for the student id: '".$hitcon->cons_id."' has been created successfully.",
+                    'data' => $bienestar_news
+
                 ], 200);
             }
         } else {

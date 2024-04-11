@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\SolicitudeType;
 use Illuminate\Http\Request;
@@ -10,11 +11,10 @@ class SolicitudesTypesController extends Controller
 {
     public function index($proj_id,$use_id)
     {        
-            $solicitudTypes = SolicitudeType::all();
-            Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 1, $proj_id, $use_id);
+            $solicitudesTypes = SolicitudeType::Getbienestar_news();
             return response()->json([
                 'status' => true,
-                'data' => $solicitudTypes
+                'data' => $solicitudesTypes
             ], 200);
         
     }
@@ -36,10 +36,14 @@ class SolicitudesTypesController extends Controller
                     $solicitudTypes = new SolicitudeType($request->input());
                     $solicitudTypes->sol_typ_status=1;
                     $solicitudTypes->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table", 3,  $proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table'$solicitudTypes->sol_typ_id'", 3, $use_id);
+                    $id = $solicitudTypes->sol_typ_id;
+                    $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
                     return response()->json([
                         'status' => true,
-                        'message' => "The reason type '".$solicitudTypes->sol_typ_name."' has been created successfully."
+                        'message' => "The solicitud type '".$solicitudTypes->sol_typ_name."' has been created successfully.",
+                        'data' => $bienestar_news
+
                     ], 200);
                 }
             } else {
@@ -50,18 +54,36 @@ class SolicitudesTypesController extends Controller
             }
         
     }
+    public function Getbienestar_news($id)
+{
+    $sol_typ_id = $id;
+    $bienestar_news = DB::table('bienestar_news')
+        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+        ->select('bie_new_date', 'persons.per_name')
+        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the solicitudes types table\'$sol_typ_id\''")
+        ->get();
+
+    if ($bienestar_news->count() > 0) {
+        return $bienestar_news[0];
+    } else {
+        return null;
+    }
+}
 
     public function show($proj_id,$use_id,$id)
     {
         
             $solicitudTypes = SolicitudeType::find($id);
+            $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
+
             if ($solicitudTypes == null) {
                 return response()->json([
                     'status' => false,
                     'data' => ['message' => 'The requested solicitudes types was not found']
                 ], 400);
             } else {
-                Controller::NewRegisterTrigger("A search was performed in the solicitudes types table", 1, $proj_id, $use_id);
+                $solicitudTypes->new_date = $bienestar_news->bie_new_date;
+                $solicitudTypes->createdBy = $bienestar_news->per_name;
                 return response()->json([
                     'status' => true,
                     'data' => $solicitudTypes
@@ -95,10 +117,10 @@ class SolicitudesTypesController extends Controller
                     } else {
                         $solicitudTypes->sol_typ_name = $request->sol_typ_name;
                         $solicitudTypes->save();
-                        Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 1,  $proj_id, $use_id);
+                        Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 4,$use_id);
                         return response()->json([
                             'status' => true,
-                            'message' => "The reason '".$solicitudTypes->sol_typ_name."' has been updated successfully."
+                            'message' => "The solicitud '".$solicitudTypes->sol_typ_name."' has been updated successfully."
                         ], 200);
                     }
                 }
@@ -120,7 +142,7 @@ class SolicitudesTypesController extends Controller
             if ($solicitudTypes->sol_typ_status == 1){
                 $solicitudTypes->sol_typ_status = 0;
                 $solicitudTypes->save();
-                Controller::NewRegisterTrigger("An delete was made in the solicitudes types table",1,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An delete was made in the solicitudes types table",2,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested solicitudes types has been disabled successfully'
