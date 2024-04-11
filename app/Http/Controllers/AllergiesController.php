@@ -136,7 +136,7 @@ class AllergiesController extends Controller
             
                 return response()->json([
                     'status' => false,
-                    'message' => 'The requested Allergie has already been disabled previously'
+                    'message' => 'Function not available.'
                 ]);
              
     }

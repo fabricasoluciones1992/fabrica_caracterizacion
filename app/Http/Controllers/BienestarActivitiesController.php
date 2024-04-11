@@ -194,20 +194,15 @@ public function update($proj_id, $use_id, Request $request, $id)
     public function destroy($proj_id,$use_id, $id)
     {
         $bienestarActivity = BienestarActivity::find($id);
-        
-            if ($bienestarActivity->bie_act_status == 1){
-                $bienestarActivity->bie_act_status = 0;
+        $newBi=($bienestarActivity->bie_act_status==1)?0:1;
+                $bienestarActivity->bie_act_status =$newBi;
                 $bienestarActivity->save();
-                Controller::NewRegisterTrigger("An delete was made in the bienestar activity type table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested bienestar activity type has been disabled successfully'
+                    'message' => 'The requested bienestar activity type has been change successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested bienestar activity type has already been disabled previously'
-                ]);
-            } 
+                
+            
     }
 }

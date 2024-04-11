@@ -161,21 +161,15 @@ public function Getbienestar_news($id)
     public function destroy($proj_id,$use_id, $id)
     {
         $solicitudes = solicitudes::find($id);
-        
-            if ($solicitudes->sol_status == 1){
-                $solicitudes->sol_status = 0;
+        $newSol=($solicitudes->sol_status == 1) ?0:1;
+                $solicitudes->sol_status = $newSol;
                 $solicitudes->save();
-                Controller::NewRegisterTrigger("An delete was made in the solicitudes table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An change status was made in the solicitudes table",2,$proj_id, $use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested solicitudes has been disabled successfully'
+                    'message' => 'The requested solicitudes has been change status successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested solicitudes has already been disabled previously'
-                ]);
-            }
+            
     }
     public function filtredforSolicitudes($proj_id,$use_id,$column,$data,Request $request)
     {

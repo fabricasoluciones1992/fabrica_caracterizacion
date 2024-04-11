@@ -148,7 +148,7 @@ class ConsultationController extends Controller
     {
         return response()->json([
             'status' => false,
-            'message' => 'no existe la opcion de eliminar'
+            'message' => 'function not available.'
         ]);
     }
 }

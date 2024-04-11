@@ -152,21 +152,15 @@ public function Getbienestar_news($id)
     public function destroy($proj_id,$use_id, $id)
     {
         $permanences = permanence::find($id);
-        
-            if ($permanences->perm_status == 1){
-                $permanences->perm_status = 0;
+        $newPerm=($permanences->perm_status == 1)?0:1;
+                $permanences->perm_status = $newPerm;
                 $permanences->save();
-                Controller::NewRegisterTrigger("An delete was made in the permanences table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$proj_id, $use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested permanence has been disabled successfully'
+                    'message' => 'The requested permanence has been change status successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested permanence has already been disabled previously'
-                ]);
-            } 
+            
     }
 
     public function filtredforPermanence($proj_id, $use_id, $id)

@@ -141,21 +141,15 @@ public function Getbienestar_news($id)
     {
 
         $factor = factor::find($id);
-        
-            if ($factor->rea_status == 1){
-                $factor->rea_status = 0;
+        $newFac=($factor->fac_status ==1)?0:1;
+                $factor->fac_status = $newFac;
                 $factor->save();
-                Controller::NewRegisterTrigger("An delete was made in the factors table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An change status was made in the factors table",2,$proj_id, $use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested factor has been disabled successfully'
+                    'message' => 'The requested factor has been change status successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested factor has already been disabled previously'
-                ]);
-            }  
+ 
     }
     
 }

@@ -139,20 +139,15 @@ class BienestarActivityTypesController extends Controller
 
         $bienestarActTypes = BienestarActivityTypes::find($id);
         
-            if ($bienestarActTypes->bie_act_typ_status == 1){
-                $bienestarActTypes->bie_act_typ_status = 0;
+                $newBiAct=($bienestarActTypes->bie_act_typ_status==1)?0:1;
+                $bienestarActTypes->bie_act_typ_status =$newBiAct ;
                 $bienestarActTypes->save();
-                Controller::NewRegisterTrigger("An delete was made in the bienestar activity type table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested bienestar activity type has been disabled successfully'
+                    'message' => 'The requested bienestar activity type has been change successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested bienestar activity type has already been disabled previously'
-                ]);
-            }  
+    
         
     }
 }

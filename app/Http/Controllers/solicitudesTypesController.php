@@ -138,21 +138,15 @@ class SolicitudesTypesController extends Controller
 
         $solicitudTypes = SolicitudeType::find($id);
         
-        
-            if ($solicitudTypes->sol_typ_status == 1){
-                $solicitudTypes->sol_typ_status = 0;
+        $newST=($solicitudesTypes->sol_typ_status ==1)?0:1;
+                $solicitudTypes->sol_typ_status = $newST;
                 $solicitudTypes->save();
-                Controller::NewRegisterTrigger("An delete was made in the solicitudes types table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the solicitudes types table",2,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested solicitudes types has been disabled successfully'
+                    'message' => 'The requested solicitudes types has been change status successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested solicitudes types has already been disabled previously'
-                ]);
-            }  
+            
         
     }
 }

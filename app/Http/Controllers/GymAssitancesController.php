@@ -147,7 +147,7 @@ public function update($proj_id, $use_id, Request $request, $id)
         
                 return response()->json([
                     'status' => false,
-                    'message' => 'The requested Gym assistances type has already been disabled previously'
+                    'message' => 'function not available'
                 ]);
     }
 }

@@ -142,19 +142,14 @@ public function Getbienestar_news($id)
     {
         $monState = MonetaryState::find($id);
         
-            if ($monState->mon_sta_status == 1){
-                $monState->mon_sta_status = 0;
+            $newMS=($monState->mon_sta_status==1)?0:1;
+                $monState->mon_sta_status = $newMS;
                 $monState->save();
-                Controller::NewRegisterTrigger("An delete was made in the permanences table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$proj_id, $use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested economic state has been disabled successfully'
+                    'message' => 'The requested economic state has been change status successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested economic state has already been disabled previously'
-                ]);
-            }
+                
     }
 }

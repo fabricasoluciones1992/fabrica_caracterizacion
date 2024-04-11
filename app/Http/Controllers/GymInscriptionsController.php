@@ -149,21 +149,15 @@ public function update($proj_id, $use_id, Request $request, $id)
     public function destroy($proj_id,$use_id, $id)
     {
         $gymIns = GymInscription::find($id);
-        
-            if ($gymIns->gym_ins_status == 1){
-                $gymIns->gym_ins_status = 0;
+        $newGy=($gymIns->gym_ins_status==1)?0:1;
+                $gymIns->gym_ins_status = $newGy;
                 $gymIns->save();
-                Controller::NewRegisterTrigger("An delete was made in the Gym inscriptions type table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the Gym inscriptions type table",2,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested Gym inscriptions type has been disabled successfully'
+                    'message' => 'The requested Gym inscriptions type has been change status successfully'
                 ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The requested Gym inscriptions type has already been disabled previously'
-                ]);
-            } 
+                
     }
 }
 
