@@ -18,7 +18,7 @@ use App\Http\Controllers\HistoryConsultationsController;
 use App\Http\Controllers\MedicalHistoriesController;
 use App\Http\Controllers\MonetaryStatesController;
 use App\Http\Controllers\PermanencesController;
-use App\Http\Controllers\ReasonsController;
+use App\Http\Controllers\ReasonsTypeController;
 use App\Http\Controllers\SolicitudesController;
 use App\Http\Controllers\solicitudesTypesController;
 use App\Models\Consultation;
@@ -41,7 +41,7 @@ define("URL", "/{proj_id}/{use_id}/");
 
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('actions'.URL, ActionsController::class)->names('actions')->parameter('', 'actions');
-    Route::resource('reasons'.URL, ReasonsController::class)->names('reasons')->parameter('', 'reasons');
+    Route::resource('reasons/types'.URL, ReasonsTypeController::class)->names('reasons.types')->parameter('', 'reasons_types');
     Route::resource('allergies'.URL, AllergiesController::class)->names('allergies')->parameter('', 'allergies');
     Route::resource('diseases'.URL, DiseasesController::class)->names('diseases')->parameter('', 'diseases');
     Route::resource('medical/histories'.URL, MedicalHistoriesController::class)->names('medical.histories')->parameter('', 'medical_histories');
@@ -66,7 +66,6 @@ Route::middleware(['auth:sanctum'])->group(function() {
     
     Route::resource('monetary/states'.URL, MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
     
-    Route::resource('factors'.URL, FactorsController::class)->names('factors')->parameter('', 'factors');
     
     Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
     Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
