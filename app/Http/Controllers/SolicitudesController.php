@@ -13,7 +13,7 @@ class SolicitudesController extends Controller
     public function index($proj_id,$use_id)
     {
        
-        $solicitudes = solicitudes::getbienestar_news();
+        $solicitudes = solicitudes::select();
  
         return response()->json([
            'status' => true,
@@ -47,12 +47,11 @@ class SolicitudesController extends Controller
                    $solicitud = new solicitudes($request->input());
                    $solicitud->save();
                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes table'$solicitud->sol_id'", 3,$use_id);
-                   $id = $solicitud->sol_id;
-                   $bienestar_news=SolicitudesController::Getbienestar_news($id);
+                //    $id = $solicitud->sol_id;
+                //    $bienestar_news=SolicitudesController::Getbienestar_news($id);
                    return response()->json([
                     'status' => True,
                     'message' => "The request has been created successfully.",
-                    'data' => $bienestar_news
 
                    ], 200);
             }
@@ -65,26 +64,26 @@ class SolicitudesController extends Controller
         }
    
 }
-public function Getbienestar_news($id)
-{
-    $sol_id = $id;
-    $bienestar_news = DB::table('bienestar_news')
-        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-        ->select('bie_new_date', 'persons.per_name')
-        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the solicitudes table\'$sol_id\''")
-        ->get();
+// public function Getbienestar_news($id)
+// {
+//     $sol_id = $id;
+//     $bienestar_news = DB::table('bienestar_news')
+//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//         ->select('bie_new_date', 'persons.per_name')
+//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the solicitudes table\'$sol_id\''")
+//         ->get();
 
-    if ($bienestar_news->count() > 0) {
-        return $bienestar_news[0];
-    } else {
-        return null;
-    }
-}
+//     if ($bienestar_news->count() > 0) {
+//         return $bienestar_news[0];
+//     } else {
+//         return null;
+//     }
+// }
     public function show($proj_id,$use_id,$id)
     {
        
         $solicitudes =  solicitudes::find($id);
-        $bienestar_news=SolicitudesController::Getbienestar_news($id);
+        // $bienestar_news=SolicitudesController::Getbienestar_news($id);
 
         if ($solicitudes == null) {
             return response()->json([
@@ -93,8 +92,8 @@ public function Getbienestar_news($id)
             ], 400);
         } else {
             Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4,$use_id);
-            $solicitudes->new_date = $bienestar_news->bie_new_date;
-            $solicitudes->createdBy = $bienestar_news->per_name;
+            // $solicitudes->new_date = $bienestar_news->bie_new_date;
+            // $solicitudes->createdBy = $bienestar_news->per_name;
             return response()->json([
                'status' => true,
                 'data' => $solicitudes
@@ -164,7 +163,7 @@ public function Getbienestar_news($id)
         $newSol=($solicitudes->sol_status == 1) ?0:1;
                 $solicitudes->sol_status = $newSol;
                 $solicitudes->save();
-                Controller::NewRegisterTrigger("An change status was made in the solicitudes table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An change status was made in the solicitudes table",2,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested solicitudes has been change status successfully'

@@ -155,7 +155,7 @@ public function Getbienestar_news($id)
         $newPerm=($permanences->perm_status == 1)?0:1;
                 $permanences->perm_status = $newPerm;
                 $permanences->save();
-                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested permanence has been change status successfully'

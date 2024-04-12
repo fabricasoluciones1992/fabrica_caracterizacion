@@ -29,26 +29,26 @@ class solicitudes extends Model
         $solicitudes = DB::select("SELECT * FROM ViewSolicitudes WHERE sol_id = $id");
         return $solicitudes[0];
     }
-    public static function Getbienestar_news()
-{
-    $solicitudes = solicitudes::select();
-    foreach ($solicitudes as $solicitud) {
-        $news = DB::table('bienestar_news')
-                    ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-                    ->where('bie_new_description', "An insertion was made in the solicitudes table'$solicitud->sol_id'")
-                    ->select('bie_new_date', 'per_name')
-                    ->get();
+//     public static function Getbienestar_news()
+// {
+//     $solicitudes = solicitudes::select();
+//     foreach ($solicitudes as $solicitud) {
+//         $news = DB::table('bienestar_news')
+//                     ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//                     ->where('bie_new_description', "An insertion was made in the solicitudes table'$solicitud->sol_id'")
+//                     ->select('bie_new_date', 'per_name')
+//                     ->get();
 
-        if ($news->isNotEmpty()) {
-            $solicitud->new_date = $news[0]->bie_new_date;
-            $solicitud->createdBy = $news[0]->per_name;
-        } else {
-            $solicitud->new_date = null;
-            $solicitud->createdBy = null;
-        }
-    }
+//         if ($news->isNotEmpty()) {
+//             $solicitud->new_date = $news[0]->bie_new_date;
+//             $solicitud->createdBy = $news[0]->per_name;
+//         } else {
+//             $solicitud->new_date = null;
+//             $solicitud->createdBy = null;
+//         }
+//     }
     
-    return $solicitudes;
-}
+//     return $solicitudes;
+// }
 }
 

@@ -17,27 +17,27 @@ class Action extends Model
     ];
     public $timestamps = false;
 
-    public static function Getbienestar_news()
-{
-    $actions = Action::all();
-    foreach ($actions as $action) {
-        $news = DB::table('bienestar_news')
-                    ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-                    ->where('bie_new_description', "An insertion was made in the actions table'$action->act_id'")
-                    ->select('bie_new_date', 'per_name')
-                    ->get();
+//     public static function Getbienestar_news()
+// {
+//     $actions = Action::all();
+//     foreach ($actions as $action) {
+//         $news = DB::table('bienestar_news')
+//                     ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//                     ->where('bie_new_description', "An insertion was made in the actions table'$action->act_id'")
+//                     ->select('bie_new_date', 'per_name')
+//                     ->get();
 
-        if ($news->isNotEmpty()) {
-            $action->new_date = $news[0]->bie_new_date;
-            $action->createdBy = $news[0]->per_name;
-        } else {
-            $action->new_date = null;
-            $action->createdBy = null;
-        }
-    }
+//         if ($news->isNotEmpty()) {
+//             $action->new_date = $news[0]->bie_new_date;
+//             $action->createdBy = $news[0]->per_name;
+//         } else {
+//             $action->new_date = null;
+//             $action->createdBy = null;
+//         }
+//     }
     
-    return $actions;
-}
+//     return $actions;
+// }
 
 
 }

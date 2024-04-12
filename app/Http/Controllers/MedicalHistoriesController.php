@@ -11,7 +11,7 @@ class MedicalHistoriesController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $mHistory = MedicalHistory::getbienestar_news();
+    $mHistory = MedicalHistory::select();
 
     return response()->json([
         'status' => true,
@@ -43,12 +43,11 @@ class MedicalHistoriesController extends Controller
                     $mHistory->med_his_status=1;
                     $mHistory->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Medical Histories table'$mHistory->med_his_id'",3, $use_id);
-                    $id = $mHistory->med_his_id;
-                    $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
+                    // $id = $mHistory->med_his_id;
+                    // $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
                         'message' => "The Medical history has been created successfully.",
-                        'data' => $bienestar_news
 
                     ],200);
                 }
@@ -60,34 +59,34 @@ class MedicalHistoriesController extends Controller
             }
         
     }
-    public function Getbienestar_news($id)
-{
-    $med_his_id = $id;
-    $bienestar_news = DB::table('bienestar_news')
-        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-        ->select('bie_new_date', 'persons.per_name')
-        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Medical Histories table\'$med_his_id\''")
-        ->get();
+//     public function Getbienestar_news($id)
+// {
+//     $med_his_id = $id;
+//     $bienestar_news = DB::table('bienestar_news')
+//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//         ->select('bie_new_date', 'persons.per_name')
+//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Medical Histories table\'$med_his_id\''")
+//         ->get();
 
-    if ($bienestar_news->count() > 0) {
-        return $bienestar_news[0];
-    } else {
-        return null;
-    }
-}
+//     if ($bienestar_news->count() > 0) {
+//         return $bienestar_news[0];
+//     } else {
+//         return null;
+//     }
+// }
 
     public function show($proj_id, $use_id, $id)
 {
     $mHistory = MedicalHistory::find($id);
-    $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
+    // $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
     if ($mHistory == null) {
         return response()->json([
             'status' => false,
             'data' => ['message' => 'The requested Medical Histories was not found']
         ],400);
     }else{
-        $mHistory->new_date = $bienestar_news->bie_new_date;
-        $mHistory->createdBy = $bienestar_news->per_name;
+        // $mHistory->new_date = $bienestar_news->bie_new_date;
+        // $mHistory->createdBy = $bienestar_news->per_name;
         return response()->json([
             'status' => true,
             'data' => $mHistory

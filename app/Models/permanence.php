@@ -35,25 +35,25 @@ class permanence extends Model
         $permanence = DB::select("SELECT * FROM viewPermanences WHERE sol_typ_name = ?",[$id]);
         return $permanence;
     }
-    public static function Getbienestar_news()
-{
-    $permanences = permanence::select();
-    foreach ($permanences as $permanence) {
-        $news = DB::table('bienestar_news')
-                    ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-                    ->where('bie_new_description', "An insertion was made in the permanences table'$permanence->perm_id'")
-                    ->select('bie_new_date', 'per_name')
-                    ->get();
+//     public static function Getbienestar_news()
+// {
+//     $permanences = permanence::select();
+//     foreach ($permanences as $permanence) {
+//         $news = DB::table('bienestar_news')
+//                     ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//                     ->where('bie_new_description', "An insertion was made in the permanences table'$permanence->perm_id'")
+//                     ->select('bie_new_date', 'per_name')
+//                     ->get();
 
-        if ($news->isNotEmpty()) {
-            $permanence->new_date = $news[0]->bie_new_date;
-            $permanence->createdBy = $news[0]->per_name;
-        } else {
-            $permanence->new_date = null;
-            $permanence->createdBy = null;
-        }
-    }
+//         if ($news->isNotEmpty()) {
+//             $permanence->new_date = $news[0]->bie_new_date;
+//             $permanence->createdBy = $news[0]->per_name;
+//         } else {
+//             $permanence->new_date = null;
+//             $permanence->createdBy = null;
+//         }
+//     }
     
-    return $permanences;
-}
+//     return $permanences;
+// }
 }

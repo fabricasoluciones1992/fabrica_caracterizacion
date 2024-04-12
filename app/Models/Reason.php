@@ -11,10 +11,10 @@ class Reason extends Model
 {
     
         use HasFactory;
-        protected $primaryKey = "rea_id";
+        protected $primaryKey = "rea_typ_id";
         protected $fillable = [
-            'rea_name',
-            'rea_status',
+            'rea_typ_name',
+            'rea_typ_type',
         ];
         public $timestamps = false;
         public static function Getbienestar_news()

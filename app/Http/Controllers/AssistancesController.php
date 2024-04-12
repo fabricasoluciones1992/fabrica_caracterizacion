@@ -12,8 +12,7 @@ class AssistancesController extends Controller
     public function index($proj_id,$use_id)
     {
         
-        $assistances = Assistance::getbienestar_news();
-        Controller::NewRegisterTrigger("A search was performed on the assistences table",4, $use_id);
+        $assistances = Assistance::select();
 
         return response()->json([
             'status' => true,
@@ -51,13 +50,12 @@ class AssistancesController extends Controller
                 $assistances->save();
 
                 Controller::NewRegisterTrigger("An insertion was made in the assistences table'$assistances->ass_id'",3, $use_id);
-                $id = $assistances->ass_id;
-                $bienestar_news=AssistancesController::Getbienestar_news($id);
+                // $id = $assistances->ass_id;
+                // $bienestar_news=AssistancesController::Getbienestar_news($id);
 
                 return response()->json([
                     'status' => True,
                     'message' => "The assistance has been created successfully.",
-                    'data' => $bienestar_news
 
                 ], 200);
             }
@@ -91,7 +89,7 @@ public function Getbienestar_news($id)
     {
         
         $assistances =  Assistance::find($id);
-        $bienestar_news=AssistancesController::Getbienestar_news($id);
+        // $bienestar_news=AssistancesController::Getbienestar_news($id);
 
         if ($assistances == null) {
 
@@ -100,8 +98,8 @@ public function Getbienestar_news($id)
                 'data' => ['message' => 'The searched assistance was not found']
             ],400);
         }else{
-            $assistances->new_date = $bienestar_news->bie_new_date;
-            $assistances->createdBy = $bienestar_news->per_name;
+            // $assistances->new_date = $bienestar_news->bie_new_date;
+            // $assistances->createdBy = $bienestar_news->per_name;
             return response()->json([
                 'status' => true,
                 'data' => $assistances

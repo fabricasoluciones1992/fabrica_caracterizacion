@@ -11,9 +11,9 @@ use Illuminate\Validation\Rule;
 
 class BienestarActivitiesController extends Controller
 {
-    public function index($proj_id, $use_id)//falta get 
+    public function index($proj_id, $use_id)
 {
-    $bienestarActivities = BienestarActivity::getbienestar_news();
+    $bienestarActivities = BienestarActivity::select();
     $assistances = Assistance::select();
 
     foreach ($bienestarActivities as $activity) {
@@ -82,25 +82,25 @@ class BienestarActivitiesController extends Controller
         
     }
 
-    public function Getbienestar_news($id)
-    {
-        $bie_act_id = $id;
-        $bienestar_news = DB::table('bienestar_news')
-            ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-            ->select('bie_new_date', 'persons.per_name')
-            ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Bienestar Activities table\'$bie_act_id\''")
-            ->get();
+    // public function Getbienestar_news($id)
+    // {
+    //     $bie_act_id = $id;
+    //     $bienestar_news = DB::table('bienestar_news')
+    //         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+    //         ->select('bie_new_date', 'persons.per_name')
+    //         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Bienestar Activities table\'$bie_act_id\''")
+    //         ->get();
     
-        if ($bienestar_news->count() > 0) {
-            return $bienestar_news[0];
-        } else {
-            return null;
-        }
-    }
+    //     if ($bienestar_news->count() > 0) {
+    //         return $bienestar_news[0];
+    //     } else {
+    //         return null;
+    //     }
+    // }
     public function show($proj_id, $use_id, $id)
 {
     $bienestarActivity = BienestarActivity::find($id);
-    $bienestar_news = BienestarActivitiesController::Getbienestar_news($id);
+    // $bienestar_news = BienestarActivitiesController::Getbienestar_news($id);
 
     if (empty($bienestarActivity)) {
         return response()->json([
@@ -119,8 +119,8 @@ class BienestarActivitiesController extends Controller
 
     $bienestarActivity->occupied_quotas = $occupiedQuotas->count();
     $bienestarActivity->person_names = $occupiedQuotas->pluck('per_name')->toArray();
-    $bienestarActivity->new_date = $bienestar_news->bie_new_date;
-    $bienestarActivity->createdBy = $bienestar_news->per_name;
+    // $bienestarActivity->new_date = $bienestar_news->bie_new_date;
+    // $bienestarActivity->createdBy = $bienestar_news->per_name;
 
     return response()->json([
         'status' => true,

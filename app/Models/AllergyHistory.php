@@ -36,25 +36,25 @@ class AllergyHistory extends Model
     return $aHistory[0];
 
     }
-    public static function Getbienestar_news()
-{
-    $aHistories = AllergyHistory::select();
-    foreach ($aHistories as $aHistory) {
-        $news = DB::table('bienestar_news')
-                    ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-                    ->where('bie_new_description', "An insertion was made in the Allergies Histories table'$aHistory->all_his_id'")
-                    ->select('bie_new_date', 'per_name')
-                    ->get();
+//     public static function Getbienestar_news()
+// {
+//     $aHistories = AllergyHistory::select();
+//     foreach ($aHistories as $aHistory) {
+//         $news = DB::table('bienestar_news')
+//                     ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//                     ->where('bie_new_description', "An insertion was made in the Allergies Histories table'$aHistory->all_his_id'")
+//                     ->select('bie_new_date', 'per_name')
+//                     ->get();
 
-        if ($news->isNotEmpty()) {
-            $aHistory->new_date = $news[0]->bie_new_date;
-            $aHistory->createdBy = $news[0]->per_name;
-        } else {
-            $aHistory->new_date = null;
-            $aHistory->createdBy = null;
-        }
-    }
+//         if ($news->isNotEmpty()) {
+//             $aHistory->new_date = $news[0]->bie_new_date;
+//             $aHistory->createdBy = $news[0]->per_name;
+//         } else {
+//             $aHistory->new_date = null;
+//             $aHistory->createdBy = null;
+//         }
+//     }
     
-    return $aHistories;
-}
+//     return $aHistories;
+// }
 }

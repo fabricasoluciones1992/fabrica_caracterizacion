@@ -12,7 +12,7 @@ class ConsultationController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $consultations = Consultation::getbienestar_news();
+        $consultations = Consultation::all();
         return response()->json([
             'status' => true,
             'data' => $consultations
@@ -43,12 +43,11 @@ class ConsultationController extends Controller
                 $consultation = new Consultation($request->input());
                 $consultation->save();
                 Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$use_id);
-                $id = $consultation->id;
-                $bienestar_news=ConsultationController::Getbienestar_news($id);
+                // $id = $consultation->id;
+                // $bienestar_news=ConsultationController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
                     'message' => "The consultations has been created successfully.",
-                    'data' => $bienestar_news
                 ],200);
             }
         } else {
@@ -58,25 +57,25 @@ class ConsultationController extends Controller
             ], 403); 
         }
     }
-    public function Getbienestar_news($id)
-{
-    $cons_id = $id;
-    $bienestar_news = DB::table('bienestar_news')
-        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-        ->select('bie_new_date', 'persons.per_name')
-        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the consultations table\'$cons_id\''")
-        ->get();
+//     public function Getbienestar_news($id)
+// {
+//     $cons_id = $id;
+//     $bienestar_news = DB::table('bienestar_news')
+//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//         ->select('bie_new_date', 'persons.per_name')
+//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the consultations table\'$cons_id\''")
+//         ->get();
 
-    if ($bienestar_news->count() > 0) {
-        return $bienestar_news[0];
-    } else {
-        return null;
-    }
-}
+//     if ($bienestar_news->count() > 0) {
+//         return $bienestar_news[0];
+//     } else {
+//         return null;
+//     }
+// }
     public function show($proj_id,$use_id,$id)
     {
         $consultation = Consultation::find($id);
-        $bienestar_news=ConsultationController::Getbienestar_news($id);
+        // $bienestar_news=ConsultationController::Getbienestar_news($id);
 
         if ($consultation == null) {
             return response()->json([
@@ -84,8 +83,8 @@ class ConsultationController extends Controller
                 "data" => ['message' => 'The searched consultations was not found']
             ], 400);
         } else {
-            $consultation->new_date = $bienestar_news->bie_new_date;
-            $consultation->createdBy = $bienestar_news->per_name;
+            // $consultation->new_date = $bienestar_news->bie_new_date;
+            // $consultation->createdBy = $bienestar_news->per_name;
             return response()->json([
                 'status' => true,
                 'data' => $consultation

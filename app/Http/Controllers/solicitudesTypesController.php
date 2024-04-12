@@ -11,7 +11,7 @@ class SolicitudesTypesController extends Controller
 {
     public function index($proj_id,$use_id)
     {        
-            $solicitudesTypes = SolicitudeType::Getbienestar_news();
+            $solicitudesTypes = SolicitudeType::all();
             return response()->json([
                 'status' => true,
                 'data' => $solicitudesTypes
@@ -37,12 +37,11 @@ class SolicitudesTypesController extends Controller
                     $solicitudTypes->sol_typ_status=1;
                     $solicitudTypes->save();
                     Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table'$solicitudTypes->sol_typ_id'", 3, $use_id);
-                    $id = $solicitudTypes->sol_typ_id;
-                    $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
+                    // $id = $solicitudTypes->sol_typ_id;
+                    // $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
                     return response()->json([
                         'status' => true,
                         'message' => "The solicitud type '".$solicitudTypes->sol_typ_name."' has been created successfully.",
-                        'data' => $bienestar_news
 
                     ], 200);
                 }
@@ -54,27 +53,27 @@ class SolicitudesTypesController extends Controller
             }
         
     }
-    public function Getbienestar_news($id)
-{
-    $sol_typ_id = $id;
-    $bienestar_news = DB::table('bienestar_news')
-        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-        ->select('bie_new_date', 'persons.per_name')
-        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the solicitudes types table\'$sol_typ_id\''")
-        ->get();
+//     public function Getbienestar_news($id)
+// {
+//     $sol_typ_id = $id;
+//     $bienestar_news = DB::table('bienestar_news')
+//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//         ->select('bie_new_date', 'persons.per_name')
+//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the solicitudes types table\'$sol_typ_id\''")
+//         ->get();
 
-    if ($bienestar_news->count() > 0) {
-        return $bienestar_news[0];
-    } else {
-        return null;
-    }
-}
+//     if ($bienestar_news->count() > 0) {
+//         return $bienestar_news[0];
+//     } else {
+//         return null;
+//     }
+// }
 
     public function show($proj_id,$use_id,$id)
     {
         
             $solicitudTypes = SolicitudeType::find($id);
-            $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
+            // $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
 
             if ($solicitudTypes == null) {
                 return response()->json([
@@ -82,8 +81,8 @@ class SolicitudesTypesController extends Controller
                     'data' => ['message' => 'The requested solicitudes types was not found']
                 ], 400);
             } else {
-                $solicitudTypes->new_date = $bienestar_news->bie_new_date;
-                $solicitudTypes->createdBy = $bienestar_news->per_name;
+                // $solicitudTypes->new_date = $bienestar_news->bie_new_date;
+                // $solicitudTypes->createdBy = $bienestar_news->per_name;
                 return response()->json([
                     'status' => true,
                     'data' => $solicitudTypes
@@ -138,7 +137,7 @@ class SolicitudesTypesController extends Controller
 
         $solicitudTypes = SolicitudeType::find($id);
         
-        $newST=($solicitudesTypes->sol_typ_status ==1)?0:1;
+        $newST=($solicitudTypes->sol_typ_status ==1)?0:1;
                 $solicitudTypes->sol_typ_status = $newST;
                 $solicitudTypes->save();
                 Controller::NewRegisterTrigger("An change status was made in the solicitudes types table",2,$use_id);

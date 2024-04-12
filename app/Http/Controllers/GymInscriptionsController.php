@@ -11,7 +11,7 @@ class GymInscriptionsController extends Controller
 {
     public function index($proj_id, $use_id)
 {
-    $gymIns = GymInscription::getbienestar_news();
+    $gymIns = GymInscription::select();
 
 
     return response()->json([
@@ -41,12 +41,11 @@ class GymInscriptionsController extends Controller
                     $gymIn->gym_ins_status=1;
                     $gymIn->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Gym inscriptions table'$gymIn->gym_ins_id'",3,$use_id);
-                    $id = $gymIn->gym_ins_id;
-                    $bienestar_news=GymInscriptionsController::Getbienestar_news($id);
+                    // $id = $gymIn->gym_ins_id;
+                    // $bienestar_news=GymInscriptionsController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
                         'message' => "The Gym inscriptions has been created successfully.",
-                        'data' => $bienestar_news
 
                     ],200);
                 }
@@ -58,26 +57,26 @@ class GymInscriptionsController extends Controller
             }
         
     }
-    public function Getbienestar_news($id)
-{
-    $gym_ins_id = $id;
-    $bienestar_news = DB::table('bienestar_news')
-        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-        ->select('bie_new_date', 'persons.per_name')
-        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Gym inscriptions table\'$gym_ins_id\''")
-        ->get();
+//     public function Getbienestar_news($id)
+// {
+//     $gym_ins_id = $id;
+//     $bienestar_news = DB::table('bienestar_news')
+//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//         ->select('bie_new_date', 'persons.per_name')
+//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Gym inscriptions table\'$gym_ins_id\''")
+//         ->get();
 
-    if ($bienestar_news->count() > 0) {
-        return $bienestar_news[0];
-    } else {
-        return null;
-    }
-}
+//     if ($bienestar_news->count() > 0) {
+//         return $bienestar_news[0];
+//     } else {
+//         return null;
+//     }
+// }
 
     public function show($proj_id, $use_id, $id)
 {
     $gymIn = GymInscription::find($id);
-    $bienestar_news=GymInscriptionsController::Getbienestar_news($id);
+    // $bienestar_news=GymInscriptionsController::Getbienestar_news($id);
 
     if ($gymIn == null) {
         return response()->json([
@@ -85,8 +84,8 @@ class GymInscriptionsController extends Controller
             'message' => 'The requested Gym inscriptions was not found.'
         ], 404);
     }else{
-        $gymIn->new_date = $bienestar_news->bie_new_date;
-        $gymIn->createdBy = $bienestar_news->per_name;
+        // $gymIn->new_date = $bienestar_news->bie_new_date;
+        // $gymIn->createdBy = $bienestar_news->per_name;
 
         return response()->json([
             'status' => true,
