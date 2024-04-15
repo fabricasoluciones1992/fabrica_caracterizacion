@@ -16,19 +16,46 @@ class GymInscription extends Model
         'per_id'
     ];
     public $timestamps = false;
-    public static function select(){
+    public static function select() {
         $gymIns = DB::select("
-        SELECT gi.gym_ins_id, gi.gym_ins_date,gi.gym_ins_status, pe.per_name 
-        FROM gym_inscriptions gi
-        INNER JOIN persons pe ON pe.per_id = gi.per_id
-    ");
-    return $gymIns;
+            SELECT 
+                gi.gym_ins_id, 
+                gi.gym_ins_date,
+                gi.gym_ins_status,
+                pe.per_name,
+                pe.per_document,
+                pe.per_lastname,
+                pe.per_typ_id,
+                pe.per_typ_id,
+                pe.per_typ_name,
+                pe.doc_typ_id,
+                pe.doc_typ_name
+            FROM 
+                gym_inscriptions gi
+            INNER JOIN 
+                ViewPersons pe ON pe.per_id = gi.per_id
+        ");
+        return $gymIns;
     }
+    
     public static function find($id){
         $gymIns = DB::select("
-    SELECT gi.gym_ins_id, gi.gym_ins_date,gi.gym_ins_status, pe.per_name 
-        FROM gym_inscriptions gi
-        INNER JOIN persons pe ON pe.per_id = gi.per_id
+        SELECT 
+        gi.gym_ins_id, 
+        gi.gym_ins_date,
+        gi.gym_ins_status,
+        pe.per_name,
+        pe.per_document,
+        pe.per_lastname,
+        pe.per_typ_id,
+        pe.per_typ_id,
+        pe.per_typ_name,
+        pe.doc_typ_id,
+        pe.doc_typ_name
+    FROM 
+        gym_inscriptions gi
+    INNER JOIN 
+        ViewPersons pe ON pe.per_id = gi.per_id
         WHERE gi.gym_ins_id = $id
     ");
     return $gymIns[0];

@@ -13,22 +13,46 @@ class Gym_assistance extends Model
     protected $fillable = [
         'gym_ass_date',
 
-        'per_id'
+        'per_id',
     ];
     public $timestamps = false;
-    public static function select(){
+    public static function select() {
         $gymAss = DB::select("
-        SELECT ga.gym_ass_id, ga.gym_ass_date,pe.per_name 
-        FROM gym_assistances ga
-        INNER JOIN persons pe ON pe.per_id = ga.per_id
-    ");
-    return $gymAss;
+            SELECT 
+                ga.gym_ass_id, 
+                ga.gym_ass_date,
+                pe.per_name,
+                pe.per_document,
+                pe.per_lastname,
+                pe.per_typ_id,
+                pe.per_typ_name,
+                pe.doc_typ_id,
+                pe.doc_typ_name
+
+            FROM 
+                gym_assistances ga
+            INNER JOIN 
+                ViewPersons pe ON pe.per_id = ga.per_id
+        ");
+        return $gymAss;
     }
+    
     public static function find($id){
         $gymAss = DB::select("
-    SELECT ga.gym_ass_id, ga.gym_ass_date,pe.per_name 
-        FROM gym_assistances ga
-        INNER JOIN persons pe ON pe.per_id = ga.per_id
+        SELECT 
+        ga.gym_ass_id, 
+        ga.gym_ass_date,
+        pe.per_name,
+        pe.per_document,
+        pe.per_lastname,
+        pe.per_typ_id,
+        pe.per_typ_name,
+        pe.doc_typ_id,
+        pe.doc_typ_name
+    FROM 
+        gym_assistances ga
+    INNER JOIN 
+        persons pe ON pe.per_id = ga.per_id
         WHERE ga.gym_ass_id = $id
     ");
     return $gymAss[0];
