@@ -17,14 +17,15 @@ class HistoryConsultationsController extends Controller
             'data' => $histcon
         ], 200);
     }
-    public function store($proj_id,$use_id, Request $request)
+    public function store($proj_id, $use_id, Request $request)
     {
         if ($request->acc_administrator == 1) {
             $rules = [
                 'cons_id' =>'required|integer|min:1|max:999999',
-                'stu_id' =>'required|integer|min:1|max:999999',
+                'per_id' =>'required|integer|min:1|max:999999',
             ];
-            $validator = HistoryConsultation::make($request->input(),$rules);
+            $validator = Validator::make($request->all(), $rules); 
+    
             if ($validator->fails()) {
                 return response()->json([
                     'status' => False,
@@ -33,13 +34,10 @@ class HistoryConsultationsController extends Controller
             } else {
                 $hitcon = new HistoryConsultation($request->input());
                 $hitcon->save();
-                Controller::NewRegisterTrigger("An insertion was made in the History consultations table'$hitcon->his_con_id'", 3,$use_id);
-                // $id = $hitcon->his_con_id;
-                // $bienestar_news=HistoryConsultationsController::Getbienestar_news($id);
+                Controller::NewRegisterTrigger("An insertion was made in the History consultations table'$hitcon->his_con_id'", 3, $use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The History consultations for the student id: '".$hitcon->cons_id."' has been created successfully.",
-
                 ], 200);
             }
         } else {

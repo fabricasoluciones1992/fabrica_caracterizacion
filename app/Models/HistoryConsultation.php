@@ -12,9 +12,9 @@ class HistoryConsultation extends Model
     protected $primaryKey = "his_con_id";
     protected $fillable = [
         'cons_id',
-        'stu_id',
+        'per_id',
     ];
-    public $timestamp = false;
+    public $timestamps = false;
     public static function select(){
         $histcon = DB::select("SELECT * FROM viewHistorialConsultas");
         return $histcon;
