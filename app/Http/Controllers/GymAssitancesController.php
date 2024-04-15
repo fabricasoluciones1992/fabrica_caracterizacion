@@ -72,7 +72,6 @@ class GymAssitancesController extends Controller
     public function show($proj_id, $use_id, $id)
 {
     $gymAs = Gym_assistance::find($id);
-    $bienestar_news=GymAssitancesController::Getbienestar_news($id);
 
 
     if (empty($gymAs)) {
@@ -81,8 +80,7 @@ class GymAssitancesController extends Controller
             'message' => 'The requested Gym assistances was not found.'
         ], 404);
     }else{
-        $gymAs->new_date = $bienestar_news->bie_new_date;
-        $gymAs->createdBy = $bienestar_news->per_name;
+       
         
         return response()->json([
         'status' => true,
@@ -138,6 +136,22 @@ public function update($proj_id, $use_id, Request $request, $id)
             'status' => false,
             'message' => 'Access denied. This action can only be performed by active administrators.'
         ], 403);
+    }
+}
+public function filtredforDocument($proj_id, $use_id, $id)
+{
+    try {
+        $gymAss = Controller::findByDocument($id);
+ 
+        return response()->json([
+            'status' => true,
+            'data' => $gymAss
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
     }
 }
 

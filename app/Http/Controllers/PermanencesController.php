@@ -11,7 +11,7 @@ class PermanencesController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $permanences = permanence::getbienestar_news();
+        $permanences = permanence::select();
 
         return response()->json([
             'status' => true,
@@ -46,12 +46,11 @@ class PermanencesController extends Controller
                 $permanence->perm_status=1;
                 $permanence->save();
                 Controller::NewRegisterTrigger("An insertion was made in the permanences table'$permanence->perm_id'", 3,$use_id);
-                $id = $permanence->perm_id;
-                $bienestar_news=PermanencesController::Getbienestar_news($id);
+                // $id = $permanence->perm_id;
+                // $bienestar_news=PermanencesController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
                     'message' => "The permanences has been created successfully.",
-                    'data' => $bienestar_news
                 ], 200);
             }
         } else {
@@ -62,27 +61,27 @@ class PermanencesController extends Controller
         }
     
 }
-public function Getbienestar_news($id)
-{
-    $perm_id = $id;
-    $bienestar_news = DB::table('bienestar_news')
-        ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-        ->select('bie_new_date', 'persons.per_name')
-        ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the permanences table\'$perm_id\''")
-        ->get();
+// public function Getbienestar_news($id)
+// {
+//     $perm_id = $id;
+//     $bienestar_news = DB::table('bienestar_news')
+//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
+//         ->select('bie_new_date', 'persons.per_name')
+//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the permanences table\'$perm_id\''")
+//         ->get();
 
-    if ($bienestar_news->count() > 0) {
-        return $bienestar_news[0];
-    } else {
-        return null;
-    }
-}
+//     if ($bienestar_news->count() > 0) {
+//         return $bienestar_news[0];
+//     } else {
+//         return null;
+//     }
+// }
 
     public function show($proj_id,$use_id,$id)
     {
         
         $permanences =  permanence::find($id);
-        $bienestar_news=PermanencesController::Getbienestar_news($id);
+        // $bienestar_news=PermanencesController::Getbienestar_news($id);
 
         if ($permanences == null) {
             return response()->json([
@@ -90,8 +89,8 @@ public function Getbienestar_news($id)
                 "data" => ['message' => 'The searched permanences was not found']
             ], 400);
         } else {
-            $permanences->new_date = $bienestar_news->bie_new_date;
-            $permanences->createdBy = $bienestar_news->per_name;
+            // $permanences->new_date = $bienestar_news->bie_new_date;
+            // $permanences->createdBy = $bienestar_news->per_name;
             return response()->json([
                 'status' => true,
                 'data' => $permanences
@@ -163,10 +162,10 @@ public function Getbienestar_news($id)
             
     }
 
-    public function filtredforPermanence($proj_id, $use_id, $id)
+    public function filtredforDocument($proj_id, $use_id, $id)
 {
     try {
-        $permanences = permanence::findByDocument($id);
+        $permanences = Controller::findByDocument($id);
         
         
         return response()->json([

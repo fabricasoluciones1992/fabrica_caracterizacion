@@ -57,6 +57,7 @@ class Gym_assistance extends Model
     ");
     return $gymAss[0];
     }
+    
 //     public static function Getbienestar_news()
 // {
 //     $gymAss = Gym_assistance::select();

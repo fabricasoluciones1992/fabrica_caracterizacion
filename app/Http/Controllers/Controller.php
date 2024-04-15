@@ -168,4 +168,8 @@ class Controller extends BaseController
             ],200);
         }
     }
+    public static function findByDocument($id){
+        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id");
+        return $persons;
+    }
 }

@@ -60,6 +60,9 @@ class GymInscription extends Model
     ");
     return $gymIns[0];
     }
+    
+    
+
 //     public static function Getbienestar_news()
 // {
 //     $gymIns = GymInscription::select();
