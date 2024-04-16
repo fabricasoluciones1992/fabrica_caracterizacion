@@ -36,4 +36,5 @@ class BienestarActivityTypes extends Model
     
 //     return $bienestarActTypes;
 // }
+
 }

@@ -34,6 +34,15 @@ class BienestarActivity extends Model
     ");
     return $bienestarActivity[0];
     }
+    public static function category($id){
+        $bienestarActivity = DB::select("
+        SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date,ba.bie_act_hour, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name 
+        FROM bienestar_activities ba
+        INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
+        WHERE ba.bie_act_typ_id = $id
+    ");
+    return $bienestarActivity[0];
+    }
 //     public static function Getbienestar_news()
 // {
 //     $bienestarActivities = BienestarActivity::select();

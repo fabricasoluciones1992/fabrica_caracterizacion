@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BienestarActivity;
 use App\Models\BienestarActivityTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +13,7 @@ class BienestarActivityTypesController extends Controller
     public function index($proj_id,$use_id)
     {
         
-            $bienestarActTypes = BienestarActivityTypes::select();
+            $bienestarActTypes = BienestarActivityTypes::all();
 
             return response()->json([
                 'status' => true,
@@ -72,7 +73,7 @@ class BienestarActivityTypesController extends Controller
     public function show($proj_id,$use_id,$id)
     {
         
-            $bienestarActType = BienestarActivityTypes::find($id);
+            $bienestarActType = BienestarActivity::category($id);
             // $bienestar_news=BienestarActivityTypesController::Getbienestar_news($id);
 
             if ($bienestarActType == null) {
