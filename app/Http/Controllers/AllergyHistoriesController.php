@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AllergyHistoriesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
 {
     $aHistories = AllergyHistory::select();
     return response()->json([
@@ -66,7 +66,7 @@ class AllergyHistoriesController extends Controller
 //         return null;
 //     }
 // }
-    public function show($proj_id, $use_id, $id)
+    public function show($id)
 {
     $aHistory = AllergyHistory::find($id);
     // $bienestar_news=AllergyHistoriesController::Getbienestar_news($id);

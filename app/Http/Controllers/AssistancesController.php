@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AssistancesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         
         $assistances = Assistance::select();
@@ -85,7 +85,7 @@ public function Getbienestar_news($id)
     }
 }
 
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         
         $assistances =  Assistance::find($id);

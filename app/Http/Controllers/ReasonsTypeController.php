@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ReasonsTypeController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
 
         $reasonsT = ReasonType::all(); 
@@ -72,7 +72,7 @@ class ReasonsTypeController extends Controller
 //         return null;
 //     }
 // }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
 
         $reasont = ReasonType::find($id);

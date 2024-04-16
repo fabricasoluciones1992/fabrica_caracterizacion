@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class MonetaryStatesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         
         $monStates = MonetaryState::all();
@@ -73,7 +73,7 @@ class MonetaryStatesController extends Controller
 //     }
 // }
 
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
          
         $monState = MonetaryState::find($id);

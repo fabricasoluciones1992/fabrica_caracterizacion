@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
  
 class SolicitudesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
        
         $solicitudes = solicitudes::select();
@@ -79,7 +79,7 @@ class SolicitudesController extends Controller
 //         return null;
 //     }
 // }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
        
         $solicitudes =  solicitudes::find($id);

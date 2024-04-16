@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class HistoryConsultationsController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $histcon = HistoryConsultation::select();
         return response()->json([
@@ -63,7 +63,7 @@ class HistoryConsultationsController extends Controller
     //     }
     // }
 
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $hitcon = HistoryConsultation::find($id);
         // $bienestar_news=HistoryConsultationsController::Getbienestar_news($id);

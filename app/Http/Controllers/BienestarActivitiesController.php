@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class BienestarActivitiesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
 {
     $bienestarActivities = BienestarActivity::select();
     $assistances = Assistance::select();
@@ -97,7 +97,7 @@ class BienestarActivitiesController extends Controller
     //         return null;
     //     }
     // }
-    public function show($proj_id, $use_id, $id)
+    public function show($id)
 {
     $bienestarActivity = BienestarActivity::find($id);
     // $bienestar_news = BienestarActivitiesController::Getbienestar_news($id);

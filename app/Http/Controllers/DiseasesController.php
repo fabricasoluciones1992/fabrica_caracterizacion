@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class DiseasesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $diseases = Disease::all();
         return response()->json([
@@ -55,7 +55,7 @@ class DiseasesController extends Controller
 //         return null;
 //     }
 // }
-    public function show($proj_id, $use_id, $id)
+    public function show($id)
     {
         $disease = Disease::find($id);
         // $bienestar_news=DiseasesController::Getbienestar_news($id);

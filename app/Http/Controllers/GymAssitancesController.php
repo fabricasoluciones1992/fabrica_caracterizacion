@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class GymAssitancesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
 {
     $gymAss = Gym_assistance::select();
     return response()->json([
@@ -69,7 +69,7 @@ class GymAssitancesController extends Controller
 //         return null;
 //     }
 // }
-    public function show($proj_id, $use_id, $id)
+    public function show($id)
 {
     $gymAs = Gym_assistance::find($id);
 

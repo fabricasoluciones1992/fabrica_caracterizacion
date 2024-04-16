@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class GymInscriptionsController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
 {
     $gymIns = GymInscription::select();
 
@@ -73,7 +73,7 @@ class GymInscriptionsController extends Controller
 //     }
 // }
 
-    public function show($proj_id, $use_id, $id)
+    public function show($id)
 {
     $gymIn = GymInscription::find($id);
     // $bienestar_news=GymInscriptionsController::Getbienestar_news($id);

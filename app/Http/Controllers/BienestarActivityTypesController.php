@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class BienestarActivityTypesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         
             $bienestarActTypes = BienestarActivityTypes::all();
@@ -70,7 +70,7 @@ class BienestarActivityTypesController extends Controller
 //         return null;
 //     }
 // }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         
             $bienestarActType = BienestarActivity::category($id);

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AllergiesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
 
         $allergies = Allergie::all();
@@ -71,7 +71,7 @@ class AllergiesController extends Controller
 //         return null;
 //     }
 // }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
 
         $allergie = Allergie::find($id);

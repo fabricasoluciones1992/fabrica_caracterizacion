@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ActionsController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
 {
     $actions = action::all();
 
@@ -75,7 +75,7 @@ class ActionsController extends Controller
 // }
 
     
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
 
         $action = action::find($id);

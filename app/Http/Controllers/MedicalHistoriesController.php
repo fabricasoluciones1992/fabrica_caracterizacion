@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class MedicalHistoriesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
 {
     $mHistory = MedicalHistory::select();
 
@@ -75,7 +75,7 @@ class MedicalHistoriesController extends Controller
 //     }
 // }
 
-    public function show($proj_id, $use_id, $id)
+    public function show($id)
 {
     $mHistory = MedicalHistory::find($id);
     // $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);

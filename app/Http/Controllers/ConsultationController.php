@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ConsultationController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $consultations = Consultation::all();
         return response()->json([
@@ -72,7 +72,7 @@ class ConsultationController extends Controller
 //         return null;
 //     }
 // }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $consultation = Consultation::find($id);
         // $bienestar_news=ConsultationController::Getbienestar_news($id);

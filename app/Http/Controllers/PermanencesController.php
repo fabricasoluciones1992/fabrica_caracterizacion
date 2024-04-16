@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class PermanencesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $permanences = permanence::select();
 
@@ -77,7 +77,7 @@ class PermanencesController extends Controller
 //     }
 // }
 
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         
         $permanences =  permanence::find($id);
