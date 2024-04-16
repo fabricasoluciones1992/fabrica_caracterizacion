@@ -193,10 +193,18 @@ class Controller extends BaseController
 
 public function reports(Request $request){
     $data = Reports::index($request);
-    return response()->json([
-        'status' => true,
-        'data' => $data
-    ]);
+    if ($data == '[]') {
+        return response()->json([
+            'status' => false,
+            'data' => "No data found"
+        ]);
+    }else{
+        return response()->json([
+            'status' => true,
+            'data' => $data
+        ]);
+    }
+    
 }
 public function reportsIndi(Request $request){
     $data = Reports::select($request);
