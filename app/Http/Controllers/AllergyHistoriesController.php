@@ -16,7 +16,7 @@ class AllergyHistoriesController extends Controller
         'data' => $aHistories
     ], 200);
 }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
             if ($request->acc_administrator == 1) {
                 $rules = [
@@ -85,7 +85,7 @@ class AllergyHistoriesController extends Controller
         ]);
     }
 }
-public function update($proj_id, $use_id, Request $request, $id)
+public function update(Request $request, $id)
 {
     return response()->json([
         'status' => false,

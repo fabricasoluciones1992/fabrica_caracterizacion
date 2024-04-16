@@ -42,7 +42,7 @@ class BienestarActivitiesController extends Controller
 
 
 
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
             if ($request->acc_administrator == 1) {
 
@@ -131,7 +131,7 @@ class BienestarActivitiesController extends Controller
 
 
 
-public function update($proj_id, $use_id, Request $request, $id)
+public function update(Request $request, $id)
 {
     $occupiedQuotas = DB::table('assistances')
         ->where('bie_act_id', $id)

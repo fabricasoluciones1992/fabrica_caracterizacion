@@ -21,7 +21,7 @@ class AssistancesController extends Controller
     
 
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         
         if ($request->acc_administrator == 1) {
@@ -106,7 +106,7 @@ public function Getbienestar_news($id)
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         
         $assistances = assistance::find($id);

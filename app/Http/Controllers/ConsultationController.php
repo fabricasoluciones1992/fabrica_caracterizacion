@@ -18,7 +18,7 @@ class ConsultationController extends Controller
             'data' => $consultations
         ],200);
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         if ($request->acc_administrator == 1) {
             $rules = [
@@ -91,7 +91,7 @@ class ConsultationController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         if ($request->acc_administrator == 1) {
             $consultation = Consultation::find($id);

@@ -16,7 +16,7 @@ class DiseasesController extends Controller
             ], 200);
         
     }
-    public function store($proj_id, $use_id, Request $request)
+    public function store( Request $request)
     {
         $rules = [
             'dis_name' => 'required|string|min:1|max:50|unique:diseases|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -74,7 +74,7 @@ class DiseasesController extends Controller
             ]);
         }
     }
-    public function update($proj_id, $use_id, Request $request, $id)
+    public function update(Request $request, $id)
     {
         $disease = Disease::find($id);
         if ($disease == null) {

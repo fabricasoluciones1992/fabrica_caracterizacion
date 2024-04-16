@@ -22,7 +22,7 @@ class MonetaryStatesController extends Controller
     
 }
 
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         
 
@@ -95,7 +95,7 @@ class MonetaryStatesController extends Controller
     
 }
 
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         
         $monState = MonetaryState::find($id);

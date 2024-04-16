@@ -21,7 +21,7 @@ class GymInscriptionsController extends Controller
 }
 
 
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         
             if ($request->acc_administrator == 1) {
@@ -99,7 +99,7 @@ class GymInscriptionsController extends Controller
 }
 
 
-public function update($proj_id, $use_id, Request $request, $id)
+public function update(Request $request, $id)
 {
 
 
