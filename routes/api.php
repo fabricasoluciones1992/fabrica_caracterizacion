@@ -26,7 +26,7 @@ use App\Models\Gym_assitance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-define("URL", "/{proj_id}/{use_id}/");
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,45 +40,45 @@ define("URL", "/{proj_id}/{use_id}/");
 */
 
 Route::middleware(['auth:sanctum'])->group(function() {
-    Route::resource('actions'.URL, ActionsController::class)->names('actions')->parameter('', 'actions');
-    Route::resource('reasons/types'.URL, ReasonsTypeController::class)->names('reasons.types')->parameter('', 'reasons_types');
-    Route::resource('allergies'.URL, AllergiesController::class)->names('allergies')->parameter('', 'allergies');
-    Route::resource('diseases'.URL, DiseasesController::class)->names('diseases')->parameter('', 'diseases');
-    Route::resource('medical/histories'.URL, MedicalHistoriesController::class)->names('medical.histories')->parameter('', 'medical_histories');
-    Route::resource('allergy/histories'.URL, AllergyHistoriesController::class)->names('allergy.histories')->parameter('', 'allergy_histories');
+    Route::resource('actions', ActionsController::class)->names('actions')->parameter('', 'actions');
+    Route::resource('reasons/types', ReasonsTypeController::class)->names('reasons.types')->parameter('', 'reasons_types');
+    Route::resource('allergies', AllergiesController::class)->names('allergies')->parameter('', 'allergies');
+    Route::resource('diseases', DiseasesController::class)->names('diseases')->parameter('', 'diseases');
+    Route::resource('medical/histories', MedicalHistoriesController::class)->names('medical.histories')->parameter('', 'medical_histories');
+    Route::resource('allergy/histories', AllergyHistoriesController::class)->names('allergy.histories')->parameter('', 'allergy_histories');
     
     
     
-    Route::resource('type/solicitudes'.URL, SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
-    Route::resource('permanences'.URL, PermanencesController::class)->names('permanences')->parameter('', 'permanences');
-    Route::resource('assistences'.URL, AssistancesController::class)->names('assistences')->parameter('', 'assistences');
+    Route::resource('type/solicitudes', SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
+    Route::resource('permanences', PermanencesController::class)->names('permanences')->parameter('', 'permanences');
+    Route::resource('assistences', AssistancesController::class)->names('assistences')->parameter('', 'assistences');
     
     
-    Route::resource('solicitudes'.URL, SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
+    Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
     
-    Route::resource('bienestar/activities/types'.URL, BienestarActivityTypesController::class)->names('bienestar.activities.types')->parameter('', 'bienestar_activities_types');
-    Route::resource('consultation'.URL, ConsultationController::class)->names('consultation')->parameter('', 'consultation');
-    Route::resource('history/consultation'.URL, HistoryConsultationsController::class)->names('history.consultation')->parameter('', 'history_consultation');
-    Route::resource('bienestar/activities'.URL, BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
-    // Route::resource('assistances'.URL, AssistancesController::class)->names('assistances')->parameter('', 'assistances');
-    Route::resource('gym/assistances'.URL, GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
-    Route::resource('gym/inscriptions'.URL, GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
+    Route::resource('bienestar/activities/types', BienestarActivityTypesController::class)->names('bienestar.activities.types')->parameter('', 'bienestar_activities_types');
+    Route::resource('consultation', ConsultationController::class)->names('consultation')->parameter('', 'consultation');
+    Route::resource('history/consultation', HistoryConsultationsController::class)->names('history.consultation')->parameter('', 'history_consultation');
+    Route::resource('bienestar/activities', BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
+    // Route::resource('assistances', AssistancesController::class)->names('assistances')->parameter('', 'assistances');
+    Route::resource('gym/assistances', GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
+    Route::resource('gym/inscriptions', GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
     
-    Route::resource('monetary/states'.URL, MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
+    Route::resource('monetary/states', MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
     
     
     Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
     Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
     Route::get('/student/activities/{code}', [Controller::class, 'viewStudentBie'])->name('student.viewStudentBie');
     
-    Route::get('persons/filtred'.URL.'{id}', [Controller::class, 'filtredforDocument'])->name('filtredforDocument');   
+    Route::get('persons/filtred'.'{id}', [Controller::class, 'filtredforDocument'])->name('filtredforDocument');   
 
 
-    Route::get('filtredforTSolicitud'.URL.'{id}', [PermanencesController::class, 'filtredforTSolicitud'])->name('filtredforTSolicitud');   
+    Route::get('filtredforTSolicitud'.'{id}', [PermanencesController::class, 'filtredforTSolicitud'])->name('filtredforTSolicitud');   
 
-    Route::get('solicitudesFiltred'.URL.'{column}/{data}', [SolicitudesController::class, 'filtredforSolicitudes'])->name('filtredforSolicitudes');  
-    Route::get('/students'.URL, [Controller::class, 'students'])->name('students'); 
-    Route::get('/students'.URL.'{id}', [Controller::class, 'student'])->name('studentById');
+    Route::get('solicitudesFiltred'.'{column}/{data}', [SolicitudesController::class, 'filtredforSolicitudes'])->name('filtredforSolicitudes');  
+    Route::get('/students', [Controller::class, 'students'])->name('students'); 
+    Route::get('/students'.'{id}', [Controller::class, 'student'])->name('studentById');
     Route::post('/reports', [Controller::class, 'reports'])->name('reports');
 
 
