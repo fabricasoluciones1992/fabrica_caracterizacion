@@ -40,7 +40,7 @@ class MonetaryStatesController extends Controller
                 $monState = new MonetaryState($request->input());
                 $monState->mon_sta_status=1;
                 $monState->save();
-                Controller::NewRegisterTrigger("An insertion was made in the monetary states table'$monState->mon_sta_id'", 3,$use_id);
+                Controller::NewRegisterTrigger("An insertion was made in the monetary states table'$monState->mon_sta_id'", 3,$request->use_id);
                 // $id = $monState->mon_sta_id;
                 // $bienestar_news=MonetaryStatesController::Getbienestar_news($id);
                 return response()->json([
@@ -120,7 +120,7 @@ class MonetaryStatesController extends Controller
                 } else {
                     $monState->mon_sta_name = $request->mon_sta_name;
                     $monState->save();
-                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 4,$use_id);
+                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 4,$request->use_id);
 
                     return response()->json([
                         'status' => True,
@@ -137,14 +137,14 @@ class MonetaryStatesController extends Controller
     
 }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         $monState = MonetaryState::find($id);
         
             $newMS=($monState->mon_sta_status==1)?0:1;
                 $monState->mon_sta_status = $newMS;
                 $monState->save();
-                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested economic state has been change status successfully'

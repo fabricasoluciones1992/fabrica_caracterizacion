@@ -38,7 +38,7 @@ class BienestarActivityTypesController extends Controller
                     $bienestarActType = new BienestarActivityTypes($request->input());
                     $bienestarActType->bie_act_typ_status=1;
                     $bienestarActType->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities types table'$bienestarActType->bie_act_typ_id'",3,$use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities types table'$bienestarActType->bie_act_typ_id'",3,$request->use_id);
                     // $id = $bienestarActType->bie_act_typ_id;
                     // $bienestar_news=BienestarActivityTypesController::Getbienestar_news($id);
                     return response()->json([
@@ -118,7 +118,7 @@ class BienestarActivityTypesController extends Controller
                         $bienestarActTypes->bie_act_typ_name = $request->bie_act_typ_name;
                         $bienestarActTypes->bie_act_typ_status=1;
                         $bienestarActTypes->save();
-                        Controller::NewRegisterTrigger("An update was made in the Bienestar Activities types table",4,$use_id);
+                        Controller::NewRegisterTrigger("An update was made in the Bienestar Activities types table",4,$request->use_id);
 
                         return response()->json([
                         'status' => True,
@@ -134,7 +134,7 @@ class BienestarActivityTypesController extends Controller
             }
         
     }
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
 
         $bienestarActTypes = BienestarActivityTypes::find($id);
@@ -142,7 +142,7 @@ class BienestarActivityTypesController extends Controller
                 $newBiAct=($bienestarActTypes->bie_act_typ_status==1)?0:1;
                 $bienestarActTypes->bie_act_typ_status =$newBiAct ;
                 $bienestarActTypes->save();
-                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested bienestar activity type has been change successfully'

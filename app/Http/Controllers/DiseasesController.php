@@ -30,7 +30,7 @@ class DiseasesController extends Controller
         } else {
             $disease = new Disease(($request->input()));
             $disease->save();
-            Controller::NewRegisterTrigger("An insertion was made in the Diseases table'$disease->dis_id'", 3, $use_id);
+            Controller::NewRegisterTrigger("An insertion was made in the Diseases table'$disease->dis_id'", 3, $request->use_id);
             // $id = $disease->dis_id;
             // $bienestar_news=DiseasesController::Getbienestar_news($id);
             return response()->json([
@@ -98,7 +98,7 @@ class DiseasesController extends Controller
                 $disease = Disease::find($id);
                 $disease->dis_name = $request->dis_name;
                 $disease->save();
-                Controller::NewRegisterTrigger("An update was made in the diseases table: id->$id", 4, $use_id);
+                Controller::NewRegisterTrigger("An update was made in the diseases table: id->$id", 4, $request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The Disease: " . $disease->dis_name . " has been update."
@@ -106,7 +106,7 @@ class DiseasesController extends Controller
             }
         }
     }
-    public function destroy(Disease $Disease)
+    public function destroy(Request $request,$id)
     {
         return response()->json([
             'status' => false,

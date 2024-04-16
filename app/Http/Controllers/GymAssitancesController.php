@@ -37,7 +37,7 @@ class GymAssitancesController extends Controller
                 } else {
                     $gymAs = new Gym_assistance($request->input());
                     $gymAs->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Gym assistances table'$gymAs->gym_ass_id'",3,$use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Gym assistances table'$gymAs->gym_ass_id'",3,$request->use_id);
                     // $id = $gymAs->gym_ass_id;
                     // $bienestar_news=GymAssitancesController::Getbienestar_news($id);
                     return response()->json([
@@ -123,7 +123,7 @@ public function update(Request $request, $id)
                 $gymAss->gym_ass_date = $request->gym_ass_date;
                 $gymAss->per_id = $request->per_id;
                 $gymAss->save();
-                Controller::NewRegisterTrigger("An update was made in the Gym assistances table", 4, $use_id);
+                Controller::NewRegisterTrigger("An update was made in the Gym assistances table", 4, $request->use_id);
 
                 return response()->json([
                     'status' => true,
@@ -155,7 +155,7 @@ public function filtredforDocument($proj_id, $use_id, $id)
     }
 }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         
                 return response()->json([

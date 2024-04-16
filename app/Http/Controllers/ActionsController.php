@@ -42,7 +42,7 @@ class ActionsController extends Controller
                     $action = new action($request->input());
                     $action->act_status=1;
                     $action->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Actions table'$action->act_id'",3,$use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Actions table'$action->act_id'",3,$request->use_id);
                     // $id = $action->act_id;
                     // $bienestar_news=ActionsController::Getbienestar_news($id);
                     return response()->json([
@@ -113,7 +113,7 @@ class ActionsController extends Controller
                 }else{
                     $action->act_name = $request->act_name;
                     $action->save();
-                    Controller::NewRegisterTrigger("An update was made in the actions table",4,$use_id);
+                    Controller::NewRegisterTrigger("An update was made in the actions table",4,$request->use_id);
 
                     return response()->json([
                         'status' => True,
@@ -128,13 +128,13 @@ class ActionsController extends Controller
     }
     }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         $action = action::find($id);
         $newAction=($action->act_status == 1)?0:1;
                 $action->act_status = $newAction;
                 $action->save();
-                Controller::NewRegisterTrigger("An changes status was made in the actions table",2,$use_id);
+                Controller::NewRegisterTrigger("An changes status was made in the actions table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested Action has been disabled successfully'

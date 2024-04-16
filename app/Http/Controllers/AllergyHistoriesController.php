@@ -32,7 +32,7 @@ class AllergyHistoriesController extends Controller
                 } else {
                     $aHistory = new AllergyHistory($request->input());
                     $aHistory->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Allergies Histories table'$aHistory->all_his_id'",3,$use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Allergies Histories table'$aHistory->all_his_id'",3,$request->use_id);
                     // $id = $aHistory->all_his_id;
                     // $bienestar_news=AllergyHistoriesController::Getbienestar_news($id);
                     return response()->json([
@@ -92,7 +92,7 @@ public function update(Request $request, $id)
         'message' => 'Function not available'
     ]);
 }
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         
                 return response()->json([

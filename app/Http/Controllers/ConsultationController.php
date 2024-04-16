@@ -42,7 +42,7 @@ class ConsultationController extends Controller
 
                 $consultation = new Consultation($request->input());
                 $consultation->save();
-                Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$use_id);
+                Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$request->use_id);
                 // $id = $consultation->id;
                 // $bienestar_news=ConsultationController::Getbienestar_news($id);
                 return response()->json([
@@ -129,7 +129,7 @@ class ConsultationController extends Controller
                     $consultation->cons_vaccination = $request->cons_vaccination;
                     $consultation->save();
                     
-                    Controller::NewRegisterTrigger("An update was made in the consultations table", 4, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the consultations table", 4, $request->use_id);
                     return response()->json([
                     'status' => True,
                     'message' => "The consultations has been updated successfully."
@@ -143,7 +143,7 @@ class ConsultationController extends Controller
             ], 403);
         }
     }
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         return response()->json([
             'status' => false,

@@ -46,7 +46,7 @@ class SolicitudesController extends Controller
                    $request->merge(['sol_date' => $currentDate]);
                    $solicitud = new solicitudes($request->input());
                    $solicitud->save();
-                   Controller::NewRegisterTrigger("An insertion was made in the solicitudes table'$solicitud->sol_id'", 3,$use_id);
+                   Controller::NewRegisterTrigger("An insertion was made in the solicitudes table'$solicitud->sol_id'", 3,$request->use_id);
                 //    $id = $solicitud->sol_id;
                 //    $bienestar_news=SolicitudesController::Getbienestar_news($id);
                    return response()->json([
@@ -91,7 +91,7 @@ class SolicitudesController extends Controller
                 "data" => ['message' => 'The searched request was not found']
             ], 400);
         } else {
-            Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4,$use_id);
+            Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4,$request->use_id);
             // $solicitudes->new_date = $bienestar_news->bie_new_date;
             // $solicitudes->createdBy = $bienestar_news->per_name;
             return response()->json([
@@ -141,7 +141,7 @@ class SolicitudesController extends Controller
                     $solicitudes->sol_typ_id = $request->sol_typ_id;
                     $solicitudes->stu_id = $request->stu_id;
                     $solicitudes->save();
-                    Controller::NewRegisterTrigger("An update was made in the solicitudes table", 4,$use_id);
+                    Controller::NewRegisterTrigger("An update was made in the solicitudes table", 4,$request->use_id);
  
                     return response()->json([
                     'status' => True,
@@ -157,13 +157,13 @@ class SolicitudesController extends Controller
         }
    
 }
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         $solicitudes = solicitudes::find($id);
         $newSol=($solicitudes->sol_status == 1) ?0:1;
                 $solicitudes->sol_status = $newSol;
                 $solicitudes->save();
-                Controller::NewRegisterTrigger("An change status was made in the solicitudes table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the solicitudes table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested solicitudes has been change status successfully'

@@ -42,7 +42,7 @@ class MedicalHistoriesController extends Controller
                     $mHistory = new MedicalHistory($request->input());
                     $mHistory->med_his_status=1;
                     $mHistory->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Medical Histories table'$mHistory->med_his_id'",3, $use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Medical Histories table'$mHistory->med_his_id'",3, $request->use_id);
                     // $id = $mHistory->med_his_id;
                     // $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
                     return response()->json([
@@ -105,7 +105,7 @@ public function update(Request $request, $id)
     ]);
 }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         
         return response()->json([

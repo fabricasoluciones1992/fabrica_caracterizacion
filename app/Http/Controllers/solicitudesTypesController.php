@@ -36,7 +36,7 @@ class SolicitudesTypesController extends Controller
                     $solicitudTypes = new SolicitudeType($request->input());
                     $solicitudTypes->sol_typ_status=1;
                     $solicitudTypes->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table'$solicitudTypes->sol_typ_id'", 3, $use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table'$solicitudTypes->sol_typ_id'", 3, $request->use_id);
                     // $id = $solicitudTypes->sol_typ_id;
                     // $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
                     return response()->json([
@@ -116,7 +116,7 @@ class SolicitudesTypesController extends Controller
                     } else {
                         $solicitudTypes->sol_typ_name = $request->sol_typ_name;
                         $solicitudTypes->save();
-                        Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 4,$use_id);
+                        Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 4,$request->use_id);
                         return response()->json([
                             'status' => true,
                             'message' => "The solicitud '".$solicitudTypes->sol_typ_name."' has been updated successfully."
@@ -132,7 +132,7 @@ class SolicitudesTypesController extends Controller
         
     }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
 
         $solicitudTypes = SolicitudeType::find($id);
@@ -140,7 +140,7 @@ class SolicitudesTypesController extends Controller
         $newST=($solicitudTypes->sol_typ_status ==1)?0:1;
                 $solicitudTypes->sol_typ_status = $newST;
                 $solicitudTypes->save();
-                Controller::NewRegisterTrigger("An change status was made in the solicitudes types table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the solicitudes types table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested solicitudes types has been change status successfully'

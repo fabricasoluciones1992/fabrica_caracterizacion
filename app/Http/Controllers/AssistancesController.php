@@ -49,7 +49,7 @@ class AssistancesController extends Controller
 
                 $assistances->save();
 
-                Controller::NewRegisterTrigger("An insertion was made in the assistences table'$assistances->ass_id'",3, $use_id);
+                Controller::NewRegisterTrigger("An insertion was made in the assistences table'$assistances->ass_id'",3, $request->use_id);
                 // $id = $assistances->ass_id;
                 // $bienestar_news=AssistancesController::Getbienestar_news($id);
 
@@ -143,7 +143,7 @@ public function Getbienestar_news($id)
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;
                     $assistances->save();
-                    Controller::NewRegisterTrigger("An update was made in the assistences table",4,$use_id);
+                    Controller::NewRegisterTrigger("An update was made in the assistences table",4,$request->use_id);
 
                     return response()->json([
                         'status' => True,
@@ -160,13 +160,13 @@ public function Getbienestar_news($id)
     
 }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         $assistances = assistance::find($id);
                 $newAss=($assistances->ass_status==1) ? 0:1;
                 $assistances->ass_status =$newAss;
                 $assistances->save();
-                Controller::NewRegisterTrigger("An change status was made in the actions table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the actions table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested assistances has been change successfully'

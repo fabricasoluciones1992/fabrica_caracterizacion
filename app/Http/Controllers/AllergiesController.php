@@ -38,7 +38,7 @@ class AllergiesController extends Controller
                 }else{
                     $allergie = new Allergie($request->input());
                     $allergie->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Allergies table'$allergie->all_id'",3,$use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Allergies table'$allergie->all_id'",3,$request->use_id);
                     // $id = $allergie->all_id;
                     // $bienestar_news=AllergiesController::Getbienestar_news($id);
 
@@ -111,7 +111,7 @@ class AllergiesController extends Controller
                 }else{
                     $allergie->all_name = $request->all_name;
                     $allergie->save();
-                    Controller::NewRegisterTrigger("An update was made in the Allergies table",4,$use_id);
+                    Controller::NewRegisterTrigger("An update was made in the Allergies table",4,$request->use_id);
 
                     return response()->json([
                         'status' => True,
@@ -127,7 +127,7 @@ class AllergiesController extends Controller
     }
         
     
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request, $id)
     {
 
         $allergie = Allergie::find($id);

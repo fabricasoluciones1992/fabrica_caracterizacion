@@ -63,7 +63,7 @@ class BienestarActivitiesController extends Controller
                     $bienestarActivity = new BienestarActivity($request->input());
                     $bienestarActivity->bie_act_status=1;
                     $bienestarActivity->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table'$bienestarActivity->bie_act_id'",3,$use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table'$bienestarActivity->bie_act_id'",3,$request->use_id);
                     $id = $bienestarActivity->bie_act_id;
                     $bienestar_news=BienestarActivitiesController::Getbienestar_news($id);
                     return response()->json([
@@ -175,7 +175,7 @@ public function update(Request $request, $id)
                 $bienestarActivity->bie_act_date = $request->bie_act_date;
                 $bienestarActivity->bie_act_hour = $request->bie_act_hour;
                 $bienestarActivity->save();
-                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table", 4,$use_id);
+                Controller::NewRegisterTrigger("An update was made in the Bienestar Activities table", 4,$request->use_id);
 
                 return response()->json([
                     'status' => true,
@@ -191,13 +191,13 @@ public function update(Request $request, $id)
     }
 }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         $bienestarActivity = BienestarActivity::find($id);
         $newBi=($bienestarActivity->bie_act_status==1)?0:1;
                 $bienestarActivity->bie_act_status =$newBi;
                 $bienestarActivity->save();
-                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested bienestar activity type has been change successfully'

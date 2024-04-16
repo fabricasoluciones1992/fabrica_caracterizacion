@@ -34,7 +34,7 @@ class HistoryConsultationsController extends Controller
             } else {
                 $hitcon = new HistoryConsultation($request->input());
                 $hitcon->save();
-                Controller::NewRegisterTrigger("An insertion was made in the History consultations table'$hitcon->his_con_id'", 3, $use_id);
+                Controller::NewRegisterTrigger("An insertion was made in the History consultations table'$hitcon->his_con_id'", 3, $request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The History consultations for the student id: '".$hitcon->cons_id."' has been created successfully.",
@@ -89,7 +89,7 @@ class HistoryConsultationsController extends Controller
             'message' => 'Function not available'
         ]);
     }
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         return response()->json([
             'status' => false,

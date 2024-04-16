@@ -45,7 +45,7 @@ class PermanencesController extends Controller
                 $permanence = new Permanence($request->input());
                 $permanence->perm_status=1;
                 $permanence->save();
-                Controller::NewRegisterTrigger("An insertion was made in the permanences table'$permanence->perm_id'", 3,$use_id);
+                Controller::NewRegisterTrigger("An insertion was made in the permanences table'$permanence->perm_id'", 3,$request->use_id);
                 // $id = $permanence->perm_id;
                 // $bienestar_news=PermanencesController::Getbienestar_news($id);
                 return response()->json([
@@ -126,7 +126,7 @@ class PermanencesController extends Controller
                         'message' => $validator->errors()->all()
                     ]);
                 } else {
-                    Controller::NewRegisterTrigger("An update was made in the permanences table", 4,$use_id);
+                    Controller::NewRegisterTrigger("An update was made in the permanences table", 4,$request->use_id);
 
                     $permanences->perm_date = $request->perm_date;
                     $permanences->perm_description = $request->perm_description;
@@ -148,13 +148,13 @@ class PermanencesController extends Controller
     
 }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         $permanences = permanence::find($id);
         $newPerm=($permanences->perm_status == 1)?0:1;
                 $permanences->perm_status = $newPerm;
                 $permanences->save();
-                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested permanence has been change status successfully'

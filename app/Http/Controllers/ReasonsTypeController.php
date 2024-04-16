@@ -40,7 +40,7 @@ class ReasonsTypeController extends Controller
                 }else{
                     $reasont = new ReasonType($request->input());
                     $reasont->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the reasons table'$reasont->rea_typ_id'",3,$use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the reasons table'$reasont->rea_typ_id'",3,$request->use_id);
                     // $id = $reasont->rea_id;
                     // $bienestar_news=ReasonsTController::Getbienestar_news($id);
                     return response()->json([
@@ -111,7 +111,7 @@ class ReasonsTypeController extends Controller
                 }else{
                     $reasont->rea_typ_name = $request->rea_typ_name;
                     $reasont->save();
-                    Controller::NewRegisterTrigger("An update was made in the reasons table",4,$use_id);
+                    Controller::NewRegisterTrigger("An update was made in the reasons table",4,$request->use_id);
 
                     return response()->json([
                         'status' => True,
@@ -127,7 +127,7 @@ class ReasonsTypeController extends Controller
     }
         
     
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
 
         

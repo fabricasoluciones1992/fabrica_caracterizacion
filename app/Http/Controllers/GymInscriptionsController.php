@@ -40,7 +40,7 @@ class GymInscriptionsController extends Controller
                     $gymIn = new GymInscription($request->input());
                     $gymIn->gym_ins_status=1;
                     $gymIn->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Gym inscriptions table'$gymIn->gym_ins_id'",3,$use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Gym inscriptions table'$gymIn->gym_ins_id'",3,$request->use_id);
                     // $id = $gymIn->gym_ins_id;
                     // $bienestar_news=GymInscriptionsController::Getbienestar_news($id);
                     return response()->json([
@@ -129,7 +129,7 @@ public function update(Request $request, $id)
                 $gymIns->gym_ins_date = $request->gym_ins_date;
                 $gymIns->per_id = $request->per_id;
                 $gymIns->save();
-                Controller::NewRegisterTrigger("An update was made in the Gym inscriptions table", 4, $use_id);
+                Controller::NewRegisterTrigger("An update was made in the Gym inscriptions table", 4, $request->use_id);
 
                 return response()->json([
                     'status' => true,
@@ -161,13 +161,13 @@ public function filtredforDocument($proj_id, $use_id, $id)
     }
 }
 
-    public function destroy($proj_id,$use_id, $id)
+    public function destroy(Request $request,$id)
     {
         $gymIns = GymInscription::find($id);
         $newGy=($gymIns->gym_ins_status==1)?0:1;
                 $gymIns->gym_ins_status = $newGy;
                 $gymIns->save();
-                Controller::NewRegisterTrigger("An change status was made in the Gym inscriptions type table",2,$use_id);
+                Controller::NewRegisterTrigger("An change status was made in the Gym inscriptions type table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested Gym inscriptions type has been change status successfully'

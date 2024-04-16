@@ -33,7 +33,7 @@ class Controller extends BaseController
 
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
-                ])->get('http://127.0.0.1:8088/api/persons/' . $proj_id . '/' . $use_id);
+                ])->get('http://127.0.0.1:8088/api/persons/' . $proj_id . '/' . $request->use_id);
                     
             if ($response->successful()) {
                 return response()->json([
