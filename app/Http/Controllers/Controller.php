@@ -173,12 +173,20 @@ class Controller extends BaseController
         $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id");
         return $persons;
     }
-
-    public function reports(Request $request) {
-        $data = Reports::index($request);
+    public function filtredforDocument($proj_id, $use_id, $id)
+{
+    try {
+        $persons = Controller::findByDocument($id);
+ 
         return response()->json([
             'status' => true,
-            'data' => $data
-        ]);
+            'data' => $persons
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
     }
+}
 }
