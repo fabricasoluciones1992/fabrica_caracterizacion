@@ -41,7 +41,7 @@ class BienestarActivity extends Model
         INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
         WHERE ba.bie_act_typ_id = $id
     ");
-    return $bienestarActivity[0];
+    return $bienestarActivity;
     }
 //     public static function Getbienestar_news()
 // {
