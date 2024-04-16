@@ -198,4 +198,11 @@ public function reports(Request $request){
         'data' => $data
     ]);
 }
+public function reportsIndi(Request $request){
+    $data = Reports::select($request);
+    return response()->json([
+        'status' => true,
+        'data' => $data
+    ]);
+}
 }

@@ -80,6 +80,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/students', [Controller::class, 'students'])->name('students'); 
     Route::get('/students'.'{id}', [Controller::class, 'student'])->name('studentById');
     Route::post('/reports', [Controller::class, 'reports'])->name('reports');
+    Route::post('/reports/individual', [Controller::class, 'reportsIndi'])->name('reports');
 
 
     

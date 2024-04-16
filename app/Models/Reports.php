@@ -37,4 +37,93 @@ class Reports extends Model
                 break;
         }
     }
+
+    public static function select($data){
+        switch ($data->option) {
+            case "1":
+                if($data->code === null || $data->code === 0){
+                    $students = DB::select("SELECT stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE per_document = $data->document");
+                }elseif($data->document === null || $data->document === 0){
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code");
+                }else{
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code AND per_document = $data->document");
+                }
+                return $students;
+                break;
+            case "2":
+                if($data->code === null || $data->code === 0){
+                    $students = DB::select("SELECT stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE per_document = $data->document");
+                }elseif($data->document === null || $data->document === 0){
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code");
+                }else{
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code AND per_document = $data->document");
+                }  
+                return $students;
+                break;
+            case "3":
+                if($data->code === null || $data->code === 0){
+                    $students = DB::select("SELECT stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE per_document = $data->document");
+                }elseif($data->document === null || $data->document === 0){
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code");
+                }else{
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code AND per_document = $data->document");
+                } 
+                return $students;
+                break;
+            case "4":
+                if($data->code === null || $data->code === 0){
+                    $students = DB::select("SELECT stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE per_document = $data->document");
+                }elseif($data->document === null || $data->document === 0){
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code");
+                }else{
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code AND per_document = $data->document");
+                } 
+                return $students;
+                break;
+            case "5":
+                if($data->code === null || $data->code === 0){
+                    $students = DB::select("SELECT stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE per_document = $data->document");
+                }elseif($data->document === null || $data->document === 0){
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code");
+                }else{
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code AND per_document = $data->document");
+                } 
+                return $students;
+                break;
+            case "6":
+                if($data->code === null || $data->code === 0){
+                    $students = DB::select("SELECT stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE per_document = $data->document");
+                }elseif($data->document === null || $data->document === 0){
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code");
+                }else{
+                    $students = DB::select("SELECT  stu_id, car_name, pro_name, pro_group, stu_journey, per_document, stu_code, per_name, tel_number, use_mail, per_typ_name
+                    FROM ViewStudents WHERE stu_code = $data->code AND per_document = $data->document");
+                } 
+                return $students;
+                break;
+            default:
+                return response()->json([
+                    'status' => false,
+                    'message' => 'option not found'
+                ],); 
+            break;
+    }
+}
 }
