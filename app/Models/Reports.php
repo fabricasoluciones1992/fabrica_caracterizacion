@@ -11,7 +11,7 @@ class Reports extends Model
     use HasFactory;
 
     public static function index($data) {
-        switch ($data->table) {
+        switch ($data->option) {
             case "1":
                 $students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM ViewStudents where per_typ_id = $data->data");
                 return $students;

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
 
  
@@ -188,5 +189,13 @@ class Controller extends BaseController
             'message' => "Error occurred while found elements"
         ], 500);
     }
+}
+
+public function reports(Request $request){
+    $data = Reports::index($request);
+    return response()->json([
+        'status' => true,
+        'data' => $data
+    ]);
 }
 }
