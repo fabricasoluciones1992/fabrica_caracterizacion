@@ -27,10 +27,7 @@ class permanence extends Model
         $permanence = DB::select("SELECT * FROM viewPermanences WHERE perm_id = $id");
         return $permanence[0];
     }
-    public static function findByDocument($id){
-        $permanence = DB::select("SELECT * FROM viewPermanences WHERE stu_code = $id");
-        return $permanence[0];
-    }
+   
     public static function findBySolTyp($id){
         $permanence = DB::select("SELECT * FROM viewPermanences WHERE sol_typ_name = ?",[$id]);
         return $permanence;
