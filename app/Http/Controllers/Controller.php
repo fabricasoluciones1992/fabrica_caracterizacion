@@ -2,6 +2,7 @@
  
 namespace App\Http\Controllers;
  
+use App\Models\Reports;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -171,5 +172,13 @@ class Controller extends BaseController
     public static function findByDocument($id){
         $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id");
         return $persons;
+    }
+
+    public function reports(Request $request) {
+        $data = Reports::index($request);
+        return response()->json([
+            'status' => true,
+            'data' => $data
+        ]);
     }
 }
