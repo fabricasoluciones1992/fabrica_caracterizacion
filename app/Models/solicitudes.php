@@ -15,8 +15,7 @@ class solicitudes extends Model
         'sol_date',
         'sol_responsible',
         'sol_status',
-        'rea_id',
-        'fac_id',
+        'rea_typ_id',
         'sol_typ_id',
         'stu_id'
     ];
