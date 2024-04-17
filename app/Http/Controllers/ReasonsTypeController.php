@@ -112,6 +112,8 @@ class ReasonsTypeController extends Controller
                     ]);
                 }else{
                     $reasont->rea_typ_name = $request->rea_typ_name;
+                    $reasont->rea_typ_type = $request->rea_typ_type;
+
                     $reasont->save();
                     Controller::NewRegisterTrigger("An update was made in the reasons table",4,$request->use_id);
 
