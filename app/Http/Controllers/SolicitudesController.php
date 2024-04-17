@@ -14,7 +14,17 @@ class SolicitudesController extends Controller
     {
        
         $solicitudes = solicitudes::select();
- 
+        foreach ($solicitudes as $solicitud) {
+            if ($solicitud->sol_status === 0) {
+                $solicitud->status_name = 'pendiente';
+            } elseif ($solicitud->sol_status === 1) {
+                $solicitud->status_name = 'en proceso';
+            } elseif ($solicitud->sol_status === 2) {
+                $solicitud->status_name = 'finalizado';
+            } elseif ($solicitud->sol_status === 3) {
+                $solicitud->status_name = 'cancelado';
+            }
+        }
         return response()->json([
            'status' => true,
             'data' => $solicitudes
@@ -29,7 +39,6 @@ class SolicitudesController extends Controller
             $rules = [
                 'sol_date' =>'date',
                 'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                'sol_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'rea_typ_id' =>'required|integer',
                 'sol_typ_id' =>'required|integer',
                 'stu_id' =>'required|integer'
@@ -45,6 +54,7 @@ class SolicitudesController extends Controller
        
                    $request->merge(['sol_date' => $currentDate]);
                    $solicitud = new solicitudes($request->input());
+                   $solicitud->sol_status=0;
                    $solicitud->save();
                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes table'$solicitud->sol_id'", 3,$request->use_id);
                 //    $id = $solicitud->sol_id;
@@ -118,7 +128,7 @@ class SolicitudesController extends Controller
                 $rules = [
                     'sol_date' =>'date',
                     'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                    'sol_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'sol_status'=> 'required|string|in:0,1,2,3',
                     'fac_id' =>'required|integer',
                     'sol_typ_id' =>'required|integer',
                     'stu_id' =>'required|integer'
