@@ -17,7 +17,7 @@ class Reports extends Model
 
                 //$students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM ViewStudents where per_typ_id = $data->data");
                 $students = DB::table('ViewStudents')
-                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'stu_code', 'per_name', 'per_lastname', 'use_mail', 'tel_number')
+                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'tel_number')
                     ->where('per_typ_id', '=', $data->data)
                     ->get();
                 return $students;
@@ -26,7 +26,7 @@ class Reports extends Model
 
                 // $students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM ViewStudents where car_id = $data->data");
                 $students = DB::table('ViewStudents')
-                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'stu_code', 'per_name', 'per_lastname', 'use_mail', 'tel_number')
+                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'tel_number')
                     ->where('car_id', '=', $data->data)
                     ->get();
                 return $students;
@@ -34,7 +34,7 @@ class Reports extends Model
             case "3":
 
                 $students = DB::table('ViewStudents')->join('viewHistorialConsultas AS hc', 'hc.per_document', '=', 'ViewStudents.per_document')
-                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'hc.per_document', 'stu_code', 'hc.per_name', 'hc.per_lastname', 'use_mail', 'tel_number')
+                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'hc.per_document', 'hc.per_name', 'hc.per_lastname', 'use_mail', 'tel_number')
                     ->where('hc.cons_id', '=', $data->data)
                     ->get();
                 return $students;
