@@ -79,7 +79,7 @@ class SolicitudesController extends Controller
 //         return null;
 //     }
 // }
-    public function show($id)
+    public function show(Request $request,$id)
     {
        
         $solicitudes =  solicitudes::find($id);
@@ -170,7 +170,7 @@ class SolicitudesController extends Controller
                 ]);
             
     }
-    public function filtredforSolicitudes($proj_id,$use_id,$column,$data,Request $request)
+    public function filtredforSolicitudes($column,$data,Request $request)
     {
         try {
             

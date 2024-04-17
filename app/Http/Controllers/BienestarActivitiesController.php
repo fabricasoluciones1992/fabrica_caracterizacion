@@ -64,12 +64,11 @@ class BienestarActivitiesController extends Controller
                     $bienestarActivity->bie_act_status=1;
                     $bienestarActivity->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table'$bienestarActivity->bie_act_id'",3,$request->use_id);
-                    $id = $bienestarActivity->bie_act_id;
-                    $bienestar_news=BienestarActivitiesController::Getbienestar_news($id);
+                    // $id = $bienestarActivity->bie_act_id;
+                    // $bienestar_news=BienestarActivitiesController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
                         'message' => "The bienestar activity has been created successfully.",
-                        'data' => $bienestar_news
 
                     ],200);
                 }
