@@ -17,7 +17,7 @@ class Reports extends Model
 
                 //$students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM ViewStudents where per_typ_id = $data->data");
                 $students = DB::table('ViewStudents')
-                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'tel_number')
+                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail')
                     ->where('per_typ_id', '=', $data->data)
                     ->get();
                 return $students;
@@ -26,7 +26,7 @@ class Reports extends Model
 
                 // $students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM ViewStudents where car_id = $data->data");
                 $students = DB::table('ViewStudents')
-                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'tel_number')
+                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail')
                     ->where('car_id', '=', $data->data)
                     ->get();
                 return $students;
@@ -34,7 +34,7 @@ class Reports extends Model
             case "3":
 
                 $students = DB::table('ViewStudents')->join('viewHistorialConsultas AS hc', 'hc.per_document', '=', 'ViewStudents.per_document')
-                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'hc.per_document', 'hc.per_name', 'hc.per_lastname', 'use_mail', 'tel_number')
+                    ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'hc.per_document', 'hc.per_name', 'hc.per_lastname', 'use_mail')
                     ->where('hc.cons_id', '=', $data->data)
                     ->get();
                 return $students;
@@ -43,14 +43,14 @@ class Reports extends Model
             case "4":
               
                 $students = DB::table('ViewStudents')->rightJoin('Vista_Actividades_Bienestar_Estudiante AS hc', 'hc.stu_id', '=', 'ViewStudents.stu_id')
-                    ->select('per_typ_name', 'hc.car_name', 'hc.pro_name', 'stu_journey', 'per_document', 'hc.stu_code', 'hc.per_name', 'hc.per_lastname', 'use_mail', 'tel_number')
+                    ->select('per_typ_name', 'hc.car_name', 'hc.pro_name', 'stu_journey', 'per_document', 'hc.stu_code', 'hc.per_name', 'hc.per_lastname', 'use_mail')
                     ->where('hc.stu_id', '=', $data->data)
                     ->get();
                 return $students;
                 break;
             case "5":
                 $students = DB::table('ViewStudents')->rightJoin('Vista_Actividades_Bienestar_Estudiante AS hc', 'hc.stu_id', '=', 'ViewStudents.stu_id')
-                    ->select('per_typ_name', 'hc.car_name', 'hc.pro_name', 'stu_journey', 'per_document', 'hc.stu_code', 'hc.per_name', 'hc.per_lastname', 'use_mail', 'tel_number')
+                    ->select('per_typ_name', 'hc.car_name', 'hc.pro_name', 'stu_journey', 'per_document', 'hc.stu_code', 'hc.per_name', 'hc.per_lastname', 'use_mail')
                     ->where('hc.stu_id', '=', $data->data)
                     ->get();
                 return $students;
