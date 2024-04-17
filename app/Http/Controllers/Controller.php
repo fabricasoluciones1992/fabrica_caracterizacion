@@ -171,10 +171,10 @@ class Controller extends BaseController
         }
     }
     public static function findByDocument($id){
-        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id");
+        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document AND doc_typ_name = $id");
         return $persons;
     }
-    public function filtredforDocument($proj_id, $use_id, $id)
+    public function filtredforDocument($id)
 {
     try {
         $persons = Controller::findByDocument($id);

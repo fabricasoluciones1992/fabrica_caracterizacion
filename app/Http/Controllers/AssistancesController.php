@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assistance;
+use App\Models\BienestarActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;

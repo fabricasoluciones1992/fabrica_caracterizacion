@@ -100,7 +100,9 @@ class ReasonsTypeController extends Controller
         $reasont = ReasonType::find($id);
         if ($request->acc_administrator == 1) {
                 $rules = [
-                    'rea_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
+                    'rea_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'rea_typ_type' => 'required|integer|in:0,1'
+
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
