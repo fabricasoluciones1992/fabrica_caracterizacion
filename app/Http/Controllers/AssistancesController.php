@@ -25,11 +25,9 @@ class AssistancesController extends Controller
     public function store(Request $request)
     {
         
-        if ($request->acc_administrator == 1) {
             $rules = [
                 'ass_date' =>'date',
                 'stu_id' =>'required|integer',
-                'per_id' =>'required|integer',
                 'bie_act_id' =>'required|integer'
             ];
 
@@ -60,13 +58,6 @@ class AssistancesController extends Controller
 
                 ], 200);
             }
-        } else {
-
-            return response()->json([
-                'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
-            ], 403); 
-        }
 
     
 }
