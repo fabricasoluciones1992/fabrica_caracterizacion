@@ -170,14 +170,15 @@ class Controller extends BaseController
             ],200);
         }
     }
-    public static function findByDocument($id){
-        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document AND doc_typ_name = $id");
+    public static function findByDocument($id, $docTypeName){
+        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id AND doc_typ_name = '$docTypeName'");
         return $persons;
     }
-    public function filtredforDocument($id)
+    
+    public function filtredforDocument($id, $docTypeName)
 {
     try {
-        $persons = Controller::findByDocument($id);
+        $persons = Controller::findByDocument($id, $docTypeName);
  
         return response()->json([
             'status' => true,
