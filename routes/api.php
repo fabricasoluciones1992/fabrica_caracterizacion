@@ -81,7 +81,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/students'.'{id}', [Controller::class, 'student'])->name('studentById');
     Route::post('/reports', [Controller::class, 'reports'])->name('reports');
     Route::post('/reports/individual', [Controller::class, 'reportsIndi'])->name('reports');
-    Route::get('/documentTypeFilter/'.'{id}', [Controller::class, 'docsTypesId'])->name('docs_types_id');
+    Route::get('/documentTypeFilter', [Controller::class, 'docsTypesId'])->name('docs_types_id');
 
 
 
