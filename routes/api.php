@@ -49,16 +49,13 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('allergy/histories', AllergyHistoriesController::class)->names('allergy.histories')->parameter('', 'allergy_histories');
     Route::resource('enfermeria/inscription', EnfermeriaInscriptionsController::class)->names('enfermeria.inscription')->parameter('', 'enfermeria.inscription');
 
-    
-    
-    
     Route::resource('type/solicitudes', SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
     Route::resource('permanences', PermanencesController::class)->names('permanences')->parameter('', 'permanences');
     Route::resource('assistences', AssistancesController::class)->names('assistences')->parameter('', 'assistences');
-    
-    
+
+
     Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
-    
+
     Route::resource('bienestar/activities/types', BienestarActivityTypesController::class)->names('bienestar.activities.types')->parameter('', 'bienestar_activities_types');
     Route::resource('consultation', ConsultationController::class)->names('consultation')->parameter('', 'consultation');
     Route::resource('history/consultation', HistoryConsultationsController::class)->names('history.consultation')->parameter('', 'history_consultation');
@@ -66,27 +63,28 @@ Route::middleware(['auth:sanctum'])->group(function() {
     // Route::resource('assistances', AssistancesController::class)->names('assistances')->parameter('', 'assistances');
     Route::resource('gym/assistances', GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
     Route::resource('gym/inscriptions', GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
-    
+
     Route::resource('monetary/states', MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
-    
-    
+
+
     Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
     Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
     Route::get('/student/activities/{code}', [Controller::class, 'viewStudentBie'])->name('student.viewStudentBie');
-    
-    Route::get('persons/filtred/{id}/{docTypeName}', [Controller::class, 'filtredforDocument'])->name('filtredforDocument');   
+
+    Route::get('persons/filtred/{id}/{docTypeId}', [Controller::class, 'filtredforDocument'])->name('filtredforDocument');
 
 
-    Route::get('filtredforTSolicitud'.'{id}', [PermanencesController::class, 'filtredforTSolicitud'])->name('filtredforTSolicitud');   
+    Route::get('filtredforTSolicitud'.'{id}', [PermanencesController::class, 'filtredforTSolicitud'])->name('filtredforTSolicitud');
 
-    Route::get('solicitudesFiltred'.'{column}/{data}', [SolicitudesController::class, 'filtredforSolicitudes'])->name('filtredforSolicitudes');  
-    Route::get('/students', [Controller::class, 'students'])->name('students'); 
+    Route::get('solicitudesFiltred'.'{column}/{data}', [SolicitudesController::class, 'filtredforSolicitudes'])->name('filtredforSolicitudes');
+    Route::get('/students', [Controller::class, 'students'])->name('students');
     Route::get('/students'.'{id}', [Controller::class, 'student'])->name('studentById');
     Route::post('/reports', [Controller::class, 'reports'])->name('reports');
     Route::post('/reports/individual', [Controller::class, 'reportsIndi'])->name('reports');
+    Route::get('/documentTypeFilter/'.'{id}', [Controller::class, 'docsTypesId'])->name('docs_types_id');
 
 
-    
+
  });
 
 Route::post('/login', [Controller::class, 'login'])->name('login');

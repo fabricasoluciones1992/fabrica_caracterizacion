@@ -18,7 +18,7 @@ class Reports extends Model
                 //$students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM ViewStudents where per_typ_id = $data->data");
                 $students = DB::table('ViewStudents')
                     ->select('per_typ_name', 'car_name', 'pro_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail')
-                    ->where('per_typ_name', '=', $data->data)
+                    ->where('per_typ_id', '=', $data->data)
                     ->get();
                 return $students;
                 break;
@@ -58,7 +58,6 @@ class Reports extends Model
             case "6";
                 $students = DB::table('ViewStudents as vs')->join('viewHistorialConsultas AS hc', 'hc.per_document', '=', 'vs.per_document')->join('consultations as c', 'c.cons_id', '=', 'hc.cons_id')
                     ->select('vs.per_typ_name', 'vs.car_name', 'vs.pro_name', 'vs.stu_journey', 'vs.per_document', 'vs.per_name', 'vs.per_lastname', 'vs.use_mail', 'hc.per_document',  'c.cons_reason', 'c.cons_description', 'c.cons_date')
-
                     ->get();
                 return $students;
                 break;
