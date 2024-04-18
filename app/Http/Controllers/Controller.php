@@ -215,9 +215,9 @@ public function reportsIndi(Request $request){
     ]);
 }
 
-public function docsTypesId($id){
+public function docsTypesId(){
 
-    $data = DB::table('document_types')->where('doc_typ_id','=',$id)->first();
+    $data = DB::table('document_types')->get();
     if($data == '[]'){
         return response()->json([
            'status' => false,
