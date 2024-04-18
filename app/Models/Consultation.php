@@ -13,34 +13,14 @@ class Consultation extends Model
     protected $fillable = [
         'cons_date',
         'cons_reason',
-        'cons_description',
+        'cons_desdecription',
         'cons_weight',
         'cons_height',
         'cons_imc',
         'cons_vaccination',
     ];
     public $timestamps = false;
-//     public static function Getbienestar_news()
-// {
-//     $consultations = Consultation::all();
-//     foreach ($consultations as $consultation) {
-//         $news = DB::table('bienestar_news')
-//                     ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//                     ->where('bie_new_description', "An insertion was made in the consultations table'$consultation->cons_id'")
-//                     ->select('bie_new_date', 'per_name')
-//                     ->get();
 
-//         if ($news->isNotEmpty()) {
-//             $consultation->new_date = $news[0]->bie_new_date;
-//             $consultation->createdBy = $news[0]->per_name;
-//         } else {
-//             $consultation->new_date = null;
-//             $consultation->createdBy = null;
-//         }
-//     }
-    
-//     return $consultations;
-// }
 
 public static function find($id)
 {

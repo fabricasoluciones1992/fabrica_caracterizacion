@@ -2,30 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Consultation;
+use App\Models\enfermeria_inscription;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 
-class ConsultationController extends Controller
+
+class EnfermeriaInscriptionsController extends Controller
 {
     public function index()
     {
-        $consultations = Consultation::all();
+        $enfIns = enfermeria_inscription::all();
         return response()->json([
             'status' => true,
-            'data' => $consultations
+            'data' => $enfIns
         ],200);
     }
     public function store(Request $request)
     {
         if ($request->acc_administrator == 1) {
             $rules = [
-                'cons_date' => 'date',
-                'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                
+                'enf_ins_weight' => 'required|integer',
+                'enf_ins_height' => 'required|integer',
+                'enf_ins_imc' => 'required|integer',
+                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -34,17 +35,16 @@ class ConsultationController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             }else{
-                $currentDate = now()->toDateString();
-                $request->merge(['cons_date' => $currentDate]);
+                
 
-                $consultation = new Consultation($request->input());
-                $consultation->save();
-                Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$request->use_id);
-                // $id = $consultation->id;
-                // $bienestar_news=ConsultationController::Getbienestar_news($id);
+                $enfIn = new enfermeria_inscription($request->input());
+                $enfIn->save();
+                Controller::NewRegisterTrigger("An insertion was made in the enfermeria inscriptions table'$enfIn->id'",3,$request->use_id);
+                // $id = $enfIn->id;
+                // $bienestar_news=enfermeria_inscriptionController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
-                    'message' => "The consultations has been created successfully.",
+                    'message' => "The enfermeria inscriptions has been created successfully.",
                 ],200);
             }
         } else {
@@ -60,7 +60,7 @@ class ConsultationController extends Controller
 //     $bienestar_news = DB::table('bienestar_news')
 //         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
 //         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the consultations table\'$cons_id\''")
+//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the enfermeria_inscriptions table\'$cons_id\''")
 //         ->get();
 
 //     if ($bienestar_news->count() > 0) {
@@ -71,38 +71,38 @@ class ConsultationController extends Controller
 // }
     public function show($id)
     {
-        $consultation = Consultation::find($id);
-        // $bienestar_news=ConsultationController::Getbienestar_news($id);
+        $enfIn = enfermeria_inscription::find($id);
+        // $bienestar_news=enfermeria_inscriptionController::Getbienestar_news($id);
 
-        if ($consultation == null) {
+        if ($enfIn == null) {
             return response()->json([
                 'status' => false,
-                "data" => ['message' => 'The searched consultations was not found']
+                "data" => ['message' => 'The searched enfermeria inscriptions was not found']
             ], 400);
         } else {
-            // $consultation->new_date = $bienestar_news->bie_new_date;
-            // $consultation->createdBy = $bienestar_news->per_name;
+            // $enfIn->new_date = $bienestar_news->bie_new_date;
+            // $enfIn->createdBy = $bienestar_news->per_name;
             return response()->json([
                 'status' => true,
-                'data' => $consultation
+                'data' => $enfIn
             ]);
         }
     }
     public function update(Request $request, $id)
     {
         if ($request->acc_administrator == 1) {
-            $consultation = Consultation::find($id);
-            if ($consultation == null) {
+            $enfIn = enfermeria_inscription::search($id);
+            if ($enfIn == null) {
                 return response()->json([
                     'status' => false,
                     'data' => ['message' => 'The searched request was not found']
                 ], 400);
             } else {
                 $rules = [
-                    'cons_date' => 'date',
-                    'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                    'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                    
+                'enf_ins_weight' => 'required|integer',
+                'enf_ins_height' => 'required|integer',
+                'enf_ins_imc' => 'required|integer',
+                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -111,19 +111,19 @@ class ConsultationController extends Controller
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
-                    $currentDate = now()->toDateString();
-                    $request->merge(['cons_date' => $currentDate]);
+                    
  
-                    $consultation->cons_date = $request->cons_date;
-                    $consultation->cons_reason = $request->cons_reason;
-                    $consultation->cons_description = $request->cons_description;
+                    $enfIn->enf_ins_weight = $request->enf_ins_weight;
+                    $enfIn->enf_ins_height = $request->enf_ins_height;
+                    $enfIn->enf_ins_imc = $request->enf_ins_imc;
+                    $enfIn->enf_ins_vaccination = $request->enf_ins_vaccination;
                     
-                    $consultation->save();
+                    $enfIn->save();
                     
-                    Controller::NewRegisterTrigger("An update was made in the consultations table", 4, $request->use_id);
+                    Controller::NewRegisterTrigger("An update was made in the enfermeria inscriptions table", 4, $request->use_id);
                     return response()->json([
                     'status' => True,
-                    'message' => "The consultations has been updated successfully."
+                    'message' => "The enfermeria inscriptions has been updated successfully."
                     ], 200);
                 }
             }

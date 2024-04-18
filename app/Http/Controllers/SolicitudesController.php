@@ -129,7 +129,7 @@ class SolicitudesController extends Controller
                     'sol_date' =>'date',
                     'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'sol_status'=> 'required|string|in:0,1,2,3',
-                    'fac_id' =>'required|integer',
+                    'rea_typ_id' =>'required|integer',
                     'sol_typ_id' =>'required|integer',
                     'stu_id' =>'required|integer'
                 ];

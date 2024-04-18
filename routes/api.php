@@ -10,6 +10,7 @@ use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\DiseasesController;
+use App\Http\Controllers\EnfermeriaInscriptionsController;
 use App\Http\Controllers\FactorsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\GymAssitancesController;
@@ -46,6 +47,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('diseases', DiseasesController::class)->names('diseases')->parameter('', 'diseases');
     Route::resource('medical/histories', MedicalHistoriesController::class)->names('medical.histories')->parameter('', 'medical_histories');
     Route::resource('allergy/histories', AllergyHistoriesController::class)->names('allergy.histories')->parameter('', 'allergy_histories');
+    Route::resource('enfermeria/inscription', EnfermeriaInscriptionsController::class)->names('enfermeria.inscription')->parameter('', 'enfermeria.inscription');
+
     
     
     
