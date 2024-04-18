@@ -26,9 +26,9 @@ class AssistancesController extends Controller
     {
         
             $rules = [
-                'ass_date' =>'date',
-                'stu_id' =>'required|integer',
-                'bie_act_id' =>'required|integer'
+                
+                'bie_act_id' =>'required|integer',
+                'use_id' =>'required|integer'
             ];
 
             $validator = Validator::make($request->input(), $rules);

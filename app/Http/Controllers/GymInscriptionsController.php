@@ -144,23 +144,6 @@ public function update(Request $request, $id)
         ], 403);
     }
 }
-public function filtredforDocument($proj_id, $use_id, $id)
-{
-    try {
-        $gymAss = Controller::findByDocument($id);
- 
-        return response()->json([
-            'status' => true,
-            'data' => $gymAss
-        ], 200);
-    } catch (\Throwable $th) {
-        return response()->json([
-            'status' => false,
-            'message' => "Error occurred while found elements"
-        ], 500);
-    }
-}
-
     public function destroy(Request $request,$id)
     {
         $gymIns = GymInscription::find($id);
