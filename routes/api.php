@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware(['auth:sanctum'])->group(function() {
+Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('actions', ActionsController::class)->names('actions')->parameter('', 'actions');
     Route::resource('reasons/types', ReasonsTypeController::class)->names('reasons.types')->parameter('', 'reasons_types');
     Route::resource('allergies', AllergiesController::class)->names('allergies')->parameter('', 'allergies');
@@ -85,7 +85,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-//  });
+ });
 
 Route::post('/login', [Controller::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
