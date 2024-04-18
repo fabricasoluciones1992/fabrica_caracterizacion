@@ -147,7 +147,7 @@ class SolicitudesController extends Controller
                     $solicitudes->sol_date = $request->sol_date;
                     $solicitudes->sol_responsible = $request->sol_responsible;
                     $solicitudes->sol_status = $request->sol_status;
-                    $solicitudes->fac_id = $request->fac_id;
+                    $solicitudes->rea_typ_id = $request->rea_typ_id;
                     $solicitudes->sol_typ_id = $request->sol_typ_id;
                     $solicitudes->stu_id = $request->stu_id;
                     $solicitudes->save();
