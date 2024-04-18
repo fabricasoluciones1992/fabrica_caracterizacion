@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace App\Http\Controllers;
- 
+
 use App\Models\Reports;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -14,16 +14,16 @@ use App\Models\User;
 use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
 
- 
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
- 
+
     public function NewRegisterTrigger($bie_new_description,$new_typ_id, $use_id)
     {
         DB::statement("CALL bie_new_register('" . addslashes($bie_new_description) . "', $new_typ_id, $use_id)");
     }
-    
+
     public function students($proj_id,$use_id,Request $request) {
         $token = $request->header('Authorization');
 
@@ -34,7 +34,7 @@ class Controller extends BaseController
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
                 ])->get('http://127.0.0.1:8088/api/persons/' . $proj_id . '/' . $request->use_id);
-                    
+
             if ($response->successful()) {
                 return response()->json([
                     'status' => true,
@@ -48,7 +48,7 @@ class Controller extends BaseController
             }
         }
     }
-    
+
 
     public function student($proj_id,$use_id,$id,Request $request) {
         $token = $request->header('Authorization');
@@ -60,7 +60,7 @@ class Controller extends BaseController
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
                 ])->get('http://127.0.0.1:8088/api/persons/' . $proj_id . '/' . $use_id . '/' . $id);
-                    
+
             if ($response->successful()) {
                 return response()->json([
                     'status' => true,
@@ -82,7 +82,7 @@ class Controller extends BaseController
         $user=DB::table('users')->where("use_mail",'=',$request->use_mail)->first();
         $user = User::find($user->use_id);
         Auth::login($user);
-        
+
         // Check if the HTTP request was successful
         if ($response->successful()) {
             // Get the token from the JSON response if present
@@ -95,7 +95,7 @@ class Controller extends BaseController
                 // $_SESSION['api_token'] = $token;
                 // $_SESSION['use_id'] = $user->use_id;
                 // $_SESSION['acc_administrator'] = $responseData['acc_administrator'];
-    
+
                 return response()->json([
                     'status' => true,
                     'data' => [
@@ -170,16 +170,16 @@ class Controller extends BaseController
             ],200);
         }
     }
-    public static function findByDocument($id, $docTypeName){
-        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id AND doc_typ_name = '$docTypeName'");
+    public static function findByDocument($id, $docTypeId){
+        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id AND doc_typ_id = $docTypeId");
         return $persons;
     }
-    
-    public function filtredforDocument($id, $docTypeName)
+
+    public function filtredforDocument($id, $docTypeId)
 {
     try {
-        $persons = Controller::findByDocument($id, $docTypeName);
- 
+        $persons = Controller::findByDocument($id, $docTypeId);
+
         return response()->json([
             'status' => true,
             'data' => $persons
@@ -205,7 +205,7 @@ public function reports(Request $request){
             'data' => $data
         ]);
     }
-    
+
 }
 public function reportsIndi(Request $request){
     $data = Reports::select($request);
@@ -213,5 +213,23 @@ public function reportsIndi(Request $request){
         'status' => true,
         'data' => $data
     ]);
+}
+
+public function docsTypesId($id){
+
+    $data = DB::table('document_types')->where('doc_typ_id','=',$id)->first();
+    if($data == '[]'){
+        return response()->json([
+           'status' => false,
+            'data' => "No data found"
+        ]);
+    }else{
+        return response()->json([
+            'status' => true,
+            'data' => $data
+        ]);
+    }
+
+
 }
 }
