@@ -82,8 +82,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('/reports', [Controller::class, 'reports'])->name('reports');
     Route::post('/reports/individual', [Controller::class, 'reportsIndi'])->name('reports');
     Route::get('/documentTypeFilter', [Controller::class, 'docsTypesId'])->name('docs_types_id');
-    Route::delete('/destroyA', [BienestarActivitiesController::class, 'destroyA'])->name('destroyA');
-    Route::delete('/destroyAR', [BienestarActivitiesController::class, 'destroyAR'])->name('destroyAR');
+    Route::delete('/destroyAR', [AssistancesController::class, 'destroyAR'])->name('destroyAR');
 
 
     

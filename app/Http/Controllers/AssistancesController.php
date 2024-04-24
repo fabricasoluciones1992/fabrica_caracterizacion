@@ -166,4 +166,18 @@ public function Getbienestar_news($id)
             
 
     }
+    public function destroyAR(Request $request,$id)
+    {
+        $assistance = Assistance::find($id);
+        $newAsg=($assistance->ass_reg_status==1)?0:1;
+                $assistance->ass_reg_status =$newAsg;
+                $assistance->save();
+                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$request->use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested asisstance register has been change successfully'
+                ]);
+                
+            
+    }
 }
