@@ -22,11 +22,9 @@ class BienestarActivitiesController extends Controller
         foreach ($assistances as $assistance) {
             $date = date('Y-m-d');
             if ($assistance->ass_status == 1 || $activity->bie_act_date < $date) {
-                $assistance->ass_status = 'ASISTIO';
-            }else if($assistance->ass_status == 0 || $activity->bie_act_date > $date){
-                $assistance->ass_status = 'NO ASISTIO';
+                $assistance->ass_status = 1;
             }else{
-                $assistance->ass_status = 'PRE-REGISTRADO';
+                $assistance->ass_status = 0;
             }
             if ($assistance->bie_act_id == $activity->bie_act_id) {
                 array_push($assistancesStudents,$assistance);
@@ -200,6 +198,34 @@ public function update(Request $request, $id)
                 return response()->json([
                     'status' => True,
                     'message' => 'The requested bienestar activity type has been change successfully'
+                ]);
+                
+            
+    }
+    public function destroyA(Request $request,$id)
+    {
+        $assistance = Assistance::find($id);
+        $newAss=($assistance->ass_status==1)?0:1;
+                $assistance->ass_status =$newAss;
+                $assistance->save();
+                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$request->use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested asisstance has been change successfully'
+                ]);
+                
+            
+    }
+    public function destroyAR(Request $request,$id)
+    {
+        $assistance = Assistance::find($id);
+        $newAsg=($assistance->ass_reg_status==1)?0:1;
+                $assistance->ass_reg_status =$newAsg;
+                $assistance->save();
+                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$request->use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => 'The requested asisstance register has been change successfully'
                 ]);
                 
             

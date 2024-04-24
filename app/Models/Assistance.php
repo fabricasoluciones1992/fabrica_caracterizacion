@@ -14,6 +14,7 @@ class Assistance extends Model
         'ass_date',
         'ass_status',
         'stu_id',
+        'ass_reg_status',
         'bie_act_id'
     ];
     public $timestamps = false;
