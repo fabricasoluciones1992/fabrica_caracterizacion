@@ -13,30 +13,22 @@ class BienestarActivitiesController extends Controller
 {
     public function index()
 {
-    $bienestarActivities = BienestarActivity::select();
-    $assistances = Assistance::select();
+    $bienestarActivities = BienestarActivity::all();
 
     foreach ($bienestarActivities as $activity) {
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
-        $assistancesStudents = array();
-        foreach ($assistances as $assistance) {
-            $date = date('Y-m-d');
-            if ($assistance->ass_status == 1 || $activity->bie_act_date < $date) {
-                $assistance->ass_status = 1;
-            }else{
-                $assistance->ass_status = 0;
-            }
-            if ($assistance->bie_act_id == $activity->bie_act_id) {
-                array_push($assistancesStudents,$assistance);
-            }
-        }
+        $assistancesStudents = Assistance::where('bie_act_id', $activity->bie_act_id)
+                                          ->get();
+        
         $activity->assistances = $assistancesStudents;
     }
+
     return response()->json([
         'status' => true,
         'data' => $bienestarActivities
     ], 200);
 }
+
 
 
 
