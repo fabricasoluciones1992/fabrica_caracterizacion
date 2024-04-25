@@ -15,14 +15,19 @@ class SolicitudesController extends Controller
        
         $solicitudes = solicitudes::select();
         foreach ($solicitudes as $solicitud) {
-            if ($solicitud->sol_status === 0) {
-                $solicitud->status_name = 'pendiente';
-            } elseif ($solicitud->sol_status === 1) {
-                $solicitud->status_name = 'en proceso';
-            } elseif ($solicitud->sol_status === 2) {
-                $solicitud->status_name = 'finalizado';
-            } elseif ($solicitud->sol_status === 3) {
-                $solicitud->status_name = 'cancelado';
+            switch ($solicitud->sol_status) {
+                case 0:
+                    $solicitud->status_name = 'pendiente';
+                    break;
+                case 1:
+                    $solicitud->status_name = 'en proceso';
+                    break;
+                case 2:
+                    $solicitud->status_name = 'finalizado';
+                    break;
+                case 3:
+                    $solicitud->status_name = 'cancelado';
+                    break;
             }
         }
         return response()->json([

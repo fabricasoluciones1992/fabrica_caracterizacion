@@ -12,7 +12,7 @@ class ConsultationController extends Controller
 {
     public function index()
     {
-        $consultations = Consultation::all();
+        $consultations = DB::select("SELECT consultations.*, persons.* FROM consultations INNER JOIN persons ON consultations.per_id = persons.per_id");
         return response()->json([
             'status' => true,
             'data' => $consultations
@@ -22,10 +22,9 @@ class ConsultationController extends Controller
     {
         if ($request->acc_administrator == 1) {
             $rules = [
-                'cons_date' => 'date',
                 'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s]+$/',
                 'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                
+                'per_id' => 'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -36,8 +35,8 @@ class ConsultationController extends Controller
             }else{
                 $currentDate = now()->toDateString();
                 $request->merge(['cons_date' => $currentDate]);
-
                 $consultation = new Consultation($request->input());
+                $consultation->date = date('Y-m-d');
                 $consultation->save();
                 Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$request->use_id);
                 // $id = $consultation->id;
