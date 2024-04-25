@@ -13,7 +13,7 @@ class EnfermeriaInscriptionsController extends Controller
 {
     public function index()
     {
-        $enfIns = enfermeria_inscription::all();
+        $enfIns = enfermeria_inscription::select();
         return response()->json([
             'status' => true,
             'data' => $enfIns
@@ -27,6 +27,8 @@ class EnfermeriaInscriptionsController extends Controller
                 'enf_ins_height' => 'required|integer',
                 'enf_ins_imc' => 'required|integer',
                 'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
+                'per_id'=> 'required|integer',
+                
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -103,6 +105,8 @@ class EnfermeriaInscriptionsController extends Controller
                 'enf_ins_height' => 'required|integer',
                 'enf_ins_imc' => 'required|integer',
                 'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
+                'per_id'=>'required|integer',
+                
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -117,7 +121,9 @@ class EnfermeriaInscriptionsController extends Controller
                     $enfIn->enf_ins_height = $request->enf_ins_height;
                     $enfIn->enf_ins_imc = $request->enf_ins_imc;
                     $enfIn->enf_ins_vaccination = $request->enf_ins_vaccination;
-                    
+                    $enfIn->per_id = $request->per_id;
+                   
+
                     $enfIn->save();
                     
                     Controller::NewRegisterTrigger("An update was made in the enfermeria inscriptions table", 4, $request->use_id);

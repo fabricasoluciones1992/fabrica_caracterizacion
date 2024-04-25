@@ -86,7 +86,7 @@ class BienestarActivitiesController extends Controller
     //         return null;
     //     }
     // }
-    public function show($id)
+    public function show($id)//arreglar
 {
     $bienestarActivity = BienestarActivity::find($id);
     // $bienestar_news = BienestarActivitiesController::Getbienestar_news($id);

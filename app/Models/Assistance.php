@@ -22,7 +22,7 @@ class Assistance extends Model
         $assistances = DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante");
         return $assistances;
     }
-    public static function find($id){
+    public static function search($id){
         $assistances =  DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante WHERE ass_id = $id; ");
         return $assistances[0];
     }

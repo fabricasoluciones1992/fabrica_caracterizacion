@@ -47,7 +47,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('diseases', DiseasesController::class)->names('diseases')->parameter('', 'diseases');
     Route::resource('medical/histories', MedicalHistoriesController::class)->names('medical.histories')->parameter('', 'medical_histories');
     Route::resource('allergy/histories', AllergyHistoriesController::class)->names('allergy.histories')->parameter('', 'allergy_histories');
-    Route::resource('enfermeria/inscription', EnfermeriaInscriptionsController::class)->names('enfermeria.inscription')->parameter('', 'enfermeria.inscription');
+    Route::resource('enfermeria/inscriptions', EnfermeriaInscriptionsController::class)->names('enfermeria.inscription')->parameter('', 'enfermeria.inscription');
 
     Route::resource('type/solicitudes', SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
     Route::resource('permanences', PermanencesController::class)->names('permanences')->parameter('', 'permanences');

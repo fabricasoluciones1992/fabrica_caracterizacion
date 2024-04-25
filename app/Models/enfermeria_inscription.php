@@ -17,8 +17,30 @@ class enfermeria_inscription extends Model
         'enf_ins_height',
         'enf_ins_imc',
         'enf_ins_vaccination',
+        'per_id',
+        
     ];
     public $timestamps = false;
+    public static function select(){
+        $enfIns = DB::select("
+            SELECT ef.enf_ins_id, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name, alh.all_his_id, al.all_name, mh.med_his_id, ds.dis_name, mh.med_his_status
+            FROM enfermeria_inscriptions ef
+            INNER JOIN Viewpersons pe ON pe.per_id = ef.per_id
+            INNER JOIN allergy_histories alh ON alh.per_id = pe.per_id
+            LEFT JOIN allergies al ON al.all_id = alh.all_id
+            INNER JOIN medical_histories mh ON mh.per_id = pe.per_id
+            LEFT JOIN diseases ds ON ds.dis_id = mh.dis_id
+        ");
+        foreach ($enfIns as $enfIn) {
+            $medical_histories = DB::table('medical_histories')->where('per_id', '=', $enfIn->per_id)->get(); 
+            $allergy_histories = DB::table('allergy_histories')->where('per_id', '=', $enfIn->per_id)->get(); 
+            $enfIn->medical_histories = $medical_histories;
+            $enfIn->allergy_histories = $allergy_histories;
+        }
+    
+        return $enfIns;
+    }
+    
     public static function search($id)
 {
     $eIns=DB::select("SELECT enf_ins_id,enf_ins_weight,enf_ins_height,enf_ins_imc,enf_ins_vaccination 

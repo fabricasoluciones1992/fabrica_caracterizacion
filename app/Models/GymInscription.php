@@ -33,12 +33,12 @@ class GymInscription extends Model
             FROM 
                 gym_inscriptions gi
             INNER JOIN 
-                ViewPersons pe ON pe.per_id = gi.per_id
+                Viewpersons pe ON pe.per_id = gi.per_id
         ");
         return $gymIns;
     }
     
-    public static function find($id){
+    public static function search($id){
         $gymIns = DB::select("
         SELECT 
         gi.gym_ins_id, 
@@ -55,7 +55,7 @@ class GymInscription extends Model
     FROM 
         gym_inscriptions gi
     INNER JOIN 
-        ViewPersons pe ON pe.per_id = gi.per_id
+        Viewpersons pe ON pe.per_id = gi.per_id
         WHERE gi.gym_ins_id = $id
     ");
     return $gymIns[0];

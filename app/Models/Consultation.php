@@ -14,17 +14,14 @@ class Consultation extends Model
         'cons_date',
         'cons_reason',
         'cons_desdecription',
-        'cons_weight',
-        'cons_height',
-        'cons_imc',
-        'cons_vaccination',
+        
     ];
     public $timestamps = false;
 
 
 public static function find($id)
 {
-    $consultations=DB::select("SELECT cons_id,cons_date,cons_reason,cons_description,cons_weight,cons_height,cons_imc,cons_vaccination 
+    $consultations=DB::select("SELECT cons_id,cons_date,cons_reason,cons_description 
     FROM consultations 
     WHERE cons_id=$id");
     return $consultations[0];
