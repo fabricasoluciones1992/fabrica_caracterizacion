@@ -17,9 +17,9 @@ class BienestarActivitiesController extends Controller
 
     foreach ($bienestarActivities as $activity) {
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
+        $activity->total_assistances = BienestarActivity::countAssitances($activity->bie_act_id);
         $assistancesStudents = Assistance::where('bie_act_id', $activity->bie_act_id)
-                                          ->get();
-        
+      ->get();
         $activity->assistances = $assistancesStudents;
     }
 

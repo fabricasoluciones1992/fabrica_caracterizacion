@@ -75,8 +75,14 @@ class Reports extends Model
     {
         switch ($data->option) {
             case "1":
-                $students = DB::select("SELECT stu_id, car_name, pro_name, pro_group, stu_journey, per_document,per_name, tel_number, use_mail, per_typ_name
-                    FROM ViewStudents WHERE per_document = $data->code");
+                $students = DB::select("SELECT stu_id, car_name, pro_name, pro_group, stu_journey, per_document,per_name, use_mail, per_typ_name
+                FROM ViewStudents WHERE per_document = $data->code");
+                
+                $activity = DB::select("SELECT assistances.ass_date, bienestar_activity_types.bie_act_typ_name,bienestar_activities.bie_act_name, bienestar_activities.bie_act_date, bienestar_activities.bie_act_hour FROM assistances
+                INNER JOIN bienestar_activities ON assistances.bie_act_id = bienestar_activities.bie_act_id
+                INNER JOIN bienestar_activity_types ON bienestar_activities.bie_act_typ_id = bienestar_activity_types.bie_act_typ_id
+                WHERE assistances.stu_id = ?", [$students[0]->stu_id]);
+                
                 return $students;
                 break;
             case "2":

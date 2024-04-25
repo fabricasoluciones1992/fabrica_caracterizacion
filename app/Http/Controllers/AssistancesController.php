@@ -24,34 +24,26 @@ class AssistancesController extends Controller
     }
     public function store(Request $request)
     {
-        
-            $rules = [
-                
+            $rules = [ 
                 'bie_act_id' =>'required|integer',
                 'use_id' =>'required|integer'
             ];
-
             $validator = Validator::make($request->input(), $rules);
-
             if ($validator->fails()) {
                 return response()->json([
                     'status' => False,
                     'message' => $validator->errors()->all()
                 ]);
             } else {
+                $student = DB::select("SELECT * FROM students WHERE ? = per_id", [$request->use_id]);
                 $currentDate = now()->toDateString();
-
                 $request->merge(['ass_date' => $currentDate]);
-
                 $assistances = new assistance($request->input());
                 $assistances->ass_status=0;
-
+                $assistances->ass_reg_status = 1;
+                $assistances->stu_id = $student[0]->stu_id;
                 $assistances->save();
-
                 Controller::NewRegisterTrigger("An insertion was made in the assistences table'$assistances->ass_id'",3, $request->use_id);
-                // $id = $assistances->ass_id;
-                // $bienestar_news=AssistancesController::Getbienestar_news($id);
-
                 return response()->json([
                     'status' => True,
                     'message' => "The assistance has been created successfully.",
