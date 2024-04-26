@@ -23,7 +23,7 @@ class enfermeria_inscription extends Model
     public static function select()//eps falta
 {
     $enfIns = DB::select("
-        SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name
+        SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name,pe.eps_id,pe.eps_name
         FROM enfermeria_inscriptions ef
         INNER JOIN ViewPersons pe ON pe.per_id = ef.per_id
     ");
