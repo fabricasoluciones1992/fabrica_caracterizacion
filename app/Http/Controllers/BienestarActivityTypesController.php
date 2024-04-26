@@ -71,9 +71,8 @@ class BienestarActivityTypesController extends Controller
 //     }
 // }
     public function show($id)
-    {
-        
-            $bienestarActType = BienestarActivity::category($id);
+    {        
+            $bienestarActType = BienestarActivityTypes  ::search($id);
             // $bienestar_news=BienestarActivityTypesController::Getbienestar_news($id);
 
             if ($bienestarActType == null) {
