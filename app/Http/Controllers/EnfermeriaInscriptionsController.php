@@ -57,22 +57,10 @@ class EnfermeriaInscriptionsController extends Controller
             ], 403); 
         }
     }
-    private function calculateIMC($weight, $height)
-    {
-        $imc = $weight / (($height / 100) * ($height / 100));
-        if ($imc < 18.5) {
-            return 'Bajo';
-        } elseif ($imc >= 18.5 && $imc < 25) {
-            return 'Normal';
-        } elseif ($imc >= 25 && $imc < 30) {
-            return 'Sobrepeso';
-        } else {
-            return 'Obesidad';
-        }
-    }
+    
     public function show($id)
     {
-        $enfIn = enfermeria_inscription::find($id);
+        $enfIn = enfermeria_inscription::search($id);
         // $bienestar_news=enfermeria_inscriptionController::Getbienestar_news($id);
 
         if ($enfIn == null) {
