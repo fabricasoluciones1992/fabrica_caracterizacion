@@ -33,7 +33,7 @@ class GymInscription extends Model
             FROM 
                 gym_inscriptions gi
             INNER JOIN 
-                Viewpersons pe ON pe.per_id = gi.per_id
+                ViewPersons pe ON pe.per_id = gi.per_id
         ");
         return $gymIns;
     }
@@ -55,7 +55,7 @@ class GymInscription extends Model
     FROM 
         gym_inscriptions gi
     INNER JOIN 
-        Viewpersons pe ON pe.per_id = gi.per_id
+        ViewPersons pe ON pe.per_id = gi.per_id
         WHERE gi.gym_ins_id = $id
     ");
     return $gymIns[0];
