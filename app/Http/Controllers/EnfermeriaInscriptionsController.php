@@ -19,65 +19,57 @@ class EnfermeriaInscriptionsController extends Controller
             'data' => $enfIns
         ],200);
     }
+
     public function store(Request $request)
-{
-    if ($request->acc_administrator == 1) {
-        $rules = [
-            'enf_ins_weight' => 'required|integer',
-            'enf_ins_height' => 'required|integer',
-            'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
-            'per_id'=> 'required|integer',
-        ];
-        $validator = Validator::make($request->input(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => False,
-                'message' => $validator->errors()->all()
-            ]);
-        } else {
-            $peso = $request->enf_ins_weight;
-            $altura = $request->enf_ins_height / 100;
-            $imc = $peso / ($altura * $altura);
-            
-            if ($imc < 18.5) {
-                $categoria_imc = "Bajo";
-            } elseif ($imc >= 18.5 && $imc < 25) {
-                $categoria_imc = "Normal";
-            } elseif ($imc >= 25 && $imc < 30) {
-                $categoria_imc = "Sobrepeso";
-            } else {
-                $categoria_imc = "Obesidad";
+    {
+        if ($request->acc_administrator == 1) {
+            $rules = [
+                'enf_ins_weight' => 'required|integer',
+                'enf_ins_height' => 'required|integer',
+                'enf_ins_imc' => 'required|integer',
+                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
+                'per_id'=> 'required|integer',
+                
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                ]);
+            }else{
+                
+
+                $enfIn = new enfermeria_inscription($request->input());
+                $enfIn->save();
+                Controller::NewRegisterTrigger("An insertion was made in the enfermeria inscriptions table'$enfIn->id'",3,$request->use_id);
+                // $id = $enfIn->id;
+                // $bienestar_news=enfermeria_inscriptionController::Getbienestar_news($id);
+                return response()->json([
+                    'status' => True,
+                    'message' => "The enfermeria inscriptions has been created successfully.",
+                ],200);
             }
-            
+        } else {
             return response()->json([
-                'status' => True,
-                'message' => "The enfermeria inscriptions has been created successfully.",
-                'imc_category' => $categoria_imc 
-            ],200);
+                'status' => false,
+                'message' => 'Access denied. This reason can only be performed by active administrators.'
+            ], 403); 
         }
-    } else {
-        return response()->json([
-            'status' => false,
-            'message' => 'Access denied. This reason can only be performed by active administrators.'
-        ], 403); 
     }
-}
-
-//     public function Getbienestar_news($id)
-// {
-//     $cons_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the enfermeria_inscriptions table\'$cons_id\''")
-//         ->get();
-
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
+    private function calculateIMC($weight, $height)
+    {
+        $imc = $weight / (($height / 100) * ($height / 100));
+        if ($imc < 18.5) {
+            return 'Bajo';
+        } elseif ($imc >= 18.5 && $imc < 25) {
+            return 'Normal';
+        } elseif ($imc >= 25 && $imc < 30) {
+            return 'Sobrepeso';
+        } else {
+            return 'Obesidad';
+        }
+    }
     public function show($id)
     {
         $enfIn = enfermeria_inscription::find($id);

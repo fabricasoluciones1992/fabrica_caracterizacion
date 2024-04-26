@@ -6,26 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-
 class enfermeria_inscription extends Model
 {
     use HasFactory;
-    protected $primarykey = "enf_ins_id";
+
+    protected $primaryKey = "enf_ins_id";
     protected $fillable = [
-        
         'enf_ins_weight',
         'enf_ins_height',
         'enf_ins_imc',
         'enf_ins_vaccination',
         'per_id',
-        
     ];
     public $timestamps = false;
     public static function select(){
         $enfIns = DB::select("
             SELECT ef.enf_ins_id, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name
             FROM enfermeria_inscriptions ef
-            INNER JOIN ViewPersons pe ON pe.per_id = ef.per_id
+            INNER JOIN Viewpersons pe ON pe.per_id = ef.per_id
            
         ");
     
@@ -40,11 +38,10 @@ class enfermeria_inscription extends Model
     }
     
     public static function search($id)
-{
-    $eIns=DB::select("SELECT enf_ins_id,enf_ins_weight,enf_ins_height,enf_ins_imc,enf_ins_vaccination 
-    FROM enfermeria_inscriptions
-    WHERE enf_ins_id=$id");
-    return $eIns[0];
-}
-
+    {
+        $eIns = DB::select("SELECT enf_ins_id, enf_ins_weight, enf_ins_height, enf_ins_imc, enf_ins_vaccination 
+        FROM enfermeria_inscriptions
+        WHERE enf_ins_id=$id");
+        return $eIns[0];
+    }
 }
