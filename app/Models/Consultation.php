@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class Consultation extends Model
 {
-    use HasFactory;
+    use HasFactory;//agregar tipo de persona
     protected $primarykey = "cons_id";
     protected $fillable = [
         'cons_date',
         'cons_reason',
-        'cons_desdecription',
+        'cons_description',
         
     ];
     public $timestamps = false;
