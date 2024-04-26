@@ -20,12 +20,12 @@ class enfermeria_inscription extends Model
     ];
     public $timestamps = false;
 
-    public static function select()
+    public static function select()//eps falta
 {
     $enfIns = DB::select("
         SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name
         FROM enfermeria_inscriptions ef
-        INNER JOIN Viewpersons pe ON pe.per_id = ef.per_id
+        INNER JOIN ViewPersons pe ON pe.per_id = ef.per_id
     ");
 
     foreach ($enfIns as $enfIn) {
@@ -40,14 +40,25 @@ class enfermeria_inscription extends Model
             $enfIn->imc_status = "Obesidad";
         }
 
-        $medical_histories = DB::table('medical_histories')->where('per_id', '=', $enfIn->per_id)->get(); 
-        $allergy_histories = DB::table('allergy_histories')->where('per_id', '=', $enfIn->per_id)->get(); 
+        $medical_histories = DB::table('medical_histories')
+                                ->join('diseases', 'medical_histories.dis_id', '=', 'diseases.dis_id')
+                                ->select('medical_histories.*', 'diseases.dis_name')
+                                ->where('medical_histories.per_id', '=', $enfIn->per_id)
+                                ->get(); 
+
+        $allergy_histories = DB::table('allergy_histories')
+                                ->join('allergies', 'allergy_histories.all_id', '=', 'allergies.all_id')
+                                ->select('allergy_histories.*', 'allergies.all_name')
+                                ->where('allergy_histories.per_id', '=', $enfIn->per_id)
+                                ->get(); 
+
         $enfIn->medical_histories = $medical_histories;
         $enfIn->allergy_histories = $allergy_histories;
     }
 
     return $enfIns;
 }
+
 
 
     public static function search($id)
