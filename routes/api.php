@@ -65,6 +65,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('gym/inscriptions', GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
 
     Route::resource('monetary/states', MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
+    Route::get('/last/disease/{id}', [EnfermeriaInscriptionsController::class, 'lastDisease'])->name('last_disease');
 
 
     Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');

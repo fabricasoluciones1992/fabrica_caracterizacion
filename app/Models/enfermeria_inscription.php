@@ -95,5 +95,18 @@ class enfermeria_inscription extends Model
     }
         return $enfIns[0];
     }
-    //hacer lo mismo que la funcion de arriba, pero no va hacer un foreach si no que solo traiga el ultimo registro
+    public static function lastDisease($id){
+        $lDis = DB::select("
+    SELECT di.dis_name 
+    FROM medical_histories mh 
+    INNER JOIN diseases di ON di.dis_id = mh.dis_id 
+    WHERE mh.per_id = $id 
+    ORDER BY mh.med_his_id DESC 
+    LIMIT 1
+");
+        return $lDis;
+    }
+
+
+
 }

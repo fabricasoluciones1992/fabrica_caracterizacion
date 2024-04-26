@@ -134,4 +134,13 @@ class EnfermeriaInscriptionsController extends Controller
             'message' => 'function not available.'
         ]);
     }
+    public function lastDisease($id)
+    {
+        $lastDisease = enfermeria_inscription::lastDisease($id);
+
+        return response()->json([
+            'status' => true,
+            'last_disease' => $lastDisease
+        ], 200);
+    }
 }
