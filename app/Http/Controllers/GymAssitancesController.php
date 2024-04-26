@@ -19,13 +19,12 @@ class GymAssitancesController extends Controller
 }
 
 
-    public function store(Request $request)
+    public function store(Request $request)//FECHA ACTUAL
     {
         
             if ($request->acc_administrator == 1) {
 
                 $rules = [
-                    'gym_ass_date' =>'required|date',
                     'per_id' =>'required|numeric'
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -35,7 +34,10 @@ class GymAssitancesController extends Controller
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
+                    $currentDate = now()->toDateString();
+                    $request->merge(['gym_ass_date' => $currentDate]);
                     $gymAs = new Gym_assistance($request->input());
+
                     $gymAs->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Gym assistances table'$gymAs->gym_ass_id'",3,$request->use_id);
                     // $id = $gymAs->gym_ass_id;
@@ -97,46 +99,12 @@ public function update(Request $request, $id)
 {
 
 
-
-    $gymAss = Gym_assistance::find($id);
-
-    if ($request->acc_administrator == 1) {
-        $gymAss = Gym_assistance::find($id);
-        if ($gymAss == null) {
-            return response()->json([
-                'status' => false,
-                'data' => ['message' => 'The searched Gym assistances was not found']
-            ], 400);
-        } else {
-            $rules = [
-                'gym_ass_date' =>'required|date',
-                'per_id' =>'required|numeric'
-            ];
-
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => $validator->errors()->all()
-                ]);
-            } else {
-                $gymAss->gym_ass_date = $request->gym_ass_date;
-                $gymAss->per_id = $request->per_id;
-                $gymAss->save();
-                Controller::NewRegisterTrigger("An update was made in the Gym assistances table", 4, $request->use_id);
-
-                return response()->json([
-                    'status' => true,
-                    'message' => "The Gym assistances has been updated."
-                ], 200);
-            }
-        }
-    } else {
+                
         return response()->json([
             'status' => false,
-            'message' => 'Access denied. This action can only be performed by active administrators.'
+            'message' => 'function not available.'
         ], 403);
-    }
+    
 }
 
 
