@@ -25,7 +25,7 @@ class enfermeria_inscription extends Model
         $enfIns = DB::select("
             SELECT ef.enf_ins_id, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name
             FROM enfermeria_inscriptions ef
-            INNER JOIN Viewpersons pe ON pe.per_id = ef.per_id
+            INNER JOIN ViewPersons pe ON pe.per_id = ef.per_id
            
         ");
     
