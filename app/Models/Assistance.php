@@ -19,11 +19,11 @@ class Assistance extends Model
     ];
     public $timestamps = false;
     public static function select(){
-        $assistances = DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante");
+        $assistances = DB::select("SELECT * FROM viewActivitiesBienestarStudent");
         return $assistances;
     }
     public static function search($id){
-        $assistances =  DB::select("SELECT * FROM Vista_Actividades_Bienestar_Estudiante WHERE ass_id = $id; ");
+        $assistances =  DB::select("SELECT * FROM viewActivitiesBienestarStudent WHERE ass_id = $id; ");
         return $assistances[0];
     }
 //     public static function Getbienestar_news()
@@ -50,7 +50,7 @@ class Assistance extends Model
 
 public static function countQuotas($id)
 {
-    $quotas = DB::select("SELECT COUNT(*) as quotas FROM viewActivitiesBienestarStudent where bie_act_id = ".$id);
+    $quotas = DB::select("SELECT COUNT(*) as quotas FROM assistances where bie_act_id = ".$id);
     return $quotas[0]->quotas;
 }
 }

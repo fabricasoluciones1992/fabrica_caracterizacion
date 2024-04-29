@@ -68,13 +68,13 @@ class BienestarActivity extends Model
 
 public static function countQuotas($id)
 {
-    $quotas = DB::select("SELECT COUNT(*) as quotas FROM viewActivitiesBienestarStudent where ass_reg_status =1 AND bie_act_id = ".$id);
+    $quotas = DB::select("SELECT COUNT(*) as quotas FROM assistances where ass_reg_status =1 AND bie_act_id = ".$id);
     return $quotas[0]->quotas;
 }
 
 public static function countAssitances($id)
 {
-    $quotas = DB::select("SELECT COUNT(*) as quotas FROM viewActivitiesBienestarStudent where ass_status = 1 AND bie_act_id = ".$id);
+    $quotas = DB::select("SELECT COUNT(*) as quotas FROM assistances where ass_status = 1 AND bie_act_id = ".$id);
     return $quotas[0]->quotas;
 }
 }
