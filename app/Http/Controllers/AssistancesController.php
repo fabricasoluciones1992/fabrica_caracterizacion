@@ -36,6 +36,12 @@ class AssistancesController extends Controller
                 ]);
             } else {
                 $student = DB::select("SELECT * FROM students WHERE ? = per_id", [$request->use_id]);
+                if ($student = []) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'cualquier cosa'
+                    ]);
+                }
                 $currentDate = now()->toDateString();
                 $request->merge(['ass_date' => $currentDate]);
                 $assistances = new assistance($request->input());
@@ -154,7 +160,30 @@ class AssistancesController extends Controller
                     'status' => True,
                     'message' => 'The requested asisstance register has been change successfully'
                 ]);
+    }
+
+    public function uploadFile(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            $file->storeAs('csv', $file->getClientOriginalName());
+
+            $csvData = array_map('str_getcsv', file($file->path()));
+
+            foreach ($csvData as $row) {
                 
-            
+                $assistance = new Assistance();
+                $assistance->ass_date = date('Y-m-d');
+                $assistance->ass_status = 1;
+                $assistance->stu_id = intval($row[0]);
+                $assistance->bie_act_id = $request->bie_act_id;
+                $assistance->ass_reg_status = 1;
+                $assistance->save();
+            }
+        }else{
+            return response()->json(['error' => 'No CSV file found in request'], 400);
+        }
+
     }
 }
