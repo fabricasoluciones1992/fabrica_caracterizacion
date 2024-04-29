@@ -21,11 +21,11 @@ class solicitudes extends Model
     ];
     public $timestamps = false;
     public static function select(){
-        $solicitudes = DB::select("SELECT * FROM ViewSolicitudes");
+        $solicitudes = DB::select("SELECT * FROM viewSolicitudes");
         return $solicitudes;
     }
     public static function search($id){
-        $solicitudes = DB::select("SELECT * FROM ViewSolicitudes WHERE sol_id = $id");
+        $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE sol_id = $id");
         return $solicitudes[0];
     }
 }

@@ -18,7 +18,9 @@ class BienestarActivitiesController extends Controller
     foreach ($bienestarActivities as $activity) {
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
         $activity->total_assistances = BienestarActivity::countAssitances($activity->bie_act_id);
-        $assistancesStudents = Assistance::where('bie_act_id', $activity->bie_act_id)
+        // $assistancesStudents = Assistance::where('bie_act_id', $activity->bie_act_id)
+        $assistancesStudents= DB::table('viewActivitiesBienestarStudent AS vA')
+                                        ->select('vA.stu_id','vA.per_name','vA.per_lastname','vA.per_document','vA.car_name','vA.pro_name','vA.pro_group','vA.stu_enr_semester')
       ->get();
         $activity->assistances = $assistancesStudents;
     }
@@ -86,36 +88,28 @@ class BienestarActivitiesController extends Controller
     //         return null;
     //     }
     // }
-    public function show($id)//arreglar
-{
-    $bienestarActivity = BienestarActivity::find($id);
-    // $bienestar_news = BienestarActivitiesController::Getbienestar_news($id);
-
-    if (empty($bienestarActivity)) {
+    public function show($id)
+    {
+        $bienestarActivity = BienestarActivity::find($id);
+    
+        if (empty($bienestarActivity)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'The requested bienestar activity was not found.'
+            ], 404);
+        }
+    
+        $bienestarActivity->quotas = BienestarActivity::countQuotas($bienestarActivity->bie_act_id);
+        $bienestarActivity->total_assistances = BienestarActivity::countAssitances($bienestarActivity->bie_act_id);
+        $assistancesStudents = Assistance::where('bie_act_id', $bienestarActivity->bie_act_id)->get();
+        $bienestarActivity->assistances = $assistancesStudents;
+    
         return response()->json([
-            'status' => false,
-            'message' => 'The requested bienestar activity was not found.'
-        ], 404);
+            'status' => true,
+            'data' => $bienestarActivity
+        ]);
     }
-
-    $occupiedQuotas = DB::table('assistances')
-        ->select('assistances.*', 'persons.per_name')
-        ->join('students', 'assistances.stu_id', '=', 'students.stu_id')
-        ->leftJoin('persons', 'students.stu_code', '=', 'persons.per_document')
-        ->where('assistances.ass_status', 1)
-        ->where('assistances.bie_act_id', $id)
-        ->get();
-
-    $bienestarActivity->occupied_quotas = $occupiedQuotas->count();
-    $bienestarActivity->person_names = $occupiedQuotas->pluck('per_name')->toArray();
-    // $bienestarActivity->new_date = $bienestar_news->bie_new_date;
-    // $bienestarActivity->createdBy = $bienestar_news->per_name;
-
-    return response()->json([
-        'status' => true,
-        'data' => $bienestarActivity
-    ]);
-}
+    
 
 
 

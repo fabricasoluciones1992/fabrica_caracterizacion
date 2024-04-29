@@ -130,7 +130,7 @@ class PermanencesController extends Controller
 
                     $permanences->perm_date = $request->perm_date;
                     $permanences->perm_description = $request->perm_description;
-                    $permanences->req_id = $request->req_id;
+                    $permanences->sol_id = $request->sol_id;
                     $permanences->act_id = $request->act_id;
                     $permanences->save();
                     return response()->json([
