@@ -25,7 +25,8 @@ class GymAssitancesController extends Controller
             if ($request->acc_administrator == 1) {
 
                 $rules = [
-                    'per_id' =>'required|integer'
+                    'gym_ass_date' =>'required|date',
+                    'per_id' =>'required|numeric'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -35,7 +36,6 @@ class GymAssitancesController extends Controller
                     ]);
                 } else {
                     $gymAs = new Gym_assistance($request->input());
-                    $gymAs->gym_ass_date = date('Y-m-d');
                     $gymAs->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Gym assistances table'$gymAs->gym_ass_id'",3,$request->use_id);
                     // $id = $gymAs->gym_ass_id;
