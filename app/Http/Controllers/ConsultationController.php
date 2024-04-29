@@ -12,7 +12,7 @@ class ConsultationController extends Controller
 {
     public function index()
     {
-        $consultations = Consultation::select();
+        $consultations = DB::select("SELECT consultations.*, persons.* FROM consultations INNER JOIN persons ON consultations.per_id = persons.per_id");
         return response()->json([
             'status' => true,
             'data' => $consultations
@@ -70,7 +70,7 @@ class ConsultationController extends Controller
 // }
     public function show($id)
     {
-        $consultation = Consultation::search($id);
+        $consultation = Consultation::find($id);
         // $bienestar_news=ConsultationController::Getbienestar_news($id);
 
         if ($consultation == null) {

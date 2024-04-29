@@ -13,7 +13,7 @@ class BienestarActivitiesController extends Controller
 {
     public function index()
 {
-    $bienestarActivities = BienestarActivity::select();
+    $bienestarActivities = BienestarActivity::all();
 
     foreach ($bienestarActivities as $activity) {
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
@@ -90,7 +90,7 @@ class BienestarActivitiesController extends Controller
     // }
     public function show($id)
     {
-        $bienestarActivity = BienestarActivity::search($id);
+        $bienestarActivity = BienestarActivity::find($id);
     
         if (empty($bienestarActivity)) {
             return response()->json([
@@ -101,9 +101,7 @@ class BienestarActivitiesController extends Controller
     
         $bienestarActivity->quotas = BienestarActivity::countQuotas($bienestarActivity->bie_act_id);
         $bienestarActivity->total_assistances = BienestarActivity::countAssitances($bienestarActivity->bie_act_id);
-        $assistancesStudents= DB::table('viewActivitiesBienestarStudent AS vA')
-        ->select('vA.stu_id','vA.per_name','vA.per_lastname','vA.per_document','vA.car_name','vA.pro_name','vA.pro_group','vA.stu_enr_semester')
-        ->get();        
+        $assistancesStudents = Assistance::where('bie_act_id', $bienestarActivity->bie_act_id)->get();
         $bienestarActivity->assistances = $assistancesStudents;
     
         return response()->json([

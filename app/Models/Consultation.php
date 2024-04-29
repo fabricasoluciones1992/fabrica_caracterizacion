@@ -14,22 +14,15 @@ class Consultation extends Model
         'cons_date',
         'cons_reason',
         'cons_description',
-        'per_id'
         
     ];
     public $timestamps = false;
 
-public static function select(){
-    $cons= DB::select("SELECT co.cons_id,co.cons_date,co.cons_reason,co.cons_description,pe.per_id,pe.per_name,pe.per_lastname,pe.per_typ_id,pe.per_typ_name
-    FROM consultations co
-    INNER JOIN ViewPersons pe ON pe.per_id = co.per_id");
-    return $cons;
-}
-public static function search($id)
+
+public static function find($id)
 {
-    $consultations=DB::select("SELECT co.cons_id,co.cons_date,co.cons_reason,co.cons_description,pe.per_id,pe.per_name,pe.per_lastname,pe.per_typ_id,pe.per_typ_name
-    FROM consultations co
-    INNER JOIN ViewPersons pe ON pe.per_id = co.per_id  
+    $consultations=DB::select("SELECT cons_id,cons_date,cons_reason,cons_description 
+    FROM consultations 
     WHERE cons_id=$id");
     return $consultations[0];
 }
