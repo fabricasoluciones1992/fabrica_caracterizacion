@@ -28,6 +28,7 @@ class solicitudes extends Model
         $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE sol_id = $id");
         return $solicitudes[0];
     }
+    
 }
 
 

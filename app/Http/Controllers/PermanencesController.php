@@ -163,10 +163,27 @@ class PermanencesController extends Controller
     }
 
   
-public function filtredforTSolicitud($proj_id, $use_id, $id)
+public function filtredforTSolicitud($id)
 {
     try {
         $permanences = permanence::findBySolTyp($id);
+        
+        
+        return response()->json([
+            'status' => true,
+            'data' => $permanences
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
+    }
+}
+public function filtredPsolicitud($id)
+{
+    try {
+        $permanences = permanence::findByPsol($id);
         
         
         return response()->json([
