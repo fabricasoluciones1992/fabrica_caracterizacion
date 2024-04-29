@@ -13,14 +13,17 @@ class BienestarActivitiesController extends Controller
 {
     public function index()
 {
-    $bienestarActivities = BienestarActivity::all();
+    $bienestarActivities = BienestarActivity::select();
 
     foreach ($bienestarActivities as $activity) {
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
         $activity->total_assistances = BienestarActivity::countAssitances($activity->bie_act_id);
-        $assistancesStudents= DB::table('viewActivitiesBienestarStudent AS vA')
-                                        ->select('vA.*')
-      ->get();
+        
+        $assistancesStudents = DB::table('viewActivitiesBienestarStudent AS vA')
+                                ->select('vA.*')
+                                ->where('vA.bie_act_id', $activity->bie_act_id)
+                                ->get();
+
         $activity->assistances = $assistancesStudents;
     }
 
@@ -29,6 +32,7 @@ class BienestarActivitiesController extends Controller
         'data' => $bienestarActivities
     ], 200);
 }
+
 
 
 
