@@ -35,27 +35,6 @@ class BienestarActivity extends Model
     return $bienestarActivity[0];
     }
     
-//     public static function Getbienestar_news()
-// {
-//     $bienestarActivities = BienestarActivity::select();
-//     foreach ($bienestarActivities as $bienestarActivity) {
-//         $news = DB::table('bienestar_news')
-//                     ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//                     ->where('bie_new_description', "An insertion was made in the Bienestar Activities table'$bienestarActivity->bie_act_id'")
-//                     ->select('bie_new_date', 'per_name')
-//                     ->get();
-
-//         if ($news->isNotEmpty()) {
-//             $bienestarActivity->new_date = $news[0]->bie_new_date;
-//             $bienestarActivity->createdBy = $news[0]->per_name;
-//         } else {
-//             $bienestarActivity->new_date = null;
-//             $bienestarActivity->createdBy = null;
-//         }
-//     }
-    
-//     return $bienestarActivities;
-// }
 
 
 public static function countQuotas($id)
