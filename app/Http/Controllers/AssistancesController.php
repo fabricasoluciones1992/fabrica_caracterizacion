@@ -36,7 +36,7 @@ class AssistancesController extends Controller
                 ]);
             } else {
                 $student = DB::select("SELECT * FROM students WHERE ? = per_id", [$request->use_id]);
-                if ($student = []) {
+                if ($student == []) {
                     return response()->json([
                         'status' => false,
                         'message' => 'cualquier cosa'
