@@ -18,7 +18,9 @@ class BienestarActivitiesController extends Controller
     foreach ($bienestarActivities as $activity) {
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
         $activity->total_assistances = BienestarActivity::countAssitances($activity->bie_act_id);
-        $assistancesStudents = Assistance::where('bie_act_id', $activity->bie_act_id)
+        // $assistancesStudents = Assistance::where('bie_act_id', $activity->bie_act_id)
+        $assistancesStudents= DB::table('viewActivitiesBienestarStudent AS vA')
+                                        ->select('vA.stu_id','vA.per_name','vA.per_lastname','vA.per_document','vA.car_name','vA.pro_name','vA.pro_group','vA.stu_enr_semester')
       ->get();
         $activity->assistances = $assistancesStudents;
     }
@@ -88,7 +90,7 @@ class BienestarActivitiesController extends Controller
     // }
     public function show($id)
     {
-        $bienestarActivity = BienestarActivity::find($id);
+        $bienestarActivity = BienestarActivity::search($id);
     
         if (empty($bienestarActivity)) {
             return response()->json([
@@ -99,7 +101,9 @@ class BienestarActivitiesController extends Controller
     
         $bienestarActivity->quotas = BienestarActivity::countQuotas($bienestarActivity->bie_act_id);
         $bienestarActivity->total_assistances = BienestarActivity::countAssitances($bienestarActivity->bie_act_id);
-        $assistancesStudents = Assistance::where('bie_act_id', $bienestarActivity->bie_act_id)->get();
+        $assistancesStudents= DB::table('viewActivitiesBienestarStudent AS vA')
+        ->select('vA.stu_id','vA.per_name','vA.per_lastname','vA.per_document','vA.car_name','vA.pro_name','vA.pro_group','vA.stu_enr_semester')
+        ->get();        
         $bienestarActivity->assistances = $assistancesStudents;
     
         return response()->json([

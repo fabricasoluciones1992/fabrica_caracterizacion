@@ -18,6 +18,7 @@ class permanence extends Model
         'sol_id',
         'act_id'
     ];
+    //filtro solicitud por persona
     public $timestamps = false;
     public static function select(){
         $permanences = DB::select("SELECT * FROM viewPermanences");
