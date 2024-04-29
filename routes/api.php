@@ -59,7 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('bienestar/activities/types', BienestarActivityTypesController::class)->names('bienestar.activities.types')->parameter('', 'bienestar_activities_types');
     Route::resource('consultation', ConsultationController::class)->names('consultation')->parameter('', 'consultation');
     Route::resource('history/consultation', HistoryConsultationsController::class)->names('history.consultation')->parameter('', 'history_consultation');
-    Route::resource('bienestar/activities', BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
+    Route::resource('bienestar/activity', BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
     // Route::resource('assistances', AssistancesController::class)->names('assistances')->parameter('', 'assistances');
     Route::resource('gym/assistances', GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
     Route::resource('gym/inscriptions', GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
