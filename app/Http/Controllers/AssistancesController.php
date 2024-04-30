@@ -39,7 +39,7 @@ class AssistancesController extends Controller
                 if ($student == []) {
                     return response()->json([
                         'status' => false,
-                        'message' => 'cualquier cosa'
+                        'message' => 'The user who is registering is not a student'
                     ]);
                 }
                 $currentDate = now()->toDateString();
