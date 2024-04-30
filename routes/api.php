@@ -51,7 +51,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
 
     Route::resource('type/solicitudes', SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
     Route::resource('permanences', PermanencesController::class)->names('permanences')->parameter('', 'permanences');
-    Route::resource('assistences', AssistancesController::class)->names('assistences')->parameter('', 'assistences');
+    Route::post('upload/assistances', [AssistancesController::class, 'uploadFile'])->name('upload.assistances');
+    Route::resource('assistances', AssistancesController::class)->names('assistences')->parameter('', 'assistences');
 
 
     Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
