@@ -104,9 +104,11 @@ class BienestarActivitiesController extends Controller
     
         $bienestarActivity->quotas = BienestarActivity::countQuotas($bienestarActivity->bie_act_id);
         $bienestarActivity->total_assistances = BienestarActivity::countAssitances($bienestarActivity->bie_act_id);
-        $assistancesStudents= DB::table('viewActivitiesBienestarStudent AS vA')
-        ->select('vA.stu_id','vA.per_name','vA.per_lastname','vA.per_document','vA.car_name','vA.pro_name','vA.pro_group','vA.stu_enr_semester')
-        ->get();        
+        $assistancesStudents = DB::table('viewActivitiesBienestarStudent AS vA')
+        ->select('vA.*')
+        ->where('vA.bie_act_id', $bienestarActivity->bie_act_id)
+        ->get();
+
         $bienestarActivity->assistances = $assistancesStudents;
     
         return response()->json([
