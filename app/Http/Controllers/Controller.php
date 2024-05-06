@@ -14,7 +14,7 @@ use App\Models\User;
 use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
 
-
+//login
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -83,18 +83,11 @@ class Controller extends BaseController
         $user = User::find($user->use_id);
         Auth::login($user);
 
-        // Check if the HTTP request was successful
         if ($response->successful()) {
-            // Get the token from the JSON response if present
             $responseData = $response->json();
             $token = isset($responseData['token']) ? $responseData['token'] : null;
-            // Check if a token was retrieved before storing it
             if ($token !== null) {
-                // Start the session and store the token
-                // session_start();
-                // $_SESSION['api_token'] = $token;
-                // $_SESSION['use_id'] = $user->use_id;
-                // $_SESSION['acc_administrator'] = $responseData['acc_administrator'];
+                
 
                 return response()->json([
                     'status' => true,
@@ -102,7 +95,9 @@ class Controller extends BaseController
                         "token" => $token,
                         "use_id" => $user->use_id,
                         "acc_administrator" => $responseData['acc_administrator'],
-                        'per_document' => $responseData['per_document']                    ]
+                        'per_document' => $responseData['per_document'],
+                        'per_typ_name' => $responseData['per_typ_name'],
+                        ]
                 ],200);
             } else {
                 // Handle the case where 'token' is not present in the response
