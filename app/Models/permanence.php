@@ -34,7 +34,7 @@ class permanence extends Model
         return $permanence;
     }
     public static function findByPsol($id){
-        $permanence = DB::select("SELECT * FROM viewPermanences WHERE per_id = ?",[$id]);
+        $permanence = DB::select("SELECT * FROM viewPermanences WHERE per_document = ?",[$id]);
         return $permanence;
     }
 

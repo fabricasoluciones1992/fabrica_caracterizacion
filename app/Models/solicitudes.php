@@ -29,6 +29,10 @@ class solicitudes extends Model
         return $solicitudes[0];
     }
     
+    public static function findBysol($id){
+        $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = ?",[$id]);
+        return $solicitudes;
+    }
 }
 
 
