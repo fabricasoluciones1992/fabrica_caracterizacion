@@ -115,9 +115,11 @@ class PermanencesController extends Controller
             } else {
                 $rules = [
                     'perm_date' =>'required|date',
+                    'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'perm_description' =>'required|string|min:1|max:50|/^[a-zA-Z0-9\s]+$/',
                     'sol_id' =>'required|integer|max:1',
-                    'act_id' =>'required|integer|max:1'
+                    'act_id' =>'required|integer|max:1',
+                    'perm_status'=>'required|integer|max:1'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -130,7 +132,11 @@ class PermanencesController extends Controller
 
                     $permanences->perm_date = $request->perm_date;
                     $permanences->perm_description = $request->perm_description;
+                    $permanences->perm_responsible = $request->perm_responsible;
+
                     $permanences->sol_id = $request->sol_id;
+                    $permanences->perm_status = $request->perm_status;
+
                     $permanences->act_id = $request->act_id;
                     $permanences->save();
                     return response()->json([
