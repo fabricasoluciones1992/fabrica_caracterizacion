@@ -139,6 +139,15 @@ class EnfermeriaInscriptionsController extends Controller
             ], 403);
         }
     }
+    public function lastDisease($id)
+    {
+        $lastDisease = enfermeria_inscription::lastDisease($id);
+
+        return response()->json([
+            'status' => true,
+            'last_disease' => $lastDisease
+        ], 200);
+    }
     public function destroy(Request $request,$id)
     {
         return response()->json([

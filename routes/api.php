@@ -67,7 +67,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
 
     Route::resource('monetary/states', MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
 
-
+    Route::get('/last/disease/{id}', [EnfermeriaInscriptionsController::class, 'lastDisease'])->name('last_disease');
     Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
     Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
     Route::get('/student/activities/{code}', [Controller::class, 'viewStudentBie'])->name('student.viewStudentBie');

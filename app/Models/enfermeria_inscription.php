@@ -20,10 +20,10 @@ class enfermeria_inscription extends Model
     ];
     public $timestamps = false;
 
-    public static function select()//eps falta
+    public static function select()
 {
     $enfIns = DB::select("
-        SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name
+        SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name,pe.eps_id,pe.eps_name
         FROM enfermeria_inscriptions ef
         INNER JOIN ViewPersons pe ON pe.per_id = ef.per_id
     ");
@@ -85,5 +85,16 @@ class enfermeria_inscription extends Model
             $enfIn->allergy_histories = $allergy_histories;
         }
         return $enfIns[0];
+    }
+    public static function lastDisease($id){
+        $lDis = DB::select("
+    SELECT di.dis_name 
+    FROM medical_histories mh 
+    INNER JOIN diseases di ON di.dis_id = mh.dis_id 
+    WHERE mh.per_id = $id 
+    ORDER BY mh.med_his_id DESC 
+    LIMIT 1
+");
+        return $lDis;
     }
 }
