@@ -74,7 +74,7 @@ public static function countQuotas($id)
 
 public static function countAssitances($id)
 {
-    $quotas = DB::select("SELECT COUNT(*) as quotas FROM assistances where ass_status = 1 AND bie_act_id = ".$id);
+    $quotas = DB::select("SELECT COUNT(*) as quotas FROM assistances where ass_status = 1 AND ass_reg_status = 1 AND bie_act_id = ".$id);
     return $quotas[0]->quotas;
 }
 }
