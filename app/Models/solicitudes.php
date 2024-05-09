@@ -30,7 +30,7 @@ class solicitudes extends Model
     }
     
     public static function findBysol($id){
-        $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE stu_id = ?",[$id]);
+        $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = ?",[$id]);
         return $solicitudes;
     }
 }
