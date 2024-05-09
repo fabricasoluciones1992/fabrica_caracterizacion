@@ -14,12 +14,13 @@ class Consultation extends Model
         'cons_date',
         'cons_reason',
         'cons_description',
+        'per_id'
         
     ];
     public $timestamps = false;
 
 
-public static function find($id)
+public static function search($id)
 {
     $consultations=DB::select("SELECT cons_id,cons_date,cons_reason,cons_description 
     FROM consultations 

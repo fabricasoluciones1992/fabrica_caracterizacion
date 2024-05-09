@@ -33,6 +33,8 @@ class solicitudes extends Model
         $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = ?",[$id]);
         return $solicitudes;
     }
+    //filtro use_id
+
 }
 
 

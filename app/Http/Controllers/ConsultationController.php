@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ConsultationController extends Controller
 {
-    public function index()
+    public function index()//tipo de persona id tipo de documento
     {
         $consultations = DB::select("SELECT consultations.*, persons.* FROM consultations INNER JOIN persons ON consultations.per_id = persons.per_id");
         return response()->json([
@@ -36,11 +36,10 @@ class ConsultationController extends Controller
                 $currentDate = now()->toDateString();
                 $request->merge(['cons_date' => $currentDate]);
                 $consultation = new Consultation($request->input());
-                $consultation->date = date('Y-m-d');
+                $consultation->cons_date = date('Y-m-d');
                 $consultation->save();
                 Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$request->use_id);
-                // $id = $consultation->id;
-                // $bienestar_news=ConsultationController::Getbienestar_news($id);
+                
                 return response()->json([
                     'status' => True,
                     'message' => "The consultations has been created successfully.",
@@ -53,25 +52,10 @@ class ConsultationController extends Controller
             ], 403); 
         }
     }
-//     public function Getbienestar_news($id)
-// {
-//     $cons_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the consultations table\'$cons_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
     public function show($id)
     {
-        $consultation = Consultation::find($id);
-        // $bienestar_news=ConsultationController::Getbienestar_news($id);
+        $consultation = Consultation::search($id);
 
         if ($consultation == null) {
             return response()->json([
@@ -79,8 +63,7 @@ class ConsultationController extends Controller
                 "data" => ['message' => 'The searched consultations was not found']
             ], 400);
         } else {
-            // $consultation->new_date = $bienestar_news->bie_new_date;
-            // $consultation->createdBy = $bienestar_news->per_name;
+
             return response()->json([
                 'status' => true,
                 'data' => $consultation
