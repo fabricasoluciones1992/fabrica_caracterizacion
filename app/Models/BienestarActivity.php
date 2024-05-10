@@ -58,4 +58,8 @@ public static function countAssitances($id)
     $quotas = DB::select("SELECT COUNT(*) as quotas FROM assistances where ass_status = 1 AND ass_reg_status = 1 AND bie_act_id = ".$id);
     return $quotas[0]->quotas;
 }
+public static function findByUse($id){
+    $solicitudes = DB::select("SELECT * FROM viewActivitiesBienestarStudent WHERE per_id = ?",[$id]);
+    return $solicitudes;
+}
 }

@@ -22,7 +22,7 @@ class AssistancesController extends Controller
     
 
     }
-    public function store(Request $request)
+    public function store(Request $request)//un estudiante se puede registrar solo una vez a una actividad
     {
             $rules = [ 
                 'bie_act_id' =>'required|integer',
@@ -64,7 +64,7 @@ class AssistancesController extends Controller
     {
         
         $assistances =  Assistance::find($id);
-        // $bienestar_news=AssistancesController::Getbienestar_news($id);
+
 
         if ($assistances == null) {
 
@@ -73,8 +73,7 @@ class AssistancesController extends Controller
                 'data' => ['message' => 'The searched assistance was not found']
             ],400);
         }else{
-            // $assistances->new_date = $bienestar_news->bie_new_date;
-            // $assistances->createdBy = $bienestar_news->per_name;
+ 
             return response()->json([
                 'status' => true,
                 'data' => $assistances

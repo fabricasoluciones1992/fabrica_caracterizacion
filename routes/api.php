@@ -79,6 +79,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('filtredPsolicitud/{id}', [PermanencesController::class, 'filtredPsolicitud'])->name('filtredPsolicitud');
     Route::get('filtredPesolicitud/{id}', [SolicitudesController::class, 'filtredPesolicitud'])->name('filtredPesolicitud');
     Route::get('filtreduser/{id}', [SolicitudesController::class, 'filtreduser'])->name('filtreduser');
+    Route::get('filtreduserP/{id}', [BienestarActivitiesController::class, 'filtreduserP'])->name('filtreduserP');
 
 
     Route::get('solicitudesFiltred/{column}/{data}', [SolicitudesController::class, 'filtredforSolicitudes'])->name('filtredforSolicitudes');

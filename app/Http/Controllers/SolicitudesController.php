@@ -18,16 +18,22 @@ class SolicitudesController extends Controller
         foreach ($solicitudes as $solicitud) {
             switch ($solicitud->sol_status) {
                 case 0:
-                    $solicitud->status_name = 'pendiente';
+                    $solicitud->status_name = 'Recibida';
                     break;
                 case 1:
-                    $solicitud->status_name = 'en proceso';
+                    $solicitud->status_name = 'En curso';
                     break;
                 case 2:
-                    $solicitud->status_name = 'finalizado';
+                    $solicitud->status_name = 'Gestionada';
                     break;
                 case 3:
-                    $solicitud->status_name = 'cancelado';
+                    $solicitud->status_name = 'Cancelada';
+                    break;
+                case 4:
+                    $solicitud->status_name = 'Remisión interna';
+                    break;
+                case 5:
+                    $solicitud->status_name = 'Remisión externa';
                     break;
             }
         }
@@ -37,6 +43,7 @@ class SolicitudesController extends Controller
         ], 200);
  
    
+        
 }
     public function store(Request $request)
     {
