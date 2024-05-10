@@ -202,5 +202,22 @@ class SolicitudesController extends Controller
         ], 500);
     }
 }
+public function filtreduser($id)
+{
+    try {
+        $solicitudes = solicitudes::findByUse($id);
+        
+        
+        return response()->json([
+            'status' => true,
+            'data' => $solicitudes
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
+    }
+}
     
 }
