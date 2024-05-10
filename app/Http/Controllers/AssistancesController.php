@@ -22,43 +22,63 @@ class AssistancesController extends Controller
     
 
     }
-    public function store(Request $request)//un estudiante se puede registrar solo una vez a una actividad
-    {
-            $rules = [ 
-                'bie_act_id' =>'required|integer',
-                'use_id' =>'required|integer'
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                ]);
-            } else {
-                $student = DB::select("SELECT * FROM students WHERE ? = per_id", [$request->use_id]);
-                if ($student == []) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'The user who is registering is not a student'
-                    ]);
-                }
-                $currentDate = now()->toDateString();
-                $request->merge(['ass_date' => $currentDate]);
-                $assistances = new assistance($request->input());
-                $assistances->ass_status=0;
-                $assistances->ass_reg_status = 1;
-                $assistances->stu_id = $student[0]->stu_id;
-                $assistances->save();
-                Controller::NewRegisterTrigger("An insertion was made in the assistences table'$assistances->ass_id'",3, $request->use_id);
-                return response()->json([
-                    'status' => True,
-                    'message' => "The assistance has been created successfully.",
+    public function store(Request $request)
+{
+    $rules = [ 
+        'bie_act_id' =>'required|integer',
+        'use_id' =>'required|integer'
+    ];
 
-                ], 200);
-            }
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'message' => $validator->errors()->all()
+        ]);
+    }
+
+    $student = DB::table('students')->where('per_id', $request->use_id)->first();
+
+    if (!$student) {
+        return response()->json([
+            'status' => false,
+            'message' => 'The user who is registering is not a student'
+        ]);
+    }
+
+    $existingAssistance = DB::table('assistances')
+                            ->where('bie_act_id', $request->bie_act_id)
+                            ->where('stu_id', $student->stu_id)
+                            ->first();
+
+    if ($existingAssistance) {
+        return response()->json([
+            'status' => false,
+            'message' => 'The student is already registered for this activity'
+        ]);
+    }
+
+    $currentDate = now()->toDateString();
+    $request->merge(['ass_date' => $currentDate]);
+
+    $newAssistanceId = DB::table('assistances')->insertGetId([
+        'bie_act_id' => $request->bie_act_id,
+        'stu_id' => $student->stu_id,
+        'ass_date' => $request->ass_date,
+        'ass_status' => 0,
+        'ass_reg_status' => 1,
+    ]);
+
+    Controller::NewRegisterTrigger("An insertion was made in the assistences table '$newAssistanceId'", 3, $request->use_id);
+
+    return response()->json([
+        'status' => true,
+        'message' => "The assistance has been created successfully."
+    ], 200);
+}
 
     
-}
 
     public function show($id)
     {

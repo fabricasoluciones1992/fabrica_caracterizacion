@@ -46,7 +46,7 @@ class BienestarActivitiesController extends Controller
                     'bie_act_quotas' => 'required|numeric',
                     'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                     'bie_act_typ_id' =>'required|numeric',
-                    'bie_act_hour' => 'required',
+                    'bie_act_hour' => 'required|date_format:H:i'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -59,8 +59,7 @@ class BienestarActivitiesController extends Controller
                     $bienestarActivity->bie_act_status=1;
                     $bienestarActivity->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table'$bienestarActivity->bie_act_id'",3,$request->use_id);
-                    // $id = $bienestarActivity->bie_act_id;
-                    // $bienestar_news=BienestarActivitiesController::Getbienestar_news($id);
+                   
                     return response()->json([
                         'status' => True,
                         'message' => "The bienestar activity has been created successfully.",
@@ -76,21 +75,7 @@ class BienestarActivitiesController extends Controller
         
     }
 
-    // public function Getbienestar_news($id)
-    // {
-    //     $bie_act_id = $id;
-    //     $bienestar_news = DB::table('bienestar_news')
-    //         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-    //         ->select('bie_new_date', 'persons.per_name')
-    //         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Bienestar Activities table\'$bie_act_id\''")
-    //         ->get();
-    
-    //     if ($bienestar_news->count() > 0) {
-    //         return $bienestar_news[0];
-    //     } else {
-    //         return null;
-    //     }
-    // }
+   
     public function show($id)
     {
         $bienestarActivity = BienestarActivity::find($id);
