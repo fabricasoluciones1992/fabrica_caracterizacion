@@ -21,12 +21,9 @@ class HistoryConsultationsController extends Controller
     {
         if ($request->acc_administrator == 1) {
             $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
-                'cons_id' =>'required|integer|min:1|max:999999',
-                'per_id' =>'required|integer|min:1|max:999999',
+
+                'cons_id' =>'required|exists:consultations|integer|min:1|max:999999',
+                'per_id' =>'required|exists:persons|integer|min:1|max:999999',
             ];
             $validator = Validator::make($request->all(), $rules); 
     

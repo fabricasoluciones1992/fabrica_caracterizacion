@@ -24,15 +24,12 @@ class EnfermeriaInscriptionsController extends Controller
     {
         if ($request->acc_administrator == 1) {
             $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                 'enf_ins_weight' => 'required|numeric',
                 'enf_ins_height' => 'required|numeric',
                 'enf_ins_imc' => 'required|numeric',
                 'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                'per_id'=> 'required|integer',
+                'per_id'=> 'required|exists:persons|integer',
                 
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -104,15 +101,12 @@ class EnfermeriaInscriptionsController extends Controller
                 ], 400);
             } else {
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                 'enf_ins_weight' => 'required|integer',
                 'enf_ins_height' => 'required|integer',
                 'enf_ins_imc' => 'required|integer',
                 'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                'per_id'=>'required|integer',
+                'per_id'=>'required|exists:persons|integer',
                 
                 ];
                 $validator = Validator::make($request->input(), $rules);

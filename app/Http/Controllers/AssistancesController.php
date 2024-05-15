@@ -25,11 +25,8 @@ class AssistancesController extends Controller
     public function store(Request $request)
 {
     $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users', 
-        'bie_act_id' =>'required|integer',
+        'use_id' =>'required|exists:users|integer',
+        'bie_act_id' =>'required|exists:bienestar_activities|integer',
     ];
 
     $validator = Validator::make($request->all(), $rules);
@@ -117,14 +114,12 @@ class AssistancesController extends Controller
                 ],400);
             } else {
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
+                    'stu_id' =>'required|exists:students|integer|max:1',
                     'ass_date' =>'date',
                     'ass_status' =>'required|integer|max:1',
-                    'bie_act_id' =>'required|integer|max:1',
-                    'per_id' =>'required|integer|max:1'
+                    'bie_act_id' =>'required|exists:bienestar_activities|integer|max:1',
+                    'per_id' =>'required|exists:persons|integer|max:1'
 
                 ];
                 $validator = Validator::make($request->input(), $rules);

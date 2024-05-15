@@ -29,10 +29,7 @@ class ActionsController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                     'act_name' => 'required|string|min:1|max:50|unique:actions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     
                 ];
@@ -90,10 +87,7 @@ class ActionsController extends Controller
         $action = action::find($id);
         if ($request->acc_administrator == 1) {
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                     'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);

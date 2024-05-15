@@ -42,14 +42,11 @@ class BienestarActivitiesController extends Controller
             if ($request->acc_administrator == 1) {
 
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                     'bie_act_date' =>'required|date',
                     'bie_act_quotas' => 'required|numeric',
                     'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                    'bie_act_typ_id' =>'required|numeric',
+                    'bie_act_typ_id' =>'required|exists:bienestar_activity_types|numeric',
                     'bie_act_hour' => 'required|date_format:H:i'
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -134,11 +131,8 @@ public function update(Request $request, $id)
             ], 400);
         } else {
             $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
-                'bie_act_typ_id' => 'required|numeric',
+
+                'bie_act_typ_id' => 'required|exists:bienestar_activity_types|numeric',
                 'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                 'bie_act_quotas' => 'required|numeric',
                 'bie_act_date' => 'required|date',

@@ -50,14 +50,12 @@ class SolicitudesController extends Controller
        
         if ($request->acc_administrator == 1) {
             $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                 'sol_date' =>'date',
                 'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                'rea_typ_id' =>'required|integer',
-                'sol_typ_id' =>'required|integer',
+                'rea_typ_id' =>'required|exists:reason_types|integer',
+                'sol_typ_id' =>'required|exists:solicitude_types|integer',
+                'stu_id' =>'required|exists:students|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -125,15 +123,13 @@ class SolicitudesController extends Controller
                 ], 400);
             } else {
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                     'sol_date' =>'date',
                     'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'sol_status'=> 'required|string|in:0,1,2,3',
-                    'rea_typ_id' =>'required|integer',
-                    'sol_typ_id' =>'required|integer',
+                    'rea_typ_id' =>'required|exists:reason_types|integer',
+                    'sol_typ_id' =>'required|exists:solicitude_types|integer',
+                    'stu_id' =>'required|exists:students|integer'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {

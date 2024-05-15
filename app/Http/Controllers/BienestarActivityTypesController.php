@@ -26,10 +26,7 @@ class BienestarActivityTypesController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                     'bie_act_typ_name' => 'required|string|min:1|max:55|unique:bienestar_activity_types|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -109,10 +106,7 @@ class BienestarActivityTypesController extends Controller
                     ],400);
                 } else {
                     $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                         'bie_act_typ_name' =>'required|string|min:1|max:55|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
 
                     ];

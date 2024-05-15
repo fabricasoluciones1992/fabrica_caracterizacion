@@ -26,15 +26,12 @@ class PermanencesController extends Controller
         
         if ($request->acc_administrator == 1) {
             $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                 'perm_date' =>'required|date',
                 'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
                 'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                'sol_id' =>'required|integer|max:1',
-                'act_id' =>'required|integer|max:1'
+                'sol_id' =>'required|exists:solicitudes|integer|max:1',
+                'act_id' =>'required|exists:actions|integer|max:1'
             ];            
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -118,15 +115,12 @@ class PermanencesController extends Controller
                 ], 400);
             } else {
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                     'perm_date' =>'required|date',
                     'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
-                    'sol_id' =>'required|integer|max:1',
-                    'act_id' =>'required|integer|max:1',
+                    'sol_id' =>'required|exists:solicitudes|integer|max:1',
+                    'act_id' =>'required|exists:actions|integer|max:1',
                     'perm_status'=>'required|integer|max:1'
                 ];
                 $validator = Validator::make($request->input(), $rules);

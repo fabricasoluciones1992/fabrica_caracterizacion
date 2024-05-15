@@ -24,11 +24,8 @@ class SolicitudesTypesController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
-                    'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u|unique:solicitude_types'
+
+                    'sol_typ_name' => 'requiredstring|min:1|max:100|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u|unique:solicitude_types'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -109,11 +106,8 @@ class SolicitudesTypesController extends Controller
                 } else {
 
                     $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
-                        'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
+
+                        'sol_typ_name' => 'requiredstring|min:1|max:100|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     ];
                     $validator = Validator::make($request->input(), $rules);
                     if ($validator->fails()) {

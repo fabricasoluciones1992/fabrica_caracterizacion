@@ -25,11 +25,8 @@ class GymAssitancesController extends Controller
             if ($request->acc_administrator == 1) {
 
                 $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
-                    'per_id' =>'required|integer'
+
+                    'per_id' =>'required|exists:persons|integer'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -113,12 +110,9 @@ public function update(Request $request, $id)
             ], 400);
         } else {
             $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+
                 'gym_ass_date' =>'required|date',
-                'per_id' =>'required|numeric'
+                'per_id' =>'required|exists:persons|numeric'
             ];
 
             $validator = Validator::make($request->input(), $rules);
