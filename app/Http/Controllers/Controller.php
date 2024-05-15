@@ -96,7 +96,7 @@ class Controller extends BaseController
                         "use_id" => $user->use_id,
                         "acc_administrator" => $responseData['acc_administrator'],
                         'per_document' => $responseData['per_document'],
-                        'per_typ_name' => $responseData['per_typ_name'],
+                        
                         ]
                 ],200);
             } else {
