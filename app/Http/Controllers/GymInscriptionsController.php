@@ -27,6 +27,10 @@ class GymInscriptionsController extends Controller
             if ($request->acc_administrator == 1) {
 
                 $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                     'gym_ins_date' =>'required|date',
                     'per_id' =>'required|numeric'
                 ];
@@ -115,6 +119,10 @@ public function update(Request $request, $id)
             ], 400);
         } else {
             $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                 'gym_ins_date' =>'required|date',
                     'per_id' =>'required|numeric'
             ];

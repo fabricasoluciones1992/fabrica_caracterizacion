@@ -28,6 +28,10 @@ class MonetaryStatesController extends Controller
 
         if ($request->acc_administrator == 1) {
             $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                 'mon_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u|unique:monetary_states'
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -109,6 +113,10 @@ class MonetaryStatesController extends Controller
                 ], 400);
             } else {
                 $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                     'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 ];
                 $validator = Validator::make($request->input(), $rules);

@@ -25,6 +25,10 @@ class ReasonsTypeController extends Controller
     {
             if ($request->acc_administrator == 1) {
                 $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                     'rea_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'rea_typ_type' => 'required|integer|in:0,1'
 
@@ -100,6 +104,10 @@ class ReasonsTypeController extends Controller
         $reasont = ReasonType::find($id);
         if ($request->acc_administrator == 1) {
                 $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                     'rea_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'rea_typ_type' => 'required|integer|in:0,1'
 

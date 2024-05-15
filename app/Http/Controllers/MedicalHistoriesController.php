@@ -26,6 +26,10 @@ class MedicalHistoriesController extends Controller
             if ($request->acc_administrator == 1) {
 
                 $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                     
                     'per_id' =>'required|numeric',
                     'dis_id' =>'required|numeric',

@@ -29,6 +29,10 @@ class ActionsController extends Controller
         
             if ($request->acc_administrator == 1) {
                 $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                     'act_name' => 'required|string|min:1|max:50|unique:actions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     
                 ];
@@ -58,21 +62,7 @@ class ActionsController extends Controller
             }
         
     }
-//     public function Getbienestar_news($id)
-// {
-//     $act_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Actions table\'$act_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
 
     
     public function show($id)
@@ -80,15 +70,13 @@ class ActionsController extends Controller
 
         $action = action::find($id);
         
-        // $bienestar_news=ActionsController::Getbienestar_news($id);
             if ($action == null) {
                 return response()->json([
                     'status' => false,
                     'data' => ['message' => 'The requested Action was not found']
                 ],400);
             }else{
-                // $action->new_date = $bienestar_news->bie_new_date;
-                // $action->createdBy = $bienestar_news->per_name;
+               
                 return response()->json([
                     'status' => true,
                     'data' => $action
@@ -102,6 +90,10 @@ class ActionsController extends Controller
         $action = action::find($id);
         if ($request->acc_administrator == 1) {
                 $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                     'act_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);

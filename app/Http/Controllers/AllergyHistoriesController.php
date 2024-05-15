@@ -20,6 +20,10 @@ class AllergyHistoriesController extends Controller
     {
             if ($request->acc_administrator == 1) {
                 $rules = [
+                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                     'per_id' =>'required|numeric',
                     'all_id' =>'required|numeric',
                 ];
@@ -33,8 +37,7 @@ class AllergyHistoriesController extends Controller
                     $aHistory = new AllergyHistory($request->input());
                     $aHistory->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Allergies Histories table'$aHistory->all_his_id'",3,$request->use_id);
-                    // $id = $aHistory->all_his_id;
-                    // $bienestar_news=AllergyHistoriesController::Getbienestar_news($id);
+                    
                     return response()->json([
                         'status' => True,
                         'message' => "The Allergy History has been created successfully.",
@@ -51,25 +54,10 @@ class AllergyHistoriesController extends Controller
         
     }
     
-//     public function Getbienestar_news($id)
-// {
-//     $all_his_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Allergies Histories table\'$all_his_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
     public function show($id)
 {
     $aHistory = AllergyHistory::find($id);
-    // $bienestar_news=AllergyHistoriesController::Getbienestar_news($id);
 
     if ($aHistory == null) {
         return response()->json([
@@ -77,8 +65,7 @@ class AllergyHistoriesController extends Controller
             'data' => ['message' => 'The requested Allergies Histories was not found']
         ],400);
     }else{
-        // $aHistory->new_date = $bienestar_news->bie_new_date;
-        // $aHistory->createdBy = $bienestar_news->per_name;
+        
         return response()->json([
             'status' => true,
             'data' => $aHistory
