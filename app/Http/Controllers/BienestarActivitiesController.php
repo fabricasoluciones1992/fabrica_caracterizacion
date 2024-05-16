@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class BienestarActivitiesController extends Controller
 {
-    public function index()
+    public function index()//que aparezca si ya estoy registrado o no
 {
     $bienestarActivities = BienestarActivity::select();
 

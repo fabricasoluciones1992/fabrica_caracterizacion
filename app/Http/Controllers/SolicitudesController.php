@@ -12,81 +12,90 @@ use Illuminate\Support\Facades\DB;
 class SolicitudesController extends Controller
 {
     public function index()
-    {
-       
-        $solicitudes = solicitudes::select();
-        foreach ($solicitudes as $solicitud) {
-            switch ($solicitud->sol_status) {
-                case 0:
-                    $solicitud->status_name = 'Recibida';
-                    break;
-                case 1:
-                    $solicitud->status_name = 'En curso';
-                    break;
-                case 2:
-                    $solicitud->status_name = 'Gestionada';
-                    break;
-                case 3:
-                    $solicitud->status_name = 'Cancelada';
-                    break;
-                case 4:
-                    $solicitud->status_name = 'Remisión interna';
-                    break;
-                case 5:
-                    $solicitud->status_name = 'Remisión externa';
-                    break;
-            }
+{
+    $solicitudes = Solicitudes::select();
+    
+    $solicitudesType0 = [];
+    $solicitudesType1 = [];
+
+    foreach ($solicitudes as $solicitud) {
+        switch ($solicitud->sol_status) {
+            case 0:
+                $solicitud->status_name = 'Recibida';
+                break;
+            case 1:
+                $solicitud->status_name = 'En curso';
+                break;
+            case 2:
+                $solicitud->status_name = 'Gestionada';
+                break;
+            case 3:
+                $solicitud->status_name = 'Cancelada';
+                break;
+            case 4:
+                $solicitud->status_name = 'Remisión interna';
+                break;
+            case 5:
+                $solicitud->status_name = 'Remisión externa';
+                break;
         }
+
+        if ($solicitud->rea_typ_type == 0) {
+            $solicitudesType0[] = $solicitud;
+        } elseif ($solicitud->rea_typ_type == 1) {
+            $solicitudesType1[] = $solicitud;
+        }
+    }
+
+    return response()->json([
+        'status' => true,
+        'data' => [
+            'Reason' => $solicitudesType0,
+            'Factor' => $solicitudesType1
+        ]
+    ], 200);
+}
+
+public function store(Request $request)//falta
+{
+    $rules = [
+        'sol_date' => 'date',
+        'rea_typ_id' => 'required|exists:reason_types|integer',
+        'sol_typ_id' => 'required|exists:solicitude_types|integer',
+        'stu_id' => 'required|exists:students|integer'
+    ];
+
+    if ($request->acc_administrator != 1) {
+        $request->merge(['sol_responsible' => 'Por definir']);
+    } else {
+        $rules['sol_responsible'] = 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u';
+    }
+
+    $validator = Validator::make($request->input(), $rules);
+    if ($validator->fails()) {
         return response()->json([
-           'status' => true,
-            'data' => $solicitudes
-        ], 200);
- 
-   
-        
-}
-    public function store(Request $request)
-    {
-       
-        if ($request->acc_administrator == 1) {
-            $rules = [
+            'status' => false,
+            'message' => $validator->errors()->all()
+        ]);
+    }
 
-                'sol_date' =>'date',
-                'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                'rea_typ_id' =>'required|exists:reason_types|integer',
-                'sol_typ_id' =>'required|exists:solicitude_types|integer',
-                'stu_id' =>'required|exists:students|integer'
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                   ]);
-               }else{
-                   $currentDate = now()->toDateString();
-       
-                   $request->merge(['sol_date' => $currentDate]);
-                   $solicitud = new solicitudes($request->input());
-                   $solicitud->sol_status=0;
-                   $solicitud->save();
-                   Controller::NewRegisterTrigger("An insertion was made in the solicitudes table'$solicitud->sol_id'", 3,$request->use_id);
-            
-                   return response()->json([
-                    'status' => True,
-                    'message' => "The request has been created successfully.",
+    $currentDate = now()->toDateString();
+    $request->merge(['sol_date' => $currentDate]);
 
-                   ], 200);
-            }
-        } else {
-            return response()->json([
- 
-                'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
-            ], 403);
-        }
-   
+    $solicitud = new solicitudes($request->input());
+    $solicitud->sol_status = 0;
+    $solicitud->save();
+
+    // Dispara el trigger de nuevo registro
+    Controller::NewRegisterTrigger("An insertion was made in the solicitudes table'$solicitud->sol_id'", 3, $request->use_id);
+
+    // Retorna la respuesta exitosa
+    return response()->json([
+        'status' => true,
+        'message' => "The request has been created successfully."
+    ], 200);
 }
+
 
     public function show(Request $request,$id)
     {
@@ -165,7 +174,7 @@ class SolicitudesController extends Controller
         }
    
 }
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request,$id)//estudiante puede eliminar
     {
         $solicitudes = solicitudes::find($id);
         $newSol=($solicitudes->sol_status == 1) ?0:1;

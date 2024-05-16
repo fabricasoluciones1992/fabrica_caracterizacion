@@ -58,21 +58,7 @@ class ReasonsTypeController extends Controller
             }
         
     }
-//     public function Getbienestar_news($id)
-// {
-//     $rea_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the reasons table\'$rea_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
     public function show($id)
     {
 

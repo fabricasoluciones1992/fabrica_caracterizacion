@@ -20,7 +20,7 @@ class PermanencesController extends Controller
 
 }
 
-    public function store(Request $request)
+    public function store(Request $request)//status
     {
         
         
@@ -30,8 +30,9 @@ class PermanencesController extends Controller
                 'perm_date' =>'required|date',
                 'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
                 'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'perm_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'sol_id' =>'required|exists:solicitudes|integer|max:1',
-                'act_id' =>'required|exists:actions|integer|max:1'
+                'act_id' =>'required|exists:actions|integer|max:1',
             ];            
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -62,27 +63,12 @@ class PermanencesController extends Controller
         }
     
 }
-// public function Getbienestar_news($id)
-// {
-//     $perm_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the permanences table\'$perm_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
 
     public function show($id)
     {
         
         $permanences =  permanence::find($id);
-        // $bienestar_news=PermanencesController::Getbienestar_news($id);
 
         if ($permanences == null) {
             return response()->json([
@@ -90,8 +76,7 @@ class PermanencesController extends Controller
                 "data" => ['message' => 'The searched permanences was not found']
             ], 400);
         } else {
-            // $permanences->new_date = $bienestar_news->bie_new_date;
-            // $permanences->createdBy = $bienestar_news->per_name;
+          
             return response()->json([
                 'status' => true,
                 'data' => $permanences
@@ -101,7 +86,7 @@ class PermanencesController extends Controller
     
 }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id)//status
     {
         
         $permanences = permanence::find($id);
@@ -121,7 +106,7 @@ class PermanencesController extends Controller
                     'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
                     'sol_id' =>'required|exists:solicitudes|integer|max:1',
                     'act_id' =>'required|exists:actions|integer|max:1',
-                    'perm_status'=>'required|integer|max:1'
+                    'perm_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
