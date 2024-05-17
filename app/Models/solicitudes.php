@@ -33,10 +33,15 @@ class solicitudes extends Model
         $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = ?",[$id]);
         return $solicitudes;
     }
-    public static function findByUse($id){
-        $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_id = ?",[$id]);
+    public static function findByUse($id, $rea_typ_type = null){
+        if ($rea_typ_type !== null) {
+            $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_id = ? AND rea_typ_type = ?", [$id, $rea_typ_type]);
+        } else {
+            $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_id = ?", [$id]);
+        }
         return $solicitudes;
     }
+    
 
 }
 

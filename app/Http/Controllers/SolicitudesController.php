@@ -267,12 +267,14 @@ public function show($id)
             'message' => "Error occurred while found elements"
         ], 500);
     }
-}
-public function filtreduser($id)
+}public function filtreduser($id, $rea_typ_type = null)
 {
     try {
-        $solicitudes = solicitudes::findByUse($id);
-        
+        if ($rea_typ_type !== null) {
+            $solicitudes = solicitudes::findByUse($id, $rea_typ_type);
+        } else {
+            $solicitudes = solicitudes::findByUse($id);
+        }
         
         return response()->json([
             'status' => true,
@@ -285,5 +287,6 @@ public function filtreduser($id)
         ], 500);
     }
 }
+
     
 }
