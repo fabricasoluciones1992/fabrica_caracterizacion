@@ -56,68 +56,116 @@ class SolicitudesController extends Controller
     ], 200);
 }
 
-public function store(Request $request)//falta
+public function store(Request $request)
 {
-    $rules = [
-        'sol_date' => 'date',
-        'rea_typ_id' => 'required|exists:reason_types|integer',
-        'sol_typ_id' => 'required|exists:solicitude_types|integer',
-        'stu_id' => 'required|exists:students|integer'
-    ];
+    if ($request->acc_administrator == 1) {
+        $rules = [
+            'sol_date' => 'date',
+            'sol_responsible' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+            'rea_typ_id' => 'required|integer',
+            'sol_typ_id' => 'required|integer',
+            'stu_id' => 'required|integer'
+        ];
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+            ]);
+        } else {
+            $currentDate = now()->toDateString();
+            $request->merge(['sol_date' => $currentDate]);
+            $solicitud = new solicitudes($request->input());
+            $solicitud->sol_status = 0;
+            $solicitud->save();
+            Controller::NewRegisterTrigger("An insertion was made in the solicitudes table '$solicitud->sol_id'", 3, $request->use_id);
 
-    if ($request->acc_administrator != 1) {
-        $request->merge(['sol_responsible' => 'Por definir']);
+            return response()->json([
+                'status' => True,
+                'message' => "The request has been created successfully.",
+            ], 200);
+        }
     } else {
-        $rules['sol_responsible'] = 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u';
-    }
+        $student = \DB::table('viewStudents')->where('stu_id', $request->use_id)->first();
 
-    $validator = Validator::make($request->input(), $rules);
-    if ($validator->fails()) {
+        if ($student) {
+            $rules = [
+                'sol_date' => 'date',
+                'rea_typ_id' => 'required|integer',
+                'sol_typ_id' => 'required|integer',
+                'stu_id' => 'required|integer'
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                ]);
+            } else {
+                $currentDate = now()->toDateString();
+                $request->merge(['sol_date' => $currentDate]);
+                $request->merge(['sol_responsible' => 'por definir']);
+                $solicitud = new solicitudes($request->input());
+                $solicitud->sol_status = 0;
+                $solicitud->save();
+                Controller::NewRegisterTrigger("An insertion was made in the solicitudes table '$solicitud->sol_id'", 3, $request->use_id);
+
+                return response()->json([
+                    'status' => True,
+                    'message' => "The request has been created successfully.",
+                ], 200);
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Access denied. You must be an active student to create a request.'
+            ], 403);
+        }
+    }
+}
+
+
+
+
+
+public function show($id)
+{
+    $solicitud = Solicitudes::find($id);
+
+    if (!$solicitud) {
         return response()->json([
             'status' => false,
-            'message' => $validator->errors()->all()
-        ]);
+            'message' => 'The requested solicitude does not exist.'
+        ], 404);
     }
 
-    $currentDate = now()->toDateString();
-    $request->merge(['sol_date' => $currentDate]);
+    switch ($solicitud->sol_status) {
+        case 0:
+            $solicitud->status_name = 'Recibida';
+            break;
+        case 1:
+            $solicitud->status_name = 'En curso';
+            break;
+        case 2:
+            $solicitud->status_name = 'Gestionada';
+            break;
+        case 3:
+            $solicitud->status_name = 'Cancelada';
+            break;
+        case 4:
+            $solicitud->status_name = 'Remisión interna';
+            break;
+        case 5:
+            $solicitud->status_name = 'Remisión externa';
+            break;
+    }
 
-    $solicitud = new solicitudes($request->input());
-    $solicitud->sol_status = 0;
-    $solicitud->save();
-
-    // Dispara el trigger de nuevo registro
-    Controller::NewRegisterTrigger("An insertion was made in the solicitudes table'$solicitud->sol_id'", 3, $request->use_id);
-
-    // Retorna la respuesta exitosa
     return response()->json([
         'status' => true,
-        'message' => "The request has been created successfully."
+        'data' => $solicitud
     ], 200);
 }
 
-
-    public function show(Request $request,$id)
-    {
-       
-        $solicitudes =  solicitudes::find($id);
-
-        if ($solicitudes == null) {
-            return response()->json([
-                'status' => false,
-                "data" => ['message' => 'The searched request was not found']
-            ], 400);
-        } else {
-            Controller::NewRegisterTrigger("A search was performed in the solicitudes table", 4,$request->use_id);
-
-            return response()->json([
-               'status' => true,
-                'data' => $solicitudes
-            ]);
-        }
- 
-   
-}
     public function update(Request $request, $id)
     {
        
@@ -177,7 +225,7 @@ public function store(Request $request)//falta
     public function destroy(Request $request,$id)//estudiante puede eliminar
     {
         $solicitudes = solicitudes::find($id);
-        $newSol=($solicitudes->sol_status == 1) ?0:1;
+        $newSol=($solicitudes->sol_status == 0) ? 3 : 0;
                 $solicitudes->sol_status = $newSol;
                 $solicitudes->save();
                 Controller::NewRegisterTrigger("An change status was made in the solicitudes table",2,$request->use_id);
