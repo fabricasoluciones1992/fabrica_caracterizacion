@@ -10,10 +10,31 @@ use Illuminate\Support\Facades\DB;
 
 class ConsultationController extends Controller
 {
-    public function index()//tipo de persona id tipo de documento
+    public function index()
     {
-        $consultations = DB::select("SELECT consultations.*, persons.* FROM consultations INNER JOIN persons ON consultations.per_id = persons.per_id");
-        return response()->json([
+        $consultations = DB::select("
+        SELECT 
+            consultations.*, 
+            ViewPersons.per_id, 
+            ViewPersons.per_name, 
+            ViewPersons.per_lastname, 
+            ViewPersons.per_document, 
+            ViewPersons.per_expedition, 
+            ViewPersons.per_birthdate, 
+            ViewPersons.per_direction, 
+            ViewPersons.per_rh, 
+            ViewPersons.civ_sta_id, 
+            ViewPersons.mul_id, 
+            ViewPersons.doc_typ_id,
+            ViewPersons.doc_typ_name,  
+            ViewPersons.use_id, 
+            ViewPersons.eps_id, 
+            ViewPersons.gen_id, 
+            ViewPersons.per_typ_id,
+            ViewPersons.per_typ_name
+        FROM consultations 
+        INNER JOIN ViewPersons ON consultations.per_id = ViewPersons.per_id
+    ");        return response()->json([
             'status' => true,
             'data' => $consultations
         ],200);
