@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class BienestarActivitiesController extends Controller
 {
-    public function index()//que aparezca si ya estoy registrado o no
+    public function index()
 {
     $bienestarActivities = BienestarActivity::select();
 
@@ -44,7 +44,7 @@ class BienestarActivitiesController extends Controller
                 $rules = [
 
                     'bie_act_date' =>'required|date',
-                    'bie_act_quotas' => 'required|numeric',
+                    'bie_act_quotas' => 'required|numeric|min:1',
                     'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
                     'bie_act_typ_id' =>'required|exists:bienestar_activity_types|numeric',
                     'bie_act_hour' => 'required|date_format:H:i'
@@ -134,7 +134,7 @@ public function update(Request $request, $id)
 
                 'bie_act_typ_id' => 'required|exists:bienestar_activity_types|numeric',
                 'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                'bie_act_quotas' => 'required|numeric',
+                'bie_act_quotas' => 'required|numeric|min:1',
                 'bie_act_date' => 'required|date',
                 'bie_act_hour' => 'required',
             ];
