@@ -166,7 +166,7 @@ public function show($id)
         }
    
 }
-    public function destroy(Request $request,$id)//estudiante puede eliminar
+    public function destroy(Request $request,$id)
     {
         $solicitudes = solicitudes::find($id);
         $newSol=($solicitudes->sol_status == 0) ? 3 : 0;
