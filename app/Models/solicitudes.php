@@ -22,15 +22,60 @@ class solicitudes extends Model
     public $timestamps = false;
     public static function select(){
         $solicitudes = DB::select("SELECT * FROM viewSolicitudes");
-        return $solicitudes;
+        
+        $solicitudesType0 = [];
+        $solicitudesType1 = [];
+
+        foreach ($solicitudes as $solicitud) {
+            $solicitud->status_name = solicitudes::getStatusName($solicitud->sol_status);
+
+            if ($solicitud->rea_typ_type == 0) {
+                $solicitudesType0[] = $solicitud;
+            } elseif ($solicitud->rea_typ_type == 1) {
+                $solicitudesType1[] = $solicitud;
+            }
+        }
+
+        return [
+            'reason' => $solicitudesType0,
+            'factor' => $solicitudesType1,
+        ];
+    }
+
+    public static function getStatusName($status) {
+        switch ($status) {
+            case 0:
+                return 'Recibida';
+            case 1:
+                return 'En curso';
+            case 2:
+                return 'Gestionada';
+            case 3:
+                return 'Cancelada';
+            case 4:
+                return 'Remisión interna';
+            case 5:
+                return 'Remisión externa';
+            
+        }
+    
     }
     public static function search($id){
-        $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE sol_id = $id");
-        return $solicitudes[0];
+    $solicitud = DB::select("SELECT * FROM viewSolicitudes WHERE sol_id = $id");
+
+    if (!empty($solicitud)) {
+        $solicitud = $solicitud[0];
+        $solicitud->status_name = solicitudes::getStatusName($solicitud->sol_status);
     }
+    
+    return $solicitud;
+}
     
     public static function findBysol($id){
         $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = ?",[$id]);
+        foreach ($solicitudes as $solicitud) {
+            $solicitud->status_name = solicitudes::getStatusName($solicitud->sol_status);
+        }
         return $solicitudes;
     }
     public static function findByUse($id, $rea_typ_type = null){
@@ -38,6 +83,9 @@ class solicitudes extends Model
             $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_id = ? AND rea_typ_type = ?", [$id, $rea_typ_type]);
         } else {
             $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_id = ?", [$id]);
+        }
+        foreach ($solicitudes as $solicitud) {
+            $solicitud->status_name = solicitudes::getStatusName($solicitud->sol_status);
         }
         return $solicitudes;
     }

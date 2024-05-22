@@ -14,44 +14,10 @@ class SolicitudesController extends Controller
     public function index()
 {
     $solicitudes = Solicitudes::select();
-    
-    $solicitudesType0 = [];
-    $solicitudesType1 = [];
-
-    foreach ($solicitudes as $solicitud) {
-        switch ($solicitud->sol_status) {
-            case 0:
-                $solicitud->status_name = 'Recibida';
-                break;
-            case 1:
-                $solicitud->status_name = 'En curso';
-                break;
-            case 2:
-                $solicitud->status_name = 'Gestionada';
-                break;
-            case 3:
-                $solicitud->status_name = 'Cancelada';
-                break;
-            case 4:
-                $solicitud->status_name = 'Remisión interna';
-                break;
-            case 5:
-                $solicitud->status_name = 'Remisión externa';
-                break;
-        }
-
-        if ($solicitud->rea_typ_type == 0) {
-            $solicitudesType0[] = $solicitud;
-        } elseif ($solicitud->rea_typ_type == 1) {
-            $solicitudesType1[] = $solicitud;
-        }
-    }
-
     return response()->json([
         'status' => true,
         'data' => [
-            'Reason' => $solicitudesType0,
-            'Factor' => $solicitudesType1
+            'message' => $solicitudes,
         ]
     ], 200);
 }
@@ -130,7 +96,7 @@ public function store(Request $request)
 
 public function show($id)
 {
-    $solicitud = Solicitudes::find($id);
+    $solicitud = Solicitudes::search($id);
 
     if (!$solicitud) {
         return response()->json([
@@ -138,28 +104,6 @@ public function show($id)
             'message' => 'The requested solicitude does not exist.'
         ], 404);
     }
-
-    switch ($solicitud->sol_status) {
-        case 0:
-            $solicitud->status_name = 'Recibida';
-            break;
-        case 1:
-            $solicitud->status_name = 'En curso';
-            break;
-        case 2:
-            $solicitud->status_name = 'Gestionada';
-            break;
-        case 3:
-            $solicitud->status_name = 'Cancelada';
-            break;
-        case 4:
-            $solicitud->status_name = 'Remisión interna';
-            break;
-        case 5:
-            $solicitud->status_name = 'Remisión externa';
-            break;
-    }
-
     return response()->json([
         'status' => true,
         'data' => $solicitud
