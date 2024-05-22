@@ -20,7 +20,7 @@ class PermanencesController extends Controller
 
 }
 
-    public function store(Request $request)//status
+    public function store(Request $request)
     {
         
         
@@ -85,7 +85,7 @@ class PermanencesController extends Controller
     
 }
 
-    public function update(Request $request, $id)//status
+    public function update(Request $request, $id)
     {
         
         $permanences = permanence::find($id);
@@ -155,10 +155,10 @@ class PermanencesController extends Controller
     }
 
   
-public function filtredforTSolicitud($id)
+public function filtredforTSolicitud($id,$sol_typ_name)
 {
     try {
-        $permanences = permanence::findBySolTyp($id);
+        $permanences = permanence::findBySolTyp($id,$sol_typ_name);
         
         
         return response()->json([

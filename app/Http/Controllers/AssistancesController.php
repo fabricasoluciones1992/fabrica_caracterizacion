@@ -22,7 +22,7 @@ class AssistancesController extends Controller
     
 
     }
-    public function store(Request $request)//cupos de actividades deja registrar aunque ya no hay mas cupo
+    public function store(Request $request)
 {
     $rules = [
         'use_id' =>'required|exists:users|integer',
@@ -44,6 +44,24 @@ class AssistancesController extends Controller
         return response()->json([
             'status' => false,
             'message' => 'The user who is registering is not a student'
+        ]);
+    }
+
+    $activity = BienestarActivity::find($request->bie_act_id);
+
+    if (!$activity) {
+        return response()->json([
+            'status' => false,
+            'message' => 'The activity does not exist'
+        ]);
+    }
+
+    $currentQuotas = $activity->countQuotas($request->bie_act_id);
+
+    if ($currentQuotas >= $activity->bie_act_quotas) {
+        return response()->json([
+            'status' => false,
+            'message' => 'The activity has reached its maximum capacity'
         ]);
     }
 
@@ -77,8 +95,6 @@ class AssistancesController extends Controller
         'message' => "The assistance has been created successfully."
     ], 200);
 }
-
-    
 
     public function show($id)
     {

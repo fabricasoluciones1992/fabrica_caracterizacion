@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class MedicalHistoriesController extends Controller
 {
-    public function index()
+    public function index()//unique
 {
     $mHistory = MedicalHistory::select();
 

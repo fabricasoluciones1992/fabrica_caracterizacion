@@ -28,8 +28,8 @@ class permanence extends Model
         return $permanence[0];
     }
    
-    public static function findBySolTyp($id){
-        $permanence = DB::select("SELECT * FROM viewPermanences WHERE sol_typ_name = ?",[$id]);
+    public static function findBySolTyp($id,$sol_typ_name){
+        $permanence = DB::select("SELECT * FROM viewPermanences WHERE sol_typ_id = ? AND sol_typ_name = ?",[$id,$sol_typ_name]);
         return $permanence;
     }
     public static function findByPsol($id){

@@ -10,7 +10,7 @@ class AllergyHistoriesController extends Controller
 {
     public function index()
 {
-    $aHistories = AllergyHistory::select();
+    $aHistories = AllergyHistory::select();//unique
     return response()->json([
         'status' => true,
         'data' => $aHistories
