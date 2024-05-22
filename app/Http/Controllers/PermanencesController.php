@@ -45,7 +45,6 @@ class PermanencesController extends Controller
                 $request->merge(['perm_date' => $currentDate]);
 
                 $permanence = new Permanence($request->input());
-                $permanence->perm_status=1;
                 $permanence->save();
                 Controller::NewRegisterTrigger("An insertion was made in the permanences table'$permanence->perm_id'", 3,$request->use_id);
                 // $id = $permanence->perm_id;

@@ -22,7 +22,7 @@ class AssistancesController extends Controller
     
 
     }
-    public function store(Request $request)
+    public function store(Request $request)//cupos de actividades deja registrar aunque ya no hay mas cupo
 {
     $rules = [
         'use_id' =>'required|exists:users|integer',
@@ -105,7 +105,7 @@ class AssistancesController extends Controller
         
         $assistances = assistance::find($id);
         
-        if ($_SESSION['acc_administrator'] == 1) {
+        if ($request->acc_administrator== 1) {
             $assistances = assistance::find($id);
             if ($assistances == null) {
                 return response()->json([
