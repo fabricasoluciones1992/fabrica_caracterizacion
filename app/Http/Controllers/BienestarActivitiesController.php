@@ -117,7 +117,7 @@ public function update(Request $request, $id)
         return response()->json([
             'status' => false,
             'message' => 'Cannot update to full quotas. There are currently ' . $occupiedQuotas . ' pre-registrations.'
-        ], 400);
+        ]);
     }
 
     $bienestarActivity = BienestarActivity::find($id);
