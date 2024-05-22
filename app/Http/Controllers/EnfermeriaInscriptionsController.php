@@ -104,7 +104,7 @@ class EnfermeriaInscriptionsController extends Controller
 
                 'enf_ins_weight' => 'required|integer',
                 'enf_ins_height' => 'required|integer',
-                'enf_ins_imc' => 'required|integer',
+                'enf_ins_imc' => 'required|numeric',
                 'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
                 'per_id'=>'required|exists:persons|integer',
                 
