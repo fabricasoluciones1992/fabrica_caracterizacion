@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-//car_name,pro_name buscar en el historial de carerras que sea el mismo car_id en el case 2
+//car_name,pro_name buscar en el historial de carerras que sea el mismo car_id en el case 2xxx
 
 
 
@@ -20,28 +20,75 @@ class Reports extends Model
 
                 //$students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM viewStudents where per_typ_id = $data->data");
                 $students = DB::table('viewStudents')
-                    ->select('per_typ_name',  'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail')
+                    ->select('stu_id', 'per_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail')
                     ->where('per_typ_id', '=', $data->data)
                     ->get();
-                
+
+                foreach ($students as $student) {
+                    $lastPromotion = DB::table('history_promotions')
+                        ->join('promotions', 'history_promotions.pro_id', '=', 'promotions.pro_id')
+                        ->where('history_promotions.stu_id', $student->stu_id)
+                        ->orderBy('history_promotions.his_pro_id', 'desc')
+                        ->first();
+
+                    if ($lastPromotion) {
+                        $student->last_promotion_name = $lastPromotion->pro_name;
+                        $student->last_promotion_group = $lastPromotion->pro_group;
+                    } else {
+                        $student->last_promotion_name = null;
+                        $student->last_promotion_group = null;
+                    }
+
+                    $lastCareer = DB::table('history_careers')
+                        ->join('careers', 'history_careers.car_id', '=', 'careers.car_id')
+                        ->where('history_careers.stu_id', $student->stu_id)
+                        ->orderBy('history_careers.his_car_id', 'desc')
+                        ->first();
+
+                    if ($lastCareer) {
+                        $student->last_career_name = $lastCareer->car_name;
+                    } else {
+                        $student->last_career_name = null;
+                    }
+                }
+
                 return $students;
+
                 break;
             case "2"://arreglos car_id
 
                 // $students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM viewStudents where car_id = $data->data");
-                $students = DB::table('viewStudents')
-                    ->select('per_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail')
-                    ->where('car_id', '=', $data->data)
-                    ->get();
-                return $students;
+                                    $students = DB::table('history_careers as hc')
+                        ->join('careers as cr', 'cr.car_id', '=', 'hc.car_id')
+                        ->join('viewStudents as vs', 'vs.stu_id', '=', 'hc.stu_id')
+                        ->leftJoin('history_promotions as hp', 'hp.stu_id', '=', 'vs.stu_id')
+                        ->leftJoin('promotions as p', 'p.pro_id', '=', 'hp.pro_id')
+                        ->select(
+                            'hc.stu_id',
+                            'hc.car_id',
+                            'cr.car_name',
+                            'vs.per_typ_name',
+                            'vs.stu_journey',
+                            'vs.per_document',
+                            'vs.per_name',
+                            'vs.per_lastname',
+                            'vs.use_mail',
+                            'p.pro_name',
+                            'p.pro_group'
+                        )
+                        ->where('hc.car_id', '=', $data->data)
+                        ->get();
+
+                    return $students;
+
                 break;
             case "3"://pro y car
 
                 $students = DB::table('viewStudents as vs')->join('viewHistorialConsultas AS hc', 'hc.per_document', '=', 'vs.per_document')->join('consultations as c', 'c.cons_id', '=', 'hc.cons_id')
                     ->select('vs.per_typ_name','vs.stu_journey', 'vs.per_document', 'vs.per_name', 'vs.per_lastname', 'vs.use_mail', 'hc.per_document',  'c.cons_reason', 'c.cons_description', 'c.cons_date')
                     ->where('c.cons_id', '=', $data->data)
-                    ->get();
-                return $students;
+                    ->get();                  
+                return $students;                
 
                 break;
             case "4"://pro y car
