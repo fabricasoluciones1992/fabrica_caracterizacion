@@ -189,6 +189,7 @@ class Controller extends BaseController
 
 public function reports(Request $request){
     $data = Reports::index($request);
+    return $data;
     if ($data == '[]') {
         return response()->json([
             'status' => false,
