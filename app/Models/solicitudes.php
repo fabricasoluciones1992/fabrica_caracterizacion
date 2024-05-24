@@ -13,7 +13,7 @@ class solicitudes extends Model
     protected $primaryKey = "sol_id";
     protected $fillable = [
         'sol_date',
-        'sol_responsible',
+        'emp_id',
         'sol_status',
         'rea_typ_id',
         'sol_typ_id',

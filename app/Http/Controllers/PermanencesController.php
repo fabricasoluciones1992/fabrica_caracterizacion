@@ -29,7 +29,7 @@ class PermanencesController extends Controller
 
                 'perm_date' =>'required|date',
                 'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
-                'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'emp_id' =>'required|unique:employees|integer|max:1',
                 'perm_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'sol_id' =>'required|unique:solicitudes|integer|max:1',
                 'act_id' =>'required|unique:actions|integer|max:1',
@@ -101,7 +101,7 @@ class PermanencesController extends Controller
                 $rules = [
 
                     'perm_date' =>'required|date',
-                    'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'emp_id' =>'required|unique:employees|integer|max:1',
                     'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
                     'sol_id' =>'required|unique:solicitudes|integer|max:1',
                     'act_id' =>'required|unique:actions|integer|max:1',
@@ -118,7 +118,7 @@ class PermanencesController extends Controller
 
                     $permanences->perm_date = $request->perm_date;
                     $permanences->perm_description = $request->perm_description;
-                    $permanences->perm_responsible = $request->perm_responsible;
+                    $permanences->emp_id = $request->emp_id;
 
                     $permanences->sol_id = $request->sol_id;
                     $permanences->perm_status = $request->perm_status;

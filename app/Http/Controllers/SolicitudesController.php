@@ -27,7 +27,7 @@ public function store(Request $request)
     if ($request->acc_administrator == 1) {
         $rules = [
             'sol_date' => 'date',
-            'sol_responsible' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+            'emp_id' => 'required|unique:employees|integer|max:1',
             'rea_typ_id' => 'required|integer',
             'sol_typ_id' => 'required|integer',
             'stu_id' => 'required|integer'
@@ -70,7 +70,7 @@ public function store(Request $request)
             } else {
                 $currentDate = now()->toDateString();
                 $request->merge(['sol_date' => $currentDate]);
-                $request->merge(['sol_responsible' => 'por definir']);
+                $request->merge(['emp_id' => 'por definir']);
                 $solicitud = new solicitudes($request->input());
                 $solicitud->sol_status = 0;
                 $solicitud->save();
@@ -126,7 +126,7 @@ public function show($id)
                 $rules = [
 
                     'sol_date' =>'date',
-                    'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'emp_id'=>'required|unique:employees|integer|max:1',
                     'sol_status'=> 'required|string|in:0,1,2,3',
                     'rea_typ_id' =>'required|unique:reason_types|integer',
                     'sol_typ_id' =>'required|unique:solicitude_types|integer',
@@ -144,7 +144,7 @@ public function show($id)
                     $request->merge(['sol_date' => $currentDate]);
  
                     $solicitudes->sol_date = $request->sol_date;
-                    $solicitudes->sol_responsible = $request->sol_responsible;
+                    $solicitudes->emp_id = $request->emp_id;
                     $solicitudes->sol_status = $request->sol_status;
                     $solicitudes->rea_typ_id = $request->rea_typ_id;
                     $solicitudes->sol_typ_id = $request->sol_typ_id;
