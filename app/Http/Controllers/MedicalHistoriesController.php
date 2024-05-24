@@ -28,8 +28,8 @@ class MedicalHistoriesController extends Controller
                 $rules = [
 
                     
-                    'per_id' =>'required|exists:persons|numeric',
-                    'dis_id' =>'required|exists:diseases|numeric',
+                    'per_id' =>'required|unique:persons|numeric',
+                    'dis_id' =>'required|unique:diseases|numeric',
 
 
                 ];

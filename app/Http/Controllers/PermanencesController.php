@@ -31,8 +31,8 @@ class PermanencesController extends Controller
                 'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
                 'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'perm_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                'sol_id' =>'required|exists:solicitudes|integer|max:1',
-                'act_id' =>'required|exists:actions|integer|max:1',
+                'sol_id' =>'required|unique:solicitudes|integer|max:1',
+                'act_id' =>'required|unique:actions|integer|max:1',
             ];            
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -103,8 +103,8 @@ class PermanencesController extends Controller
                     'perm_date' =>'required|date',
                     'perm_responsible' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
-                    'sol_id' =>'required|exists:solicitudes|integer|max:1',
-                    'act_id' =>'required|exists:actions|integer|max:1',
+                    'sol_id' =>'required|unique:solicitudes|integer|max:1',
+                    'act_id' =>'required|unique:actions|integer|max:1',
                     'perm_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);

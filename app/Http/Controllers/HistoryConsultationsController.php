@@ -22,8 +22,8 @@ class HistoryConsultationsController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
 
-                'cons_id' =>'required|exists:consultations|integer|min:1|max:999999',
-                'per_id' =>'required|exists:persons|integer|min:1|max:999999',
+                'cons_id' =>'required|unique:consultations|integer|min:1|max:999999',
+                'per_id' =>'required|unique:persons|integer|min:1|max:999999',
             ];
             $validator = Validator::make($request->all(), $rules); 
     

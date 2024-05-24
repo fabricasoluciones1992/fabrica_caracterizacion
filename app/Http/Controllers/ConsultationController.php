@@ -44,9 +44,9 @@ class ConsultationController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
 
-                'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                'per_id' => 'required|exists:persons|integer'
+                'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                'per_id' => 'required|unique:persons|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -105,8 +105,8 @@ class ConsultationController extends Controller
                 $rules = [
 
                     'cons_date' => 'date',
-                    'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
-                    'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ÁÉÍÓÚÜáéíóúü\s]+$/',
+                    'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                    'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                     
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -122,7 +122,6 @@ class ConsultationController extends Controller
                     $consultation->cons_date = $request->cons_date;
                     $consultation->cons_reason = $request->cons_reason;
                     $consultation->cons_description = $request->cons_description;
-                    
                     $consultation->save();
                     
                     Controller::NewRegisterTrigger("An update was made in the consultations table", 4, $request->use_id);

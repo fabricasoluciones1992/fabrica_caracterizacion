@@ -21,8 +21,8 @@ class AllergyHistoriesController extends Controller
             if ($request->acc_administrator == 1) {
                 $rules = [
 
-                    'per_id' =>'required|exists:persons|numeric',
-                    'all_id' =>'required|exists:allergies|numeric',
+                    'per_id' =>'required|unique:persons|numeric',
+                    'all_id' =>'required|unique:allergies|numeric',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {

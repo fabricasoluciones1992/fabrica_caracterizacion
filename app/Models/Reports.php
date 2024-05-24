@@ -84,11 +84,55 @@ class Reports extends Model
                 break;
             case "3"://pro y car
 
-                $students = DB::table('viewStudents as vs')->join('viewHistorialConsultas AS hc', 'hc.per_document', '=', 'vs.per_document')->join('consultations as c', 'c.cons_id', '=', 'hc.cons_id')
-                    ->select('vs.per_typ_name','vs.stu_journey', 'vs.per_document', 'vs.per_name', 'vs.per_lastname', 'vs.use_mail', 'hc.per_document',  'c.cons_reason', 'c.cons_description', 'c.cons_date')
-                    ->where('c.cons_id', '=', $data->data)
-                    ->get();                  
-                return $students;                
+                            $students = DB::table('viewStudents as vs')
+                ->join('viewHistorialConsultas as hc', 'hc.per_document', '=', 'vs.per_document')
+                ->join('consultations as c', 'c.cons_id', '=', 'hc.cons_id')
+                ->select(
+                    'vs.stu_id',
+                    'vs.per_typ_name',
+                    'vs.stu_journey',
+                    'vs.per_document',
+                    'vs.per_name',
+                    'vs.per_lastname',
+                    'vs.use_mail',
+                    'hc.per_document',
+                    'c.cons_reason',
+                    'c.cons_description',
+                    'c.cons_date'
+                )
+                ->where('c.cons_id', '=', $data->data)
+                ->get();
+
+            foreach ($students as $student) {
+                $lastPromotion = DB::table('history_promotions')
+                    ->join('promotions', 'history_promotions.pro_id', '=', 'promotions.pro_id')
+                    ->where('history_promotions.stu_id', $student->stu_id)
+                    ->orderBy('history_promotions.his_pro_id', 'desc')
+                    ->first();
+
+                if ($lastPromotion) {
+                    $student->last_promotion_name = $lastPromotion->pro_name;
+                    $student->last_promotion_group = $lastPromotion->pro_group;
+                } else {
+                    $student->last_promotion_name = null;
+                    $student->last_promotion_group = null;
+                }
+
+                $lastCareer = DB::table('history_careers')
+                    ->join('careers', 'history_careers.car_id', '=', 'careers.car_id')
+                    ->where('history_careers.stu_id', $student->stu_id)
+                    ->orderBy('history_careers.his_car_id', 'desc')
+                    ->first();
+
+                if ($lastCareer) {
+                    $student->last_career_name = $lastCareer->car_name;
+                } else {
+                    $student->last_career_name = null;
+                }
+            }
+
+            return $students;
+                        
 
                 break;
             case "4"://pro y car

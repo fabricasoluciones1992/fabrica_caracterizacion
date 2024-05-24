@@ -128,9 +128,9 @@ public function show($id)
                     'sol_date' =>'date',
                     'sol_responsible'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'sol_status'=> 'required|string|in:0,1,2,3',
-                    'rea_typ_id' =>'required|exists:reason_types|integer',
-                    'sol_typ_id' =>'required|exists:solicitude_types|integer',
-                    'stu_id' =>'required|exists:students|integer'
+                    'rea_typ_id' =>'required|unique:reason_types|integer',
+                    'sol_typ_id' =>'required|unique:solicitude_types|integer',
+                    'stu_id' =>'required|unique:students|integer'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {

@@ -26,7 +26,7 @@ class GymAssitancesController extends Controller
 
                 $rules = [
 
-                    'per_id' =>'required|exists:persons|integer'
+                    'per_id' =>'required|unique:persons|integer'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -112,7 +112,7 @@ public function update(Request $request, $id)
             $rules = [
 
                 'gym_ass_date' =>'required|date',
-                'per_id' =>'required|exists:persons|numeric'
+                'per_id' =>'required|unique:persons|numeric'
             ];
 
             $validator = Validator::make($request->input(), $rules);

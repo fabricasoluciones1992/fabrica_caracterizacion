@@ -28,8 +28,8 @@ class EnfermeriaInscriptionsController extends Controller
                 'enf_ins_weight' => 'required|numeric',
                 'enf_ins_height' => 'required|numeric',
                 'enf_ins_imc' => 'required|numeric',
-                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                'per_id'=> 'required|exists:persons|integer',
+                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                'per_id'=> 'required|unique:persons|integer',
                 
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -93,7 +93,7 @@ class EnfermeriaInscriptionsController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->acc_administrator == 1) {
-            $enfIn = enfermeria_inscription::search($id);
+            $enfIn = enfermeria_inscription::find($id);
             if ($enfIn == null) {
                 return response()->json([
                     'status' => false,
@@ -105,8 +105,8 @@ class EnfermeriaInscriptionsController extends Controller
                 'enf_ins_weight' => 'required|integer',
                 'enf_ins_height' => 'required|integer',
                 'enf_ins_imc' => 'required|numeric',
-                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                'per_id'=>'required|exists:persons|integer',
+                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                'per_id'=>'required|unique:persons|integer',
                 
                 ];
                 $validator = Validator::make($request->input(), $rules);
