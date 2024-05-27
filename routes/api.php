@@ -81,8 +81,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
 
 
     Route::get('solicitudesFiltred/{column}/{data}', [SolicitudesController::class, 'filtredforSolicitudes'])->name('filtredforSolicitudes');
-    Route::get('/students', [Controller::class, 'students'])->name('students');
-    Route::get('/students'.'{id}', [Controller::class, 'student'])->name('studentById');
+    Route::get('/students/{id}', [Controller::class, 'student'])->name('studentById');
     Route::post('/reports', [Controller::class, 'reports'])->name('reports');
     Route::post('/reports/individual', [Controller::class, 'reportsIndi'])->name('reports');
     Route::get('/documentTypeFilter', [Controller::class, 'docsTypesId'])->name('docs_types_id');
