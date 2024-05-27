@@ -101,10 +101,10 @@ class PermanencesController extends Controller
                 $rules = [
 
                     'perm_date' =>'required|date',
-                    'emp_id' =>'required|unique:employees|integer|max:1',
-                    'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
-                    'sol_id' =>'required|unique:solicitudes|integer|max:1',
-                    'act_id' =>'required|unique:actions|integer|max:1',
+                    'emp_id' =>'required|unique:employees|integer|min:1',
+                    'perm_description' => 'required|string|min:1|min:50|regex:/^[a-zA-Z0-9\s]+$/',
+                    'sol_id' =>'required|unique:solicitudes|integer|min:1',
+                    'act_id' =>'required|unique:actions|integer|min:1',
                     'perm_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);

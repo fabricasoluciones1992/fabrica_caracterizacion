@@ -27,10 +27,11 @@ public function store(Request $request)
     if ($request->acc_administrator == 1) {
         $rules = [
             'sol_date' => 'date',
-            'emp_id' => 'required|unique:employees|integer|max:1',
+            'emp_id' => 'required|unique:employees|integer|min:1',
             'rea_typ_id' => 'required|integer',
             'sol_typ_id' => 'required|integer',
-            'stu_id' => 'required|integer'
+            'stu_id' => 'required|integer',
+
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -70,7 +71,7 @@ public function store(Request $request)
             } else {
                 $currentDate = now()->toDateString();
                 $request->merge(['sol_date' => $currentDate]);
-                $request->merge(['emp_id' => 'por definir']);
+                $request->merge(['emp_id' => 0]);
                 $solicitud = new solicitudes($request->input());
                 $solicitud->sol_status = 0;
                 $solicitud->save();
@@ -126,7 +127,7 @@ public function show($id)
                 $rules = [
 
                     'sol_date' =>'date',
-                    'emp_id'=>'required|unique:employees|integer|max:1',
+                    'emp_id'=>'required|unique:employees|integer|min:1',
                     'sol_status'=> 'required|string|in:0,1,2,3',
                     'rea_typ_id' =>'required|unique:reason_types|integer',
                     'sol_typ_id' =>'required|unique:solicitude_types|integer',
