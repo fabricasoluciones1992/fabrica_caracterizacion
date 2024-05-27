@@ -17,147 +17,69 @@ class Reports extends Model
     {
         switch ($data->option) {
             case "1":
-
-                //$students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM viewStudents where per_typ_id = $data->data");
-                $students = DB::table('viewStudents as vs')
-                    ->join('students as stu', 'vs.stu_id','=','stu.stu_id')
-                    ->select('vs.stu_id', 'stu_typ_name', 'vs.stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail')
-                    ->where('stu.stu_typ_id', '=', $data->data)
+                $students = DB::table('viewEnrollments')
+                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail','car_name', 'promotion')
+                    ->where('stu_typ_id', '=', $data->data)
+                    ->where('use_status', '=', 1)
                     ->get();
 
-                foreach ($students as $student) {
-                    $lastPromotion = DB::table('student_enrollments as se')
-                        ->join('promotions', 'se.pro_id', '=', 'se.pro_id')
-                        ->where('se.stu_id', $student->stu_id)
-                        ->orderBy('se.stu_enr_id', 'desc')
-                        ->first();
+                return $students;
+                break;
 
-                    if ($lastPromotion) {
-                        $student->last_promotion_name = $lastPromotion->pro_name;
-                        $student->last_promotion_group = $lastPromotion->pro_group;
-                    } else {
-                        $student->last_promotion_name = null;
-                        $student->last_promotion_group = null;
-                    }
-
-                    $lastCareer = DB::table('student_enrollments as se')
-                        ->join('careers', 'se.car_id', '=', 'careers.car_id')
-                        ->where('se.stu_id', $student->stu_id)
-                        ->orderBy('se.stu_enr_id', 'desc')
-                        ->first();
-
-                    if ($lastCareer) {
-                        $student->last_career_name = $lastCareer->car_name;
-                    } else {
-                        $student->last_career_name = null;
-                    }
-                }
+            case "2":
+                $students = DB::table('viewEnrollments')
+                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail','car_name', 'promotion')
+                    ->where('car_id', '=', $data->data)
+                    ->where('use_status', '=', 1)
+                    ->get();
 
                 return $students;
-
                 break;
-            case "2"://arreglos car_id
-
-                // $students = DB::select("SELECT car_name,pro_name,stu_journey,per_document,stu_code,per_name,per_lastname, use_mail, tel_number FROM viewStudents where car_id = $data->data");
-                                    $students = DB::table('student_enrollments as se')
-                        ->join('careers as cr', 'cr.car_id', '=', 'se.car_id')
-                        ->join('viewStudents as vs', 'vs.stu_id', '=', 'se.stu_id')
-
-                        ->leftJoin('promotions as p', 'p.pro_id', '=', 'se.pro_id')
-                        ->select(
-                            'se.stu_id',
-                            'se.car_id',
-                            'cr.car_name',
-                            'vs.stu_typ_name',
-                            'vs.stu_journey',
-                            'vs.per_document',
-                            'vs.per_name',
-                            'vs.per_lastname',
-                            'vs.use_mail',
-                            'p.pro_name',
-                            'p.pro_group'
-                        )
-                        ->where('se.car_id', '=', $data->data)
-                        ->get();
-
-                    return $students;
-
-                break;
-            case "3"://pro y car
-
-                            $students = DB::table('viewStudents as vs')
-                ->join('consultations as c', 'c.per_id', '=', 'vs.per_id')
+                
+            case "3":
+                $students = DB::table('viewSolicitudes')
                 ->select(
-                    'vs.stu_id',
-                    'vs.stu_typ_name',
-                    'vs.stu_journey',
-                    'vs.per_document',
-                    'vs.per_name',
-                    'vs.per_lastname',
-                    'vs.use_mail',
-                    'vs.per_document',
-                    'c.cons_reason',
-                    'c.cons_description',
-                    'c.cons_date'
+                    'viewSolicitudes.per_document',
+                    'viewSolicitudes.per_name',
+                    'viewSolicitudes.per_lastname',
+                    'viewSolicitudes.rea_typ_name',
+                    'viewSolicitudes.sol_typ_name',
+                    'viewSolicitudes.sol_date',
+                    'viewEnrollments.promotion',
+                    'viewEnrollments.car_name',
+                    'ViewPersons.use_mail'
                 )
+                ->join('viewEnrollments', 'viewSolicitudes.per_id', '=', 'viewEnrollments.per_id')
+                ->join('ViewPersons', 'viewSolicitudes.per_id', '=', 'ViewPersons.per_id')
+                ->where('viewSolicitudes.per_id', '=', $data->data)
                 ->get();
-
-            foreach ($students as $student) {
-                $lastPromotion = DB::table('student_enrollments as se')
-                    ->join('promotions', 'se.pro_id', '=', 'promotions.pro_id')
-                    ->where('se.stu_id', $student->stu_id)
-                    ->orderBy('se.stu_enr_id', 'desc')
-                    ->first();
-
-                if ($lastPromotion) {
-                    $student->last_promotion_name = $lastPromotion->pro_name;
-                    $student->last_promotion_group = $lastPromotion->pro_group;
-                } else {
-                    $student->last_promotion_name = null;
-                    $student->last_promotion_group = null;
-                }
-
-                $lastCareer = DB::table('student_enrollments as se')
-                ->join('careers', 'se.car_id', '=', 'careers.car_id')
-                ->where('se.stu_id', $student->stu_id)
-                ->orderBy('se.stu_enr_id', 'desc')
-                ->first();
-
-                if ($lastCareer) {
-                    $student->last_career_name = $lastCareer->car_name;
-                } else {
-                    $student->last_career_name = null;
-                }
-            }
+            
 
             return $students;
+            break;
 
-
-                break;
-            case "4"://pro y car
-
-                $students = DB::table('viewStudents as vs')
-                ->join('assistances AS a', 'a.stu_id', '=', 'vs.stu_id')
-                ->join('students as st', 'st.stu_id', '=', 'a.stu_id')
-                ->join('persons as p', 'p.per_id', '=', 'st.per_id')
-                ->select('stu_typ_name','stu_journey', 'hc.per_document', 'hc.per_name', 'hc.per_lastname', 'use_mail')
-                ->where('hc.bie_act_id', '=', $data->data)
+            case "4":
+                $students = DB::table('viewAssitances')
+                ->select('viewAssitances.ass_id','viewAssitances.per_name','viewAssitances.per_lastname','viewAssitances.per_document','viewAssitances.use_mail','viewAssitances.stu_journey','viewEnrollments.promotion','viewEnrollments.car_name','viewAssitances.bie_act_date','viewAssitances.bie_act_hour','viewAssitances.stu_typ_name')
+                ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
+                ->where('viewAssitances.bie_act_typ_id', '=', 9)
+                ->where('viewEnrollments.stu_enr_status', '=', 1)
                 ->get();
+
                 return $students;
+
                 break;
             case "5"://pro y car
-                $students = DB::table('viewStudents')
-                ->rightJoin('viewActivitiesBienestarStudent AS hc', 'hc.stu_id', '=', 'viewStudents.stu_id')
-                    ->select('stu_typ_name','stu_journey', 'hc.per_document', 'hc.per_name', 'hc.per_lastname', 'use_mail')
+                $students = DB::table('viewStudents')->rightJoin('viewActivitiesBienestarStudent AS hc', 'hc.stu_id', '=', 'viewStudents.stu_id')
+                    ->select('per_typ_name','stu_journey', 'hc.per_document', 'hc.per_name', 'hc.per_lastname', 'use_mail')
                     ->where('hc.stu_id', '=', $data->data)
                     ->get();
                 return $students;
                 break;
             case "6";//pro y car
-                $students = DB::table('viewStudents as vs')
-                ->join('consultations as c', 'c.per_id', '=', 'vs.per_id')
-                ->select('vs.stu_typ_name','vs.stu_journey', 'vs.per_document', 'vs.per_name', 'vs.per_lastname', 'vs.use_mail', 'vs.per_document',  'c.cons_reason', 'c.cons_description', 'c.cons_date')
-                ->get();
+                $students = DB::table('viewStudents as vs')->join('viewHistorialConsultas AS hc', 'hc.per_document', '=', 'vs.per_document')->join('consultations as c', 'c.cons_id', '=', 'hc.cons_id')
+                    ->select('vs.per_typ_name','vs.stu_journey', 'vs.per_document', 'vs.per_name', 'vs.per_lastname', 'vs.use_mail', 'hc.per_document',  'c.cons_reason', 'c.cons_description', 'c.cons_date')
+                    ->get();
                 return $students;
                 break;
             default:
