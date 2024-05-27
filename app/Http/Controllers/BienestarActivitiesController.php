@@ -19,7 +19,7 @@ class BienestarActivitiesController extends Controller
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
         $activity->total_assistances = BienestarActivity::countAssitances($activity->bie_act_id);
         
-        $assistancesStudents = DB::table('viewActivitiesBienestarStudent AS vA')
+        $assistancesStudents = DB::table('viewAssitances AS vA')
                                 ->select('vA.*')
                                 ->where('vA.bie_act_id', $activity->bie_act_id)
                                 ->get();
@@ -103,8 +103,6 @@ class BienestarActivitiesController extends Controller
         ]);
     }
     
-
-
 
 
 public function update(Request $request, $id)

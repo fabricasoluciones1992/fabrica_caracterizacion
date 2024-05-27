@@ -17,9 +17,7 @@ class AuthController extends Controller
     
 
     public function logout(Request $id) {
-        session_start();
         $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $id->use_id)->delete();
-        session_destroy();
         return response()->json([
             'status'=> true,
             'message'=> "logout success."

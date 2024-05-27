@@ -24,55 +24,12 @@ class Controller extends BaseController
         DB::statement("CALL bie_new_register('" . addslashes($bie_new_description) . "', $new_typ_id, $use_id)");
     }
 
-    public function students($proj_id,$use_id,Request $request) {
-        $token = $request->header('Authorization');
-
-        if ($token == "Token not found in session") {
-            return $token;
-        } else {
-
-                $response = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . $token,
-                ])->get('http://127.0.0.1:8088/api/persons/' . $proj_id . '/' . $request->use_id);
-
-            if ($response->successful()) {
-                return response()->json([
-                    'status' => true,
-                    'data' => $response->json()
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'HTTP request failed: ' . $response->body()
-                ], 400);
-            }
-        }
-    }
+    
 
 
-    public function student($proj_id,$use_id,$id,Request $request) {
-        $token = $request->header('Authorization');
-
-        if ($token == "Token not found in session") {
-            return $token;
-        } else {
-
-                $response = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . $token,
-                ])->get('http://127.0.0.1:8088/api/persons/' . $proj_id . '/' . $use_id . '/' . $id);
-
-            if ($response->successful()) {
-                return response()->json([
-                    'status' => true,
-                    'data' => $response->json()
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'HTTP request failed: ' . $response->body()
-                ], 400);
-            }
-        }
+    public function student($id) {
+        $students = DB::select("SELECT * FROM viewStudents WHERE per_document = $id");
+        return $students;
     }
     public function login(Request $request){
         $response = Http::post('http://127.0.0.1:8088/api/login/2', [
