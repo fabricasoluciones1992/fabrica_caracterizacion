@@ -87,7 +87,7 @@ class Controller extends BaseController
             $responseData = $response->json();
             $token = isset($responseData['token']) ? $responseData['token'] : null;
             if ($token !== null) {
-                
+
 
                 return response()->json([
                     'status' => true,
@@ -96,7 +96,7 @@ class Controller extends BaseController
                         "use_id" => $user->use_id,
                         "acc_administrator" => $responseData['acc_administrator'],
                         'per_document' => $responseData['per_document'],
-                        
+
                         ]
                 ],200);
             } else {
@@ -189,7 +189,6 @@ class Controller extends BaseController
 
 public function reports(Request $request){
     $data = Reports::index($request);
-    return $data;
     if ($data == '[]') {
         return response()->json([
             'status' => false,

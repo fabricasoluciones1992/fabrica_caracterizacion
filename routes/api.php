@@ -9,12 +9,14 @@ use App\Http\Controllers\AssistancesController;
 use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\CoreMaterialController;
 use App\Http\Controllers\DiseasesController;
 use App\Http\Controllers\EnfermeriaInscriptionsController;
 use App\Http\Controllers\FactorsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\GymAssitancesController;
 use App\Http\Controllers\GymInscriptionsController;
+use App\Http\Controllers\LearningObjectsController;
 use App\Http\Controllers\MedicalHistoriesController;
 use App\Http\Controllers\MonetaryStatesController;
 use App\Http\Controllers\PermanencesController;
@@ -39,7 +41,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->group(function() {
+// Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('actions', ActionsController::class)->names('actions')->parameter('', 'actions');
     Route::resource('reasons/types', ReasonsTypeController::class)->names('reasons.types')->parameter('', 'reasons_types');
     Route::resource('allergies', AllergiesController::class)->names('allergies')->parameter('', 'allergies');
@@ -64,6 +66,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('gym/inscriptions', GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
 
     Route::resource('monetary/states', MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
+    Route::resource('learning/objects', LearningObjectsController::class)->names('learning.objects')->parameter('', 'learning_objects');
+    Route::resource('core/materials', CoreMaterialController::class)->names('core.materials')->parameter('', 'core_materials');
 
     Route::get('/last/disease/{id}', [EnfermeriaInscriptionsController::class, 'lastDisease'])->name('last_disease');
     // Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
@@ -89,11 +93,11 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::delete('/destroyAR/{id}', [AssistancesController::class, 'destroyAR'])->name('destroyAR');
 
 
-    
 
 
 
- });
+
+//  });
 
 Route::post('/login', [Controller::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
