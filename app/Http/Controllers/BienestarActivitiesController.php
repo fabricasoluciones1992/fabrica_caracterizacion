@@ -90,7 +90,7 @@ class BienestarActivitiesController extends Controller
     
         $bienestarActivity->quotas = BienestarActivity::countQuotas($bienestarActivity->bie_act_id);
         $bienestarActivity->total_assistances = BienestarActivity::countAssitances($bienestarActivity->bie_act_id);
-        $assistancesStudents = DB::table('viewActivitiesBienestarStudent AS vA')
+        $assistancesStudents = DB::table('viewassistances AS vA')
         ->select('vA.*')
         ->where('vA.bie_act_id', $bienestarActivity->bie_act_id)
         ->get();

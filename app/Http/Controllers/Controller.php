@@ -184,4 +184,46 @@ public function docsTypesId(){
 
 
 }
+public function viewEmployees(){
+    $employees = DB::table('viewemployees')->get();
+    if($employees == '[]'){
+        return response()->json([
+           'status' => false,
+            'data' => "No data found"
+        ]);
+    }else{
+        return response()->json([
+            'status' => true,
+            'data' => $employees
+        ]);
+    }
+}
+public function viewCareers(){
+    $employees = DB::table('careers')->get();
+    if($employees == '[]'){
+        return response()->json([
+           'status' => false,
+            'data' => "No data found"
+        ]);
+    }else{
+        return response()->json([
+            'status' => true,
+            'data' => $employees
+        ]);
+    }
+}
+public function viewTypesStudent(){
+    $employees = DB::table('students_types')->get();
+    if($employees == '[]'){
+        return response()->json([
+           'status' => false,
+            'data' => "No data found"
+        ]);
+    }else{
+        return response()->json([
+            'status' => true,
+            'data' => $employees
+        ]);
+    }
+}
 }
