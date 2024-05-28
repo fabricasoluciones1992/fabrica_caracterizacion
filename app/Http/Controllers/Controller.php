@@ -107,7 +107,7 @@ class Controller extends BaseController
     }
 
     public function viewStudentBie($code) {
-        $codigoStu = DB::select("SELECT * FROM viewassistances
+        $codigoStu = DB::select("SELECT * FROM viewAssistances
         WHERE per_document = $code
         ");
         if ($codigoStu == null) {
