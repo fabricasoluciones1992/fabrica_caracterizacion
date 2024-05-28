@@ -9,14 +9,12 @@ use App\Http\Controllers\AssistancesController;
 use App\Http\Controllers\BienestarActivitiesController;
 use App\Http\Controllers\BienestarActivityTypesController;
 use App\Http\Controllers\ConsultationController;
-use App\Http\Controllers\CoreMaterialController;
 use App\Http\Controllers\DiseasesController;
 use App\Http\Controllers\EnfermeriaInscriptionsController;
 use App\Http\Controllers\FactorsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\GymAssitancesController;
 use App\Http\Controllers\GymInscriptionsController;
-use App\Http\Controllers\LearningObjectsController;
 use App\Http\Controllers\MedicalHistoriesController;
 use App\Http\Controllers\MonetaryStatesController;
 use App\Http\Controllers\PermanencesController;
@@ -66,8 +64,7 @@ use Illuminate\Support\Facades\Route;
     Route::resource('gym/inscriptions', GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
 
     Route::resource('monetary/states', MonetaryStatesController::class)->names('monetary.states')->parameter('', 'monetary_states');
-    Route::resource('learning/objects', LearningObjectsController::class)->names('learning.objects')->parameter('', 'learning_objects');
-    Route::resource('core/materials', CoreMaterialController::class)->names('core.materials')->parameter('', 'core_materials');
+  
 
     Route::get('/last/disease/{id}', [EnfermeriaInscriptionsController::class, 'lastDisease'])->name('last_disease');
     // Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
