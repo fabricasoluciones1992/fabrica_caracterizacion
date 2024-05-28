@@ -59,7 +59,7 @@ public static function countAssitances($id)
     return $quotas[0]->quotas;
 }
 public static function findByUse($id){
-    $solicitudes = DB::select("SELECT * FROM viewassistances WHERE per_id = ?",[$id]);
+    $solicitudes = DB::select("SELECT * FROM viewAssitances WHERE per_id = ?",[$id]);
     return $solicitudes;
 }
 }

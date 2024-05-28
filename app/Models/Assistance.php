@@ -19,11 +19,11 @@ class Assistance extends Model
     ];
     public $timestamps = false;
     public static function select(){
-        $assistances = DB::select("SELECT * FROM `viewAssistances`");
+        $assistances = DB::select("SELECT * FROM `viewAssitances`");
         return $assistances;
     }
     public static function search($id){
-        $assistances =  DB::select("SELECT * FROM `viewAssistances` WHERE ass_id = $id; ");
+        $assistances =  DB::select("SELECT * FROM `viewAssitances` WHERE ass_id = $id; ");
         return $assistances;
     }
 //     public static function Getbienestar_news()
