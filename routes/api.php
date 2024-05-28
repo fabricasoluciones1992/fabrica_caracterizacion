@@ -26,7 +26,9 @@ use App\Models\Gym_assitance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::middleware(['auth:sanctum'])->group(function() {
+
+//===============NO QUITAR EL MIDDLEWARE================================
+Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('actions', ActionsController::class)->names('actions')->parameter('', 'actions');
     Route::resource('allergies', AllergiesController::class)->names('allergies')->parameter('', 'allergies');
     Route::resource('allergy/histories', AllergyHistoriesController::class)->names('allergy.histories')->parameter('', 'allergy_histories');
@@ -64,7 +66,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('view/employees', [Controller::class, 'viewEmployees'])->name('view_employees');
     Route::get('view/careers', [Controller::class, 'viewCareers'])->name('view_employees');
     Route::get('view/types/student', [Controller::class, 'viewTypesStudent'])->name('view_employees');
-// });
+});
 
 Route::post('/login', [Controller::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
