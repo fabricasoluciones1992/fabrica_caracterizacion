@@ -91,7 +91,7 @@ class Controller extends BaseController
 
     public function viewStudentSol($code) {
         $codigoStu = DB::select("SELECT * FROM viewSolicitudes
-        WHERE stu_id = $code
+        WHERE per_document = $code
         ");
         if ($codigoStu == null) {
             return response()->json([
