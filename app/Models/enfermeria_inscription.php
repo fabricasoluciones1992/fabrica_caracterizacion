@@ -20,13 +20,14 @@ class enfermeria_inscription extends Model
     ];
     public $timestamps = false;
 
-    public static function select()//numero y id tipo de documento 
+    public static function select() 
 {
     $enfIns = DB::select("
-        SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname, pe.per_typ_name,pe.per_document,pe.doc_typ_id,pe.doc_typ_name,pe.eps_id,pe.eps_name
+        SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname, pe.per_document, pe.doc_typ_id, pe.doc_typ_name, pe.eps_id, pe.eps_name
         FROM enfermeria_inscriptions ef
         INNER JOIN ViewPersons pe ON pe.per_id = ef.per_id
     ");
+
 
     foreach ($enfIns as $enfIn) {
         $imc = $enfIn->enf_ins_imc;

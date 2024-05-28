@@ -29,9 +29,8 @@ class ConsultationController extends Controller
             ViewPersons.doc_typ_name,  
             ViewPersons.use_id, 
             ViewPersons.eps_id, 
-            ViewPersons.gen_id, 
-            ViewPersons.per_typ_id,
-            ViewPersons.per_typ_name
+            ViewPersons.gen_id
+            
         FROM consultations 
         INNER JOIN ViewPersons ON consultations.per_id = ViewPersons.per_id
     ");        return response()->json([

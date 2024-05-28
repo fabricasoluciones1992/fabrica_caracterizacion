@@ -25,8 +25,8 @@ class AssistancesController extends Controller
     public function store(Request $request)
 {
     $rules = [
-        'use_id' =>'required|unique:users|integer',
-        'bie_act_id' =>'required|unique:bienestar_activities|integer',
+        'use_id' =>'required|integer',
+        'bie_act_id' =>'required|integer',
     ];
 
     $validator = Validator::make($request->all(), $rules);
@@ -99,7 +99,7 @@ class AssistancesController extends Controller
     public function show($id)
     {
         
-        $assistances =  Assistance::find($id);
+        $assistances =  Assistance::search($id);
 
 
         if ($assistances == null) {
@@ -131,11 +131,10 @@ class AssistancesController extends Controller
             } else {
                 $rules = [
 
-                    'stu_id' =>'required|unique:students|integer|max:1',
+                    'stu_id' =>'required|integer|min:1',
                     'ass_date' =>'date',
-                    'ass_status' =>'required|integer|max:1',
-                    'bie_act_id' =>'required|unique:bienestar_activities|integer|max:1',
-                    'per_id' =>'required|unique:persons|integer|max:1'
+                    'ass_status' =>'required|integer',
+                    'bie_act_id' =>'required|integer|min:1',
 
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -154,7 +153,7 @@ class AssistancesController extends Controller
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;
                     $assistances->save();
-                    Controller::NewRegisterTrigger("An update was made in the assistences table",4,$request->use_id);
+                    Controller::NewRegisterTrigger("An update was made in assistances table", 4, $request->use_id);
 
                     return response()->json([
                         'status' => True,
