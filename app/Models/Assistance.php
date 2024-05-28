@@ -24,7 +24,7 @@ class Assistance extends Model
     }
     public static function search($id){
         $assistances =  DB::select("SELECT * FROM `viewassistances` WHERE ass_id = $id; ");
-        return $assistances[0];
+        return $assistances;
     }
 //     public static function Getbienestar_news()
 // {
