@@ -51,7 +51,7 @@ class Reports extends Model
                 )
                 ->join('viewEnrollments', 'viewSolicitudes.per_id', '=', 'viewEnrollments.per_id')
                 ->join('ViewPersons', 'viewSolicitudes.per_id', '=', 'ViewPersons.per_id')
-                ->where('viewSolicitudes.per_id', '=', $data->data)
+                ->where('viewSolicitudes.sol_typ_id', '=', $data->data)
                 ->get();
             
 
