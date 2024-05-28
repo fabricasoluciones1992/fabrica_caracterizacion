@@ -69,16 +69,21 @@ class Reports extends Model
                 return $students;
 
                 break;
-            case "5"://pro y car
-                $students = DB::table('viewStudents')->rightJoin('viewActivitiesBienestarStudent AS hc', 'hc.stu_id', '=', 'viewStudents.stu_id')
-                    ->select('per_typ_name','stu_journey', 'hc.per_document', 'hc.per_name', 'hc.per_lastname', 'use_mail')
-                    ->where('hc.stu_id', '=', $data->data)
+            case "5":
+                    $students = DB::table('viewAssitances')
+                    ->select('viewAssitances.ass_id','viewAssitances.per_name','viewAssitances.per_lastname','viewAssitances.per_document','viewAssitances.use_mail','viewAssitances.stu_journey','viewEnrollments.promotion','viewEnrollments.car_name','viewAssitances.bie_act_date','viewAssitances.bie_act_hour','viewAssitances.stu_typ_name','bie_act_name','ass_reg_status','ass_status')
+                    ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
+                    ->where('viewAssitances.stu_id', '=', $data->data)
+                    ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
                 return $students;
                 break;
-            case "6";//pro y car
-                $students = DB::table('viewStudents as vs')->join('viewHistorialConsultas AS hc', 'hc.per_document', '=', 'vs.per_document')->join('consultations as c', 'c.cons_id', '=', 'hc.cons_id')
-                    ->select('vs.per_typ_name','vs.stu_journey', 'vs.per_document', 'vs.per_name', 'vs.per_lastname', 'vs.use_mail', 'hc.per_document',  'c.cons_reason', 'c.cons_description', 'c.cons_date')
+            case "6";
+                $students = DB::table('viewStudents')
+                    ->join('consultations', 'viewStudents.per_id', '=', 'consultations.per_id')
+                    ->join('viewEnrollments', 'viewStudents.per_id', '=', 'viewEnrollments.per_id')
+                    ->select('viewStudents.per_typ_name','viewStudents.per_name','viewStudents.per_lastname', 'viewStudents.per_document','viewStudents.per_rh','viewStudents.per_birthday','viewStudents.per_direction','viewStudents.eps_name','viewStudents.stu_journey','viewEnrollments.promotion','viewEnrollments.car_name','consultations.cons_reason', 'consultations.cons_description', 'consultations.cons_date')
+                    ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
                 return $students;
                 break;
