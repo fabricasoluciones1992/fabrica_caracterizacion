@@ -65,7 +65,7 @@ class Reports extends Model
                     'viewEnrollments.promotion as Promoción',
                     'viewEnrollments.car_name as Programa',
                     'ViewPersons.use_mail as Correo'
-                )                
+                )
                     ->join('viewEnrollments', 'viewSolicitudes.per_id', '=', 'viewEnrollments.per_id')
                     ->join('ViewPersons', 'viewSolicitudes.per_id', '=', 'ViewPersons.per_id')
                     ->where('viewSolicitudes.rea_typ_id', '=', $data->data)
@@ -90,7 +90,7 @@ class Reports extends Model
                     'viewAssitances.bie_act_date as Fecha actividad',
                     'viewAssitances.bie_act_hour as Hora actividad',
                     'viewAssitances.stu_typ_name as Tipo estudiante'
-                )                
+                )
                     ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
                     ->where('viewAssitances.bie_act_typ_id', '=', 9)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
@@ -117,7 +117,7 @@ class Reports extends Model
                         'ass_reg_status as Estado registro',
                         'ass_status as Estado asistencia'
                     )
-                    
+
                     ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
                     ->where('viewAssitances.bie_act_id', '=', $data->data)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
@@ -143,7 +143,7 @@ class Reports extends Model
                 'consultations.cons_description as Descripción consulta',
                 'consultations.cons_date as Fecha consulta',
                 'consultations.cons_id as Id consulta'
-            )            
+            )
                 ->join('consultations', 'consultations.per_id', '=', 'viewStudents.per_id')
                 ->join('viewEnrollments', 'viewEnrollments.per_id', '=', 'viewStudents.per_id')
                 ->where('viewEnrollments.stu_enr_status', '=', 1)
@@ -188,8 +188,8 @@ class Reports extends Model
 
 
                     foreach($students as $stu){
-                        $tel = DB::table('telephones as tel')->where('tel.per_id','=',$stu->per_id)->select('tel_number as Teléfono','tel_description as Descripcion teléfono')->get();
-                        $stu->telephones = $tel;
+                        $tel = DB::table('telephones as tel')->where('tel.per_id','=',$stu->per_id)->select('tel_number as Teléfono','tel_description as Descripcion teléfono')->max('tel_number');
+                        $stu->telefono = $tel;
                     }
 
                 return $students;
