@@ -168,7 +168,7 @@ class Reports extends Model
                 $students = DB::table('viewEnrollments as ve')
                     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
                     ->select('stu_id', 'stu_typ_name as Tipo de estudiante', 'stu_journey as Jornada', 'per_document as Documento', 'per_name as Nombre', 'per_lastname as Apellido', 'use_mail as Correo', 'car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo')
-                    ->where('stu_id', '=', $data->data)
+                    ->where('ve.per_id', '=', $data->data)
                     ->where('use_status', '=', 1)
                     ->get();
 
@@ -224,8 +224,8 @@ class Reports extends Model
                 $students = DB::table('viewAssitances as vs')
                     ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
                     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                    ->select('vs.ass_id', 'vs.stu_id', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 'vs.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha actividad', 'vs.bie_act_hour as Actividad hora', 'vs.stu_typ_name as Tipo estudiante')
-                    ->where('vs.stu_id', '=', $data->data)
+                    ->select('vs.ass_id', 'vs.per_id', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 'vs.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha actividad', 'vs.bie_act_hour as Actividad hora', 'vs.stu_typ_name as Tipo estudiante')
+                    ->where('ve.per_id', '=', $data->data)
                     ->where('ve.stu_enr_status', '=', 1)
                     ->get();
 
@@ -236,9 +236,9 @@ class Reports extends Model
                 $students = DB::table('viewAssitances as va')
                     ->join('viewEnrollments as ve', 'va.per_id', '=', 've.per_id')
                     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                    ->select('va.ass_id', 'va.stu_id', 'va.per_name as Nombre', 'va.per_lastname as Apellido', 'va.per_document as Documento', 'va.use_mail as Correo', 'va.stu_journey as Jornada', 'pr.pro_name as Promoción','pr.pro_group as Grupo', 've.car_name as Carrera', 'va.bie_act_date as Fecha actividad', 'va.bie_act_hour as Hora actividad', 'va.stu_typ_name as Tipo de estudiante', 'bie_act_name as Nombre actividad', 'ass_reg_status as Estado de registro', 'ass_status as Estado asistencia')
+                    ->select('va.ass_id', 'va.per_id', 'va.per_name as Nombre', 'va.per_lastname as Apellido', 'va.per_document as Documento', 'va.use_mail as Correo', 'va.stu_journey as Jornada', 'pr.pro_name as Promoción','pr.pro_group as Grupo', 've.car_name as Carrera', 'va.bie_act_date as Fecha actividad', 'va.bie_act_hour as Hora actividad', 'va.stu_typ_name as Tipo de estudiante', 'bie_act_name as Nombre actividad', 'ass_reg_status as Estado de registro', 'ass_status as Estado asistencia')
 
-                    ->where('va.stu_id', '=', $data->data)
+                    ->where('ve.per_id', '=', $data->data)
                     ->where('ve.stu_enr_status', '=', 1)
                     ->get();
                 return $students;
@@ -249,7 +249,7 @@ class Reports extends Model
                     ->join('viewEnrollments as ve', 'vt.per_id', '=', 've.per_id')
                     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
                     ->select('vt.stu_typ_name as Tipo de estudiante', 'vt.stu_id', 'vt.per_name as Nombre', 'vt.per_lastname as Apellido', 'vt.per_document as Documento', 'vt.per_rh as Grupo sanguíneo', 'vt.per_birthdate as Fecha de nacimiento', 'vt.per_direction as Direccion', 'vt.eps_name as EPS', 'vt.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'co.cons_reason as Razón consulta', 'co.cons_description as Descripción consulta', 'co.cons_date as Fecha consulta')
-                    ->where('vt.stu_id', '=', $data->data)
+                    ->where('ve.per_id', '=', $data->data)
                     ->where('ve.stu_enr_status', '=', 1)
                     ->get();
                 return $students;
