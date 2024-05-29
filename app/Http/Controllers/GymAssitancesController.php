@@ -21,26 +21,23 @@ class GymAssitancesController extends Controller
 
     public function store(Request $request)
     {
-        
             if ($request->acc_administrator == 1) {
 
                 $rules = [
-
-                    'per_id' =>'required|unique:persons|integer'
+                    'per_id' =>'required|exists:persons|integer'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
+                    
                     return response()->json([
                     'status' => False,
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
                     $gymAs = new Gym_assistance($request->input());
-                    $gymAs->gym_ass_date = date('Y-m-d');
+                    $gymAs->gym_ass_date = now()->toDateString(); 
                     $gymAs->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Gym assistances table'$gymAs->gym_ass_id'",3,$request->use_id);
-                    // $id = $gymAs->gym_ass_id;
-                    // $bienestar_news=GymAssitancesController::Getbienestar_news($id);
                     return response()->json([
                         'status' => True,
                         'message' => "The Gym assistances has been created successfully.",
@@ -111,8 +108,7 @@ public function update(Request $request, $id)
         } else {
             $rules = [
 
-                'gym_ass_date' =>'required|date',
-                'per_id' =>'required|unique:persons|numeric'
+                'per_id' =>'required|exists:persons|numeric'
             ];
 
             $validator = Validator::make($request->input(), $rules);
@@ -122,7 +118,7 @@ public function update(Request $request, $id)
                     'message' => $validator->errors()->all()
                 ]);
             } else {
-                $gymAss->gym_ass_date = $request->gym_ass_date;
+                $gymAss->gym_ass_date = now()->toDateString(); 
                 $gymAss->per_id = $request->per_id;
                 $gymAss->save();
                 Controller::NewRegisterTrigger("An update was made in the Gym assistances table", 4, $request->use_id);
