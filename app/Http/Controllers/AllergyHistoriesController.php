@@ -21,8 +21,8 @@ class AllergyHistoriesController extends Controller
             if ($request->acc_administrator == 1) {
                 $rules = [
 
-                    'per_id' =>'required|unique:persons|numeric',
-                    'all_id' =>'required|unique:allergies|numeric',
+                    'per_id' =>'required|exists:persons|numeric',
+                    'all_id' =>'required|numeric',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -73,7 +73,7 @@ public function update(Request $request, $id)
 {
     return response()->json([
         'status' => false,
-        'message' => 'Function not available'
+        'message' => 'Function not available.'
     ]);
 }
     public function destroy(Request $request,$id)
@@ -81,7 +81,7 @@ public function update(Request $request, $id)
         
                 return response()->json([
                     'status' => false,
-                    'message' => 'Function not available'
+                    'message' => 'Function not available.'
                 ]);
             
     }
