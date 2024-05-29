@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\action;
+use App\Models\Action;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,7 +20,7 @@ class ActionsController extends Controller
     ], 200);
 }
 
-
+    
 
 
 
@@ -30,7 +30,8 @@ class ActionsController extends Controller
             if ($request->acc_administrator == 1) {
                 $rules = [
 
-                    'act_name' => 'required|string|min:1|max:250|unique:actions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
+                    'act_name' => 'required|string|min:1|max:250|unique:actions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'use_id' => 'required|integer|exists:users'
                     
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -40,10 +41,10 @@ class ActionsController extends Controller
                         'message' => $validator->errors()->all()
                     ]);
                 }else{
-                    $action = new action($request->input());
+                    $action = new Action($request->input());
                     $action->act_status=1;
                     $action->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Actions table'$action->act_id'",3,$request->use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Actions table ",3,$request->use_id);
                     // $id = $action->act_id;
                     // $bienestar_news=ActionsController::Getbienestar_news($id);
                     return response()->json([
@@ -91,12 +92,14 @@ class ActionsController extends Controller
                     'act_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => False,
-                        'message' => $validator->errors()->all()
-                    ]);
-                }else{
+                $validate = Controller::validate_exists($request->act_name, 'actions', 'act_name', 'act_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+                return response()->json([
+                'status' => False,
+                'message' => $msg
+                ]);
+            }else{
                     $action->act_name = $request->act_name;
                     $action->save();
                     Controller::NewRegisterTrigger("An update was made in the actions table",4,$request->use_id);

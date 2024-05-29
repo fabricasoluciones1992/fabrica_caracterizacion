@@ -28,10 +28,10 @@ class GymInscriptionsController extends Controller
 
                 $rules = [
 
-                    'gym_ins_date' =>'required|date',
-                    'per_id' =>'required|unique:persons|numeric'
+                    'per_id' =>'required|exists:persons|numeric'
                 ];
                 $validator = Validator::make($request->input(), $rules);
+                
                 if ($validator->fails()) {
                     return response()->json([
                     'status' => False,
@@ -40,6 +40,8 @@ class GymInscriptionsController extends Controller
                 } else {
                     $gymIn = new GymInscription($request->input());
                     $gymIn->gym_ins_status=1;
+                    $gymIn->gym_ins_date = now()->toDateString(); 
+
                     $gymIn->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Gym inscriptions table'$gymIn->gym_ins_id'",3,$request->use_id);
                     // $id = $gymIn->gym_ins_id;
@@ -116,9 +118,7 @@ public function update(Request $request, $id)
             ], 400);
         } else {
             $rules = [
-
-                'gym_ins_date' =>'required|date',
-                    'per_id' =>'required|unique:persons|numeric'
+                    'per_id' =>'required|exists:persons|numeric'
             ];
 
             $validator = Validator::make($request->input(), $rules);
@@ -128,7 +128,7 @@ public function update(Request $request, $id)
                     'message' => $validator->errors()->all()
                 ]);
             } else {
-                $gymIns->gym_ins_date = $request->gym_ins_date;
+                $gymIns->gym_ins_date = now()->toDateString(); 
                 $gymIns->per_id = $request->per_id;
                 $gymIns->save();
                 Controller::NewRegisterTrigger("An update was made in the Gym inscriptions table", 4, $request->use_id);
