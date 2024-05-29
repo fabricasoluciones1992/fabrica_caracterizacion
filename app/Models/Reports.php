@@ -69,11 +69,10 @@ class Reports extends Model
                 return $students;
 
                 break;
-            case "5":
-                $students = DB::table('viewAssitances')
-                    ->select('viewAssitances.ass_id', 'viewAssitances.per_name', 'viewAssitances.per_lastname', 'viewAssitances.per_document', 'viewAssitances.use_mail', 'viewAssitances.stu_journey', 'viewEnrollments.promotion', 'viewEnrollments.car_name', 'viewAssitances.bie_act_date', 'viewAssitances.bie_act_hour', 'viewAssitances.stu_typ_name', 'bie_act_name', 'ass_reg_status', 'ass_status')
+                case "5":
+                    $students = DB::table('viewAssitances')
+                    ->select('viewAssitances.ass_id','viewAssitances.per_name','viewAssitances.per_lastname','viewAssitances.per_document','viewAssitances.use_mail','viewAssitances.stu_journey','viewEnrollments.promotion','viewEnrollments.car_name','viewAssitances.bie_act_date','viewAssitances.bie_act_hour','viewAssitances.stu_typ_name','bie_act_name','ass_reg_status','ass_status')
                     ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
-                    ->where('viewAssitances.stu_id', '=', $data->data)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
                 return $students;
@@ -82,7 +81,7 @@ class Reports extends Model
                 $students = DB::table('viewStudents')
                     ->join('consultations', 'viewStudents.per_id', '=', 'consultations.per_id')
                     ->join('viewEnrollments', 'viewStudents.per_id', '=', 'viewEnrollments.per_id')
-                    ->select('viewStudents.per_typ_name', 'viewStudents.per_name', 'viewStudents.per_lastname', 'viewStudents.per_document', 'viewStudents.per_rh', 'viewStudents.per_birthday', 'viewStudents.per_direction', 'viewStudents.eps_name', 'viewStudents.stu_journey', 'viewEnrollments.promotion', 'viewEnrollments.car_name', 'consultations.cons_reason', 'consultations.cons_description', 'consultations.cons_date')
+                    ->select('viewStudents.stu_typ_name', 'viewStudents.per_name', 'viewStudents.per_lastname', 'viewStudents.per_document', 'viewStudents.per_rh', 'viewStudents.per_birthdate', 'viewStudents.per_direction', 'viewStudents.eps_name', 'viewStudents.stu_journey', 'viewEnrollments.promotion', 'viewEnrollments.car_name', 'consultations.cons_reason', 'consultations.cons_description', 'consultations.cons_date')
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
                 return $students;
