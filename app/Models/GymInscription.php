@@ -25,9 +25,7 @@ class GymInscription extends Model
                 pe.per_name,
                 pe.per_document,
                 pe.per_lastname,
-                pe.per_typ_id,
-                pe.per_typ_id,
-                pe.per_typ_name,
+                
                 pe.doc_typ_id,
                 pe.doc_typ_name
             FROM 
@@ -47,9 +45,7 @@ class GymInscription extends Model
         pe.per_name,
         pe.per_document,
         pe.per_lastname,
-        pe.per_typ_id,
-        pe.per_typ_id,
-        pe.per_typ_name,
+        
         pe.doc_typ_id,
         pe.doc_typ_name
     FROM 
