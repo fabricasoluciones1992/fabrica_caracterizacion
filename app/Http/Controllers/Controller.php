@@ -199,8 +199,8 @@ public function viewEmployees(){
     }
 }
 public function viewCareers(){
-    $employees = DB::table('careers')->get();
-    if($employees == '[]'){
+    $careers = DB::table('careers')->get();
+    if($careers == '[]'){
         return response()->json([
            'status' => false,
             'data' => "No data found"
@@ -208,13 +208,13 @@ public function viewCareers(){
     }else{
         return response()->json([
             'status' => true,
-            'data' => $employees
+            'data' => $careers
         ]);
     }
 }
 public function viewTypesStudent(){
-    $employees = DB::table('students_types')->get();
-    if($employees == '[]'){
+    $students = DB::table('students_types')->get();
+    if($students == '[]'){
         return response()->json([
            'status' => false,
             'data' => "No data found"
@@ -222,7 +222,7 @@ public function viewTypesStudent(){
     }else{
         return response()->json([
             'status' => true,
-            'data' => $employees
+            'data' => $students
         ]);
     }
 }
