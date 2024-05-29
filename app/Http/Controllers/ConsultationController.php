@@ -45,7 +45,7 @@ class ConsultationController extends Controller
 
                 'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                 'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
-                'per_id' => 'required|unique:persons|integer'
+                'per_id' => 'required|exists:persons|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
