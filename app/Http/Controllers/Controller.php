@@ -24,7 +24,7 @@ class Controller extends BaseController
         DB::statement("CALL bie_new_register('" . addslashes($bie_new_description) . "', $new_typ_id, $use_id)");
     }
 
-    
+
 
 
     public function student($id) {
@@ -185,7 +185,7 @@ public function docsTypesId(){
 
 }
 public function viewEmployees(){
-    $employees = DB::table('viewemployees')->get();
+    $employees = DB::table('viewEmployees')->get();
     if($employees == '[]'){
         return response()->json([
            'status' => false,
