@@ -148,7 +148,7 @@ class Reports extends Model
                 ->join('viewEnrollments', 'viewEnrollments.per_id', '=', 'viewStudents.per_id')
                 ->where('viewEnrollments.stu_enr_status', '=', 1)
                 ->get();
-        
+
                 return $students;
                 break;
             default:
@@ -176,13 +176,21 @@ class Reports extends Model
 
             case "2":
                 $students = DB::table('viewPermanences as vp')
-                    ->join('persons as p','vp.per_id','=','p.per_id')
+                    ->join('viewEnrollments as ve','ve.per_id','=','vp.per_id')
                     ->join('students as st','st.per_id','=','vp.per_id')
                     ->join('permanences as per','per.perm_id','=','vp.perm_id')
                     ->join('actions as a','a.act_id','=','per.act_id')
-                    ->select('st.*','vp.*','p.*','a.*')
+                    ->join('promotions as pr','pr.pro_id','=','ve.pro_id')
+                    // ->join('telephones as te','te.per_id','=','vp.per_id')
+                    ->select('vp.per_id','vp.act_name as Acción','ve.car_name as Carrera','pr.pro_name as Promoción','pr.pro_group as Grupo','st.stu_journey as Jornada','vp.per_document as Documento','vp.per_name as Nombre','vp.per_lastname as Apellido','ve.use_mail as Correo institucional','vp.sol_typ_name as Solicitud','vp.perm_date as Fecha de gestión','vp.rea_typ_name as Motivo de estado')
                     ->where('a.act_id', '=', $data->data)
                     ->get();
+
+
+                    foreach($students as $stu){
+                        $tel = DB::table('telephones as tel')->where('tel.per_id','=',$stu->per_id)->select('tel_number as Teléfono','tel_description as Descripcion teléfono')->get();
+                        $stu->telephones = $tel;
+                    }
 
                 return $students;
                 break;
