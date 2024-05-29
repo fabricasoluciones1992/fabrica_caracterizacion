@@ -16,15 +16,16 @@ class Reports extends Model
             case "1":
                 $students = DB::table('viewEnrollments')
                     ->select(
-                    'stu_id as id estudiante',
-                    'stu_typ_name as tipo de estudiante',
-                    'stu_journey as jornada',
-                    'per_document as documento',
-                    'per_name as nombres',
-                    'per_lastname as apellidos',
-                    'use_mail as correo',
-                    'car_name as programa',
-                    'promotion as promocion')
+                        'stu_id as Id Estudiante',
+                        'stu_typ_name as Tipo de Estudiante',
+                        'stu_journey as Jornada',
+                        'per_document as Documento',
+                        'per_name as Nombres',
+                        'per_lastname as Apellidos',
+                        'use_mail as Correo',
+                        'car_name as Programa',
+                        'promotion as Promoción'
+                    )
                     ->where('stu_typ_id', '=', $data->data)
                     ->where('use_status', '=', 1)
                     ->get();
@@ -35,15 +36,15 @@ class Reports extends Model
             case "2":
                 $students = DB::table('viewEnrollments')
                 ->select(
-                    'stu_id as id_estudiante',
-                    'stu_typ_name as tipo_estudiante',
-                    'stu_journey as jornada',
-                    'per_document as documento',
-                    'per_name as nombre',
-                    'per_lastname as apellido',
-                    'use_mail as correo_electronico',
-                    'car_name as nombre_carrera',
-                    'promotion as promocion'
+                    'stu_id as Id estudiante',
+                    'stu_typ_name as Tipo estudiante',
+                    'stu_journey as Jornada',
+                    'per_document as Documento',
+                    'per_name as Nombre',
+                    'per_lastname as Apellido',
+                    'use_mail as Correo electronico',
+                    'car_name as Nombre carrera',
+                    'promotion as Promocion'
                 )
                     ->where('car_id', '=', $data->data)
                     ->where('use_status', '=', 1)
@@ -55,16 +56,16 @@ class Reports extends Model
             case "3":
                 $students = DB::table('viewSolicitudes')
                 ->select(
-                    'viewSolicitudes.per_document as documento',
-                    'viewSolicitudes.per_name as nombres',
-                    'viewSolicitudes.per_lastname as apellidos',
-                    'viewSolicitudes.rea_typ_name as tipo razon',
-                    'viewSolicitudes.sol_typ_name as tipo solicitud',
-                    'viewSolicitudes.sol_date as fecha solicitud',
-                    'viewEnrollments.promotion as promocion',
-                    'viewEnrollments.car_name as programa',
-                    'ViewPersons.use_mail as correo'
-                )
+                    'viewSolicitudes.per_document as Documento',
+                    'viewSolicitudes.per_name as Nombres',
+                    'viewSolicitudes.per_lastname as Apellidos',
+                    'viewSolicitudes.rea_typ_name as Tipo razón',
+                    'viewSolicitudes.sol_typ_name as Tipo solicitud',
+                    'viewSolicitudes.sol_date as Fecha solicitud',
+                    'viewEnrollments.promotion as Promoción',
+                    'viewEnrollments.car_name as Programa',
+                    'ViewPersons.use_mail as Correo'
+                )                
                     ->join('viewEnrollments', 'viewSolicitudes.per_id', '=', 'viewEnrollments.per_id')
                     ->join('ViewPersons', 'viewSolicitudes.per_id', '=', 'ViewPersons.per_id')
                     ->where('viewSolicitudes.rea_typ_id', '=', $data->data)
@@ -78,18 +79,18 @@ class Reports extends Model
             case "4":
                 $students = DB::table('viewAssitances')
                 ->select(
-                    'viewAssitances.ass_id as id_asistencia',
-                    'viewAssitances.per_name as nombre_persona',
-                    'viewAssitances.per_lastname as apellido_persona',
-                    'viewAssitances.per_document as documento_persona',
-                    'viewAssitances.use_mail as correo_electronico',
-                    'viewAssitances.stu_journey as jornada_estudiante',
-                    'viewEnrollments.promotion as promocion',
-                    'viewEnrollments.car_name as nombre_carrera',
-                    'viewAssitances.bie_act_date as fecha_actividad',
-                    'viewAssitances.bie_act_hour as hora_actividad',
-                    'viewAssitances.stu_typ_name as tipo_estudiante'
-                )
+                    'viewAssitances.ass_id as Id asistencia',
+                    'viewAssitances.per_name as Nombre persona',
+                    'viewAssitances.per_lastname as Apellido persona',
+                    'viewAssitances.per_document as Documento persona',
+                    'viewAssitances.use_mail as Correo electrónico',
+                    'viewAssitances.stu_journey as Jornada estudiante',
+                    'viewEnrollments.promotion as Promoción',
+                    'viewEnrollments.car_name as Nombre carrera',
+                    'viewAssitances.bie_act_date as Fecha actividad',
+                    'viewAssitances.bie_act_hour as Hora actividad',
+                    'viewAssitances.stu_typ_name as Tipo estudiante'
+                )                
                     ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
                     ->where('viewAssitances.bie_act_typ_id', '=', 9)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
@@ -101,21 +102,22 @@ class Reports extends Model
                 case "5":
                     $students = DB::table('viewAssitances')
                     ->select(
-                        'viewAssitances.ass_id as id_asistencia',
-                        'viewAssitances.per_name as nombre_persona',
-                        'viewAssitances.per_lastname as apellido_persona',
-                        'viewAssitances.per_document as documento_persona',
-                        'viewAssitances.use_mail as correo_electronico',
-                        'viewAssitances.stu_journey as jornada_estudiante',
-                        'viewEnrollments.promotion as promocion',
-                        'viewEnrollments.car_name as nombre_carrera',
-                        'viewAssitances.bie_act_date as fecha_actividad',
-                        'viewAssitances.bie_act_hour as hora_actividad',
-                        'viewAssitances.stu_typ_name as tipo_estudiante',
-                        'bie_act_name as nombre_actividad',
-                        'ass_reg_status as estado_registro',
-                        'ass_status as estado_asistencia'
+                        'viewAssitances.ass_id as Id asistencia',
+                        'viewAssitances.per_name as Nombre persona',
+                        'viewAssitances.per_lastname as Apellido persona',
+                        'viewAssitances.per_document as Documento persona',
+                        'viewAssitances.use_mail as Correo electrónico',
+                        'viewAssitances.stu_journey as Jornada estudiante',
+                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.car_name as Nombre carrera',
+                        'viewAssitances.bie_act_date as Fecha actividad',
+                        'viewAssitances.bie_act_hour as Hora actividad',
+                        'viewAssitances.stu_typ_name as Tipo estudiante',
+                        'bie_act_name as Nombre actividad',
+                        'ass_reg_status as Estado registro',
+                        'ass_status as Estado asistencia'
                     )
+                    
                     ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
                     ->where('viewAssitances.bie_act_id', '=', $data->data)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
@@ -125,23 +127,23 @@ class Reports extends Model
             case "6";
             $students = DB::table('viewStudents')
             ->select(
-                'viewStudents.stu_id as id_estudiante',
-                'viewStudents.stu_typ_name as tipo_estudiante',
-                'viewStudents.per_name as nombre_persona',
-                'viewStudents.per_lastname as apellido_persona',
-                'viewStudents.per_document as documento_persona',
-                'viewStudents.per_rh as rh_persona',
-                'viewStudents.per_birthdate as fecha_nacimiento',
-                'viewStudents.per_direction as direccion_persona',
-                'viewStudents.eps_name as nombre_eps',
-                'viewStudents.stu_journey as jornada_estudiante',
-                'viewEnrollments.promotion as promocion',
-                'viewEnrollments.car_name as nombre_carrera',
-                'consultations.cons_reason as motivo_consulta',
-                'consultations.cons_description as descripcion_consulta',
-                'consultations.cons_date as fecha_consulta',
-                'consultations.cons_id as id_consulta'
-            )
+                'viewStudents.stu_id as Id estudiante',
+                'viewStudents.stu_typ_name as Tipo estudiante',
+                'viewStudents.per_name as Nombre persona',
+                'viewStudents.per_lastname as Apellido persona',
+                'viewStudents.per_document as Documento persona',
+                'viewStudents.per_rh as RH persona',
+                'viewStudents.per_birthdate as Fecha nacimiento',
+                'viewStudents.per_direction as Dirección persona',
+                'viewStudents.eps_name as Nombre EPS',
+                'viewStudents.stu_journey as Jornada estudiante',
+                'viewEnrollments.promotion as Promoción',
+                'viewEnrollments.car_name as Nombre carrera',
+                'consultations.cons_reason as Motivo consulta',
+                'consultations.cons_description as Descripción consulta',
+                'consultations.cons_date as Fecha consulta',
+                'consultations.cons_id as Id consulta'
+            )            
                 ->join('consultations', 'consultations.per_id', '=', 'viewStudents.per_id')
                 ->join('viewEnrollments', 'viewEnrollments.per_id', '=', 'viewStudents.per_id')
                 ->where('viewEnrollments.stu_enr_status', '=', 1)
