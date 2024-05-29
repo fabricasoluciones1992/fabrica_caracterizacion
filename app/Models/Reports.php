@@ -110,10 +110,13 @@ class Reports extends Model
                 break;
 
             case "2":
-                $students = DB::table('viewEnrollments')
-                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'car_name', 'promotion')
-                    ->where('stu_id', '=', $data->data)
-                    ->where('use_status', '=', 1)
+                $students = DB::table('viewPermanences as vp')
+                    ->join('persons as p','vp.per_id','=','p.per_id')
+                    ->join('students as st','st.per_id','=','vp.per_id')
+                    ->join('permanences as per','per.perm_id','=','vp.perm_id')
+                    ->join('actions as a','a.act_id','=','per.act_id')
+                    ->select('st.*','vp.*','p.*','a.*')
+                    ->where('a.act_id', '=', $data->data)
                     ->get();
 
                 return $students;
