@@ -27,7 +27,7 @@ class AllergiesController extends Controller
             if ($request->acc_administrator == 1) {
                 $rules = [
 
-                    'all_name' => 'required|string|min:1|max:50|exists:allergies|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
+                    'all_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     
                 ];
                 $validator = Validator::make($request->input(), $rules);

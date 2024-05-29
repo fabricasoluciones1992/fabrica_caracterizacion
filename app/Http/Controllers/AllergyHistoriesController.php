@@ -22,7 +22,7 @@ class AllergyHistoriesController extends Controller
                 $rules = [
 
                     'per_id' =>'required|exists:persons|numeric',
-                    'all_id' =>'required|numeric',
+                    'all_id' =>'required|exists:allergies|numeric',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
