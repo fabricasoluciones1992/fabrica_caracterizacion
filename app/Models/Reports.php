@@ -165,17 +165,97 @@ class Reports extends Model
     {
         switch ($data->option) {
             case "1":
-                $students = DB::table('viewEnrollments as ve')
-                    ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                    ->select('stu_id', 'stu_typ_name as Tipo de estudiante', 'stu_journey as Jornada', 'per_document as Documento', 'per_name as Nombre', 'per_lastname as Apellido', 'use_mail as Correo', 'car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo')
-                    ->where('ve.per_id', '=', $data->data)
-                    ->where('use_status', '=', 1)
-                    ->get();
+                // $students = DB::table('viewEnrollments as ve')
+                //     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
+                //     ->select('stu_id', 'stu_typ_name as Tipo de estudiante', 'stu_journey as Jornada', 'per_document as Documento', 'per_name as Nombre', 'per_lastname as Apellido', 'use_mail as Correo', 'car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo')
+                //     ->where('ve.per_id', '=', $data->data)
+                //     ->where('use_status', '=', 1)
+                //     ->get();
+
+                // return $students;
+                // break;
+                $students = DB::table('viewAssitances as vs')
+                ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
+                ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
+                ->select('vs.ass_id', 'vs.per_id', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 'vs.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha actividad', 'vs.bie_act_name as Actividad', 'vs.bie_act_hour as Hora de la actividad', 'vs.stu_typ_name as Tipo estudiante')
+                ->where('ve.per_id', '=', $data->data)
+                ->get();
+
+            return $students;
+
+            case "2":
+                // $students = DB::table('viewPermanences as vp')
+                //     ->join('viewEnrollments as ve', 've.per_id', '=', 'vp.per_id')
+                //     ->join('students as st', 'st.per_id', '=', 'vp.per_id')
+                //     ->join('permanences as per', 'per.perm_id', '=', 'vp.perm_id')
+                //     ->join('actions as a', 'a.act_id', '=', 'per.act_id')
+                //     ->join('promotions as pr', 'pr.pro_id', '=', 've.pro_id')
+                //     // ->join('telephones as te','te.per_id','=','vp.per_id')
+                //     ->select('vp.per_id', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 'st.stu_journey as Jornada', 'vp.per_document as Documento', 'vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha de gestión', 'vp.rea_typ_name as Motivo de estado')
+                //     ->where('a.act_id', '=', $data->data)
+                //     ->get();
+
+
+                // foreach ($students as $stu) {
+                //     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->per_id)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
+                //     $stu->telefono = $tel;
+                // }
+                $students = DB::table('viewAssitances as vs')
+                ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
+                ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
+                ->select('vs.ass_id', 'vs.per_id', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 'vs.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha actividad', 'vs.bie_act_name as Actividad', 'vs.bie_act_hour as Hora de la actividad', 'vs.bie_act_typ_id','vs.stu_typ_name as Tipo estudiante')
+                ->where('vs.bie_act_typ_id', '=', 1)
+                ->where('ve.per_id', '=', $data->data)
+                ->get();
 
                 return $students;
                 break;
+            case "3":
+                // $students = DB::table('viewSolicitudes as vs')
+                //     ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
+                //     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
+                //     ->join('ViewPersons as vp', 'vs.per_id', '=', 'vp.per_id')
+                //     ->select(
+                //         'vs.per_id',
+                //         'vs.per_document as Documento',
+                //         'vs.per_name as Nombre',
+                //         'vs.per_lastname as Apellido',
+                //         'vs.rea_typ_name as Razón',
+                //         'vs.sol_typ_name as Solicitud',
+                //         'vs.sol_date as Fecha de Solicitud',
+                //         'pr.pro_name as Promoción',
+                //         'pr.pro_group as Grupo',
+                //         've.car_name as Carrera',
+                //         'vp.use_mail as Correo'
+                //     )
 
-            case "2":
+                //     ->where('vs.per_id', '=', $data->data)
+                //     ->get();
+                $students = DB::table('viewPermanences as vp')
+                ->join('viewEnrollments as ve', 've.per_id', '=', 'vp.per_id')
+                ->join('students as st', 'st.per_id', '=', 'vp.per_id')
+                ->join('permanences as per', 'per.perm_id', '=', 'vp.perm_id')
+                ->join('actions as a', 'a.act_id', '=', 'per.act_id')
+                ->join('promotions as pr', 'pr.pro_id', '=', 've.pro_id')
+                ->join('viewSolicitudes as vs','vs.per_id', '=', 'vp.per_id')
+                // ->join('telephones as te','te.per_id','=','vp.per_id')
+                ->select('vp.per_id', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 'st.stu_journey as Jornada', 'vp.per_document as Documento', 'vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha de gestión', 'vp.rea_typ_name as Motivo de estado')
+                ->where('vs.rea_typ_type', '=', 1)
+                ->where('vs.per_id', '=', $data->data)
+                ->get();
+
+
+                return $students;
+                break;
+            case "4":
+                // $students = DB::table('viewAssitances as vs')
+                //     ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
+                //     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
+                //     ->select('vs.ass_id', 'vs.per_id', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 'vs.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha actividad', 'vs.bie_act_name as Actividad', 'vs.bie_act_hour as Hora de la actividad', 'vs.stu_typ_name as Tipo estudiante')
+                //     ->where('ve.per_id', '=', $data->data)
+                //     ->where('ve.stu_enr_status', '=', 1)
+                //     ->get();
+
                 $students = DB::table('viewPermanences as vp')
                     ->join('viewEnrollments as ve', 've.per_id', '=', 'vp.per_id')
                     ->join('students as st', 'st.per_id', '=', 'vp.per_id')
@@ -183,64 +263,33 @@ class Reports extends Model
                     ->join('actions as a', 'a.act_id', '=', 'per.act_id')
                     ->join('promotions as pr', 'pr.pro_id', '=', 've.pro_id')
                     // ->join('telephones as te','te.per_id','=','vp.per_id')
-                    ->select('vp.per_id', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 'st.stu_journey as Jornada', 'vp.per_document as Documento', 'vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha de gestión', 'vp.rea_typ_name as Motivo de estado')
-                    ->where('a.act_id', '=', $data->data)
+                    ->select('vp.per_id', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 'st.stu_journey as Jornada', 'vp.per_document as Documento', 'vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha de gestión','a.act_name as Acción de permanencia', 'vp.rea_typ_name as Motivo de estado')
+                    ->where('vp.per_id', '=', $data->data)
                     ->get();
+                    foreach ($students as $stu) {
+                        $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->per_id)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
+                        $stu->telefono = $tel;
+                    }
 
-
-                foreach ($students as $stu) {
-                    $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->per_id)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
-                    $stu->telefono = $tel;
-                }
-
-                return $students;
-                break;
-            case "3":
-                $students = DB::table('viewSolicitudes as vs')
-                    ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
-                    ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                    ->join('ViewPersons as vp', 'vs.per_id', '=', 'vp.per_id')
-                    ->select(
-                        'vs.per_id',
-                        'vs.per_document as Documento',
-                        'vs.per_name as Nombre',
-                        'vs.per_lastname as Apellido',
-                        'vs.rea_typ_name as Razón',
-                        'vs.sol_typ_name as Solicitud',
-                        'vs.sol_date as Fecha de Solicitud',
-                        'pr.pro_name as Promoción',
-                        'pr.pro_group as Grupo',
-                        've.car_name as Carrera',
-                        'vp.use_mail as Correo'
-                    )
-
-                    ->where('vs.per_id', '=', $data->data)
-                    ->get();
-
-
-                return $students;
-                break;
-            case "4":
-                $students = DB::table('viewAssitances as vs')
-                    ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
-                    ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                    ->select('vs.ass_id', 'vs.per_id', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 'vs.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha actividad', 'vs.bie_act_hour as Actividad hora', 'vs.stu_typ_name as Tipo estudiante')
-                    ->where('ve.per_id', '=', $data->data)
-                    ->where('ve.stu_enr_status', '=', 1)
-                    ->get();
 
                 return $students;
 
                 break;
             case "5":
-                $students = DB::table('viewAssitances as va')
-                    ->join('viewEnrollments as ve', 'va.per_id', '=', 've.per_id')
-                    ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                    ->select('va.ass_id', 'va.per_id', 'va.per_name as Nombre', 'va.per_lastname as Apellido', 'va.per_document as Documento', 'va.use_mail as Correo', 'va.stu_journey as Jornada', 'pr.pro_name as Promoción','pr.pro_group as Grupo', 've.car_name as Carrera', 'va.bie_act_date as Fecha actividad', 'va.bie_act_hour as Hora actividad', 'va.stu_typ_name as Tipo de estudiante', 'bie_act_name as Nombre actividad', 'ass_reg_status as Estado de registro', 'ass_status as Estado asistencia')
+                // $students = DB::table('viewAssitances as va')
+                //     ->join('viewEnrollments as ve', 'va.per_id', '=', 've.per_id')
+                //     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
+                //     ->select('va.ass_id', 'va.per_id', 'va.per_name as Nombre', 'va.per_lastname as Apellido', 'va.per_document as Documento', 'va.use_mail as Correo', 'va.stu_journey as Jornada', 'pr.pro_name as Promoción','pr.pro_group as Grupo', 've.car_name as Carrera', 'va.bie_act_date as Fecha actividad', 'va.bie_act_hour as Hora actividad', 'va.stu_typ_name as Tipo de estudiante', 'bie_act_name as Nombre actividad', 'ass_reg_status as Estado de registro', 'ass_status as Estado asistencia')
 
-                    ->where('ve.per_id', '=', $data->data)
-                    ->where('ve.stu_enr_status', '=', 1)
-                    ->get();
+                //     ->where('ve.per_id', '=', $data->data)
+                //     ->where('ve.stu_enr_status', '=', 1)
+                //     ->get();
+                $students = DB::table('viewEnrollments as ve')
+                ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
+                ->join('gym_assistances as gy', 'gy.per_id', '=', 've.per_id')
+                ->select('ve.stu_journey as Jornada','ve.car_name as Carrera','pr.pro_name as Promoción','pr.pro_group as Grupo','ve.per_document as Documento','ve.per_name as Nombre','ve.per_lastname as Apellido','gy.gym_ass_date as Fecha de asistencia')
+                ->where('ve.per_id', '=', $data->data)
+                ->get();
                 return $students;
                 break;
             case "6":
@@ -248,7 +297,8 @@ class Reports extends Model
                     ->join('consultations as co', 'vt.per_id', '=', 'co.per_id')
                     ->join('viewEnrollments as ve', 'vt.per_id', '=', 've.per_id')
                     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                    ->select('vt.stu_typ_name as Tipo de estudiante', 'vt.stu_id', 'vt.per_name as Nombre', 'vt.per_lastname as Apellido', 'vt.per_document as Documento', 'vt.per_rh as Grupo sanguíneo', 'vt.per_birthdate as Fecha de nacimiento', 'vt.per_direction as Direccion', 'vt.eps_name as EPS', 'vt.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'co.cons_reason as Razón consulta', 'co.cons_description as Descripción consulta', 'co.cons_date as Fecha consulta')
+                    ->join('enfermeria_inscriptions as en', 'en.per_id', '=', 'vt.per_id')
+                    ->select('vt.stu_typ_name as Tipo de estudiante', 'vt.stu_id', 'vt.per_name as Nombre', 'vt.per_lastname as Apellido', 'vt.per_document as Documento', 'vt.per_rh as Grupo sanguíneo', 'vt.per_birthdate as Fecha de nacimiento', 'vt.per_direction as Direccion', 'vt.eps_name as EPS', 'vt.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'co.cons_reason as Razón consulta', 'co.cons_description as Descripción consulta', 'co.cons_date as Fecha consulta','en.enf_ins_height as Altura','en.enf_ins_weight as Peso','en.enf_ins_vaccination as Vacunas')
                     ->where('ve.per_id', '=', $data->data)
                     ->where('ve.stu_enr_status', '=', 1)
                     ->get();
