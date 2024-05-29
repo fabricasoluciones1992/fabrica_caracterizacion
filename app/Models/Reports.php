@@ -18,7 +18,7 @@ class Reports extends Model
         switch ($data->option) {
             case "1":
                 $students = DB::table('viewEnrollments')
-                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail','car_name', 'promotion')
+                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'car_name', 'promotion')
                     ->where('stu_typ_id', '=', $data->data)
                     ->where('use_status', '=', 1)
                     ->get();
@@ -28,50 +28,50 @@ class Reports extends Model
 
             case "2":
                 $students = DB::table('viewEnrollments')
-                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail','car_name', 'promotion')
+                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'car_name', 'promotion')
                     ->where('car_id', '=', $data->data)
                     ->where('use_status', '=', 1)
                     ->get();
 
                 return $students;
                 break;
-                
+
             case "3":
                 $students = DB::table('viewSolicitudes')
-                ->select(
-                    'viewSolicitudes.per_document',
-                    'viewSolicitudes.per_name',
-                    'viewSolicitudes.per_lastname',
-                    'viewSolicitudes.rea_typ_name',
-                    'viewSolicitudes.sol_typ_name',
-                    'viewSolicitudes.sol_date',
-                    'viewEnrollments.promotion',
-                    'viewEnrollments.car_name',
-                    'ViewPersons.use_mail'
-                )
-                ->join('viewEnrollments', 'viewSolicitudes.per_id', '=', 'viewEnrollments.per_id')
-                ->join('ViewPersons', 'viewSolicitudes.per_id', '=', 'ViewPersons.per_id')
-                ->where('viewSolicitudes.sol_typ_id', '=', $data->data)
-                ->get();
-            
+                    ->select(
+                        'viewSolicitudes.per_document',
+                        'viewSolicitudes.per_name',
+                        'viewSolicitudes.per_lastname',
+                        'viewSolicitudes.rea_typ_name',
+                        'viewSolicitudes.sol_typ_name',
+                        'viewSolicitudes.sol_date',
+                        'viewEnrollments.promotion',
+                        'viewEnrollments.car_name',
+                        'ViewPersons.use_mail'
+                    )
+                    ->join('viewEnrollments', 'viewSolicitudes.per_id', '=', 'viewEnrollments.per_id')
+                    ->join('ViewPersons', 'viewSolicitudes.per_id', '=', 'ViewPersons.per_id')
+                    ->where('viewSolicitudes.sol_typ_id', '=', $data->data)
+                    ->get();
 
-            return $students;
-            break;
+
+                return $students;
+                break;
 
             case "4":
                 $students = DB::table('viewAssitances')
-                ->select('viewAssitances.ass_id','viewAssitances.per_name','viewAssitances.per_lastname','viewAssitances.per_document','viewAssitances.use_mail','viewAssitances.stu_journey','viewEnrollments.promotion','viewEnrollments.car_name','viewAssitances.bie_act_date','viewAssitances.bie_act_hour','viewAssitances.stu_typ_name')
-                ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
-                ->where('viewAssitances.bie_act_typ_id', '=', 9)
-                ->where('viewEnrollments.stu_enr_status', '=', 1)
-                ->get();
+                    ->select('viewAssitances.ass_id', 'viewAssitances.per_name', 'viewAssitances.per_lastname', 'viewAssitances.per_document', 'viewAssitances.use_mail', 'viewAssitances.stu_journey', 'viewEnrollments.promotion', 'viewEnrollments.car_name', 'viewAssitances.bie_act_date', 'viewAssitances.bie_act_hour', 'viewAssitances.stu_typ_name')
+                    ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
+                    ->where('viewAssitances.bie_act_typ_id', '=', 9)
+                    ->where('viewEnrollments.stu_enr_status', '=', 1)
+                    ->get();
 
                 return $students;
 
                 break;
             case "5":
-                    $students = DB::table('viewAssitances')
-                    ->select('viewAssitances.ass_id','viewAssitances.per_name','viewAssitances.per_lastname','viewAssitances.per_document','viewAssitances.use_mail','viewAssitances.stu_journey','viewEnrollments.promotion','viewEnrollments.car_name','viewAssitances.bie_act_date','viewAssitances.bie_act_hour','viewAssitances.stu_typ_name','bie_act_name','ass_reg_status','ass_status')
+                $students = DB::table('viewAssitances')
+                    ->select('viewAssitances.ass_id', 'viewAssitances.per_name', 'viewAssitances.per_lastname', 'viewAssitances.per_document', 'viewAssitances.use_mail', 'viewAssitances.stu_journey', 'viewEnrollments.promotion', 'viewEnrollments.car_name', 'viewAssitances.bie_act_date', 'viewAssitances.bie_act_hour', 'viewAssitances.stu_typ_name', 'bie_act_name', 'ass_reg_status', 'ass_status')
                     ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
                     ->where('viewAssitances.stu_id', '=', $data->data)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
@@ -82,7 +82,7 @@ class Reports extends Model
                 $students = DB::table('viewStudents')
                     ->join('consultations', 'viewStudents.per_id', '=', 'consultations.per_id')
                     ->join('viewEnrollments', 'viewStudents.per_id', '=', 'viewEnrollments.per_id')
-                    ->select('viewStudents.per_typ_name','viewStudents.per_name','viewStudents.per_lastname', 'viewStudents.per_document','viewStudents.per_rh','viewStudents.per_birthday','viewStudents.per_direction','viewStudents.eps_name','viewStudents.stu_journey','viewEnrollments.promotion','viewEnrollments.car_name','consultations.cons_reason', 'consultations.cons_description', 'consultations.cons_date')
+                    ->select('viewStudents.per_typ_name', 'viewStudents.per_name', 'viewStudents.per_lastname', 'viewStudents.per_document', 'viewStudents.per_rh', 'viewStudents.per_birthday', 'viewStudents.per_direction', 'viewStudents.eps_name', 'viewStudents.stu_journey', 'viewEnrollments.promotion', 'viewEnrollments.car_name', 'consultations.cons_reason', 'consultations.cons_description', 'consultations.cons_date')
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
                 return $students;
@@ -101,39 +101,64 @@ class Reports extends Model
     {
         switch ($data->option) {
             case "1":
-                $students = DB::select("SELECT stu_id,pro_group, stu_journey, per_document,per_name, use_mail, stu_typ_name
-                FROM viewStudents WHERE per_document = $data->code");
-
-                $activity = DB::select("SELECT assistances.ass_date, bienestar_activity_types.bie_act_typ_name,bienestar_activities.bie_act_name, bienestar_activities.bie_act_date, bienestar_activities.bie_act_hour FROM assistances
-                INNER JOIN bienestar_activities ON assistances.bie_act_id = bienestar_activities.bie_act_id
-                INNER JOIN bienestar_activity_types ON bienestar_activities.bie_act_typ_id = bienestar_activity_types.bie_act_typ_id
-                WHERE assistances.stu_id = ?", [$students[0]->stu_id]);
+                $students = DB::table('viewEnrollments')
+                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'car_name', 'promotion')
+                    ->where('stu_id', '=', $data->data)
+                    ->where('use_status', '=', 1)
+                    ->get();
 
                 return $students;
                 break;
+
             case "2":
-                $students = DB::select("SELECT stu_id,pro_group, stu_journey, per_document,per_name, tel_number, use_mail, stu_typ_name
-                    FROM viewStudents WHERE per_document = $data->code");
+                $students = DB::table('viewEnrollments')
+                    ->select('stu_id', 'stu_typ_name', 'stu_journey', 'per_document', 'per_name', 'per_lastname', 'use_mail', 'car_name', 'promotion')
+                    ->where('stu_id', '=', $data->data)
+                    ->where('use_status', '=', 1)
+                    ->get();
+
                 return $students;
                 break;
             case "3":
-                $students = DB::select("SELECT stu_id,pro_group, stu_journey, per_document,per_name, tel_number, use_mail, stu_typ_name
-                    FROM viewStudents WHERE per_document = $data->code");
+                $students = DB::table('viewSolicitudes as vs')
+                    ->select(
+                        'vs.per_id','vs.per_document','vs.per_name','vs.per_lastname','vs.rea_typ_name','vs.sol_typ_name','vs.sol_date','ve.promotion','ve.car_name','vp.use_mail')
+                    ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
+                    ->join('ViewPersons as vp', 'vs.per_id', '=', 'vp.per_id')
+                    ->where('vs.per_id', '=', $data->data)
+                    ->get();
+
+
                 return $students;
                 break;
             case "4":
-                $students = DB::select("SELECT stu_id,pro_group, stu_journey, per_document,per_name, tel_number, use_mail, stu_typ_name
-                    FROM viewStudents WHERE per_document = $data->code");
+                $students = DB::table('viewAssitances as vs')
+                    ->select('vs.ass_id', 'vs.stu_id', 'vs.per_name', 'vs.per_lastname', 'vs.per_document', 'vs.use_mail', 'vs.stu_journey', 've.promotion', 've.car_name', 'vs.bie_act_date', 'vs.bie_act_hour', 'vs.stu_typ_name')
+                    ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
+                    ->where('vs.stu_id', '=', $data->data)
+                    ->where('ve.stu_enr_status', '=', 1)
+                    ->get();
+
                 return $students;
+
                 break;
             case "5":
-                $students = DB::select("SELECT stu_id,pro_group, stu_journey, per_document,per_name, tel_number, use_mail, stu_typ_name
-                    FROM viewStudents WHERE per_document = $data->code");
+                $students = DB::table('viewAssitances as va')
+                    ->select('va.ass_id', 'va.stu_id','va.per_name', 'va.per_lastname', 'va.per_document', 'va.use_mail', 'va.stu_journey', 've.promotion', 've.car_name', 'va.bie_act_date', 'va.bie_act_hour', 'va.stu_typ_name', 'bie_act_name', 'ass_reg_status', 'ass_status')
+                    ->join('viewEnrollments as ve', 'va.per_id', '=', 've.per_id')
+                    ->where('va.stu_id', '=', $data->data)
+                    ->where('ve.stu_enr_status', '=', 1)
+                    ->get();
                 return $students;
                 break;
             case "6":
-                $students = DB::select("SELECT stu_id,pro_group, stu_journey, per_document,per_name, tel_number, use_mail, stu_typ_name
-                    FROM viewStudents WHERE per_document = $data->code");
+                $students = DB::table('viewStudents as vt')
+                    ->join('consultations as co', 'vt.per_id', '=', 'co.per_id')
+                    ->join('viewEnrollments as ve', 'vt.per_id', '=', 've.per_id')
+                    ->select('vt.stu_typ_name','vt.stu_id', 'vt.per_name', 'vt.per_lastname', 'vt.per_document', 'vt.per_rh', 'vt.per_birthdate', 'vt.per_direction', 'vt.eps_name', 'vt.stu_journey', 've.promotion', 've.car_name', 'co.cons_reason', 'co.cons_description', 'co.cons_date')
+                    ->where('vt.stu_id', '=', $data->data)
+                    ->where('ve.stu_enr_status', '=', 1)
+                    ->get();
                 return $students;
                 break;
             default:
