@@ -89,7 +89,7 @@ class DiseasesController extends Controller
                 'dis_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->dis_name, 'Disease', 'dis_name', 'dis_id', $id);
+            $validate = Controller::validate_exists($request->dis_name, 'diseases', 'dis_name', 'dis_id', $id);
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
