@@ -110,22 +110,19 @@ public function show($id)
 }
 
     public function update(Request $request, $id)
-    {
-       
-        $solicitudes = solicitudes::find($id);
- 
+    { 
         if ($request->acc_administrator == 1) {
-            $solicitudes = solicitudes::find($id);
-            if ($solicitudes == null) {
+            $solicitude = solicitudes::find($id);
+            if ($solicitude == null) {
                 return response()->json([
                     'status' => false,
-                    'data' => ['message' => 'The searched request was not found']
+                    'data' => ['message' => 'The searched request was not found.']
                 ], 400);
             } else {
                 $rules = [
 
                     'sol_date' =>'date',
-                    'sol_status'=> 'required|string|in:0,1,2,3',
+                    'sol_status'=> 'required|integer',
                     'rea_typ_id' =>'required|exists:reason_types|integer',
                     'sol_typ_id' =>'required|exists:solicitude_types|integer',
                     'stu_id' =>'required|exists:students|integer'
@@ -141,17 +138,17 @@ public function show($id)
  
                     $request->merge(['sol_date' => $currentDate]);
  
-                    $solicitudes->sol_date = $request->sol_date;
-                    $solicitudes->sol_status = $request->sol_status;
-                    $solicitudes->rea_typ_id = $request->rea_typ_id;
-                    $solicitudes->sol_typ_id = $request->sol_typ_id;
-                    $solicitudes->stu_id = $request->stu_id;
-                    $solicitudes->save();
-                    Controller::NewRegisterTrigger("An update was made in the solicitudes table", 4,$request->use_id);
+                    $solicitude->sol_date = $request->sol_date;
+                    $solicitude->sol_status = $request->sol_status;
+                    $solicitude->rea_typ_id = $request->rea_typ_id;
+                    $solicitude->sol_typ_id = $request->sol_typ_id;
+                    $solicitude->stu_id = $request->stu_id;
+                    $solicitude->save();
+                    Controller::NewRegisterTrigger("An update was made in the solicitudes table",4,$request->use_id);
  
                     return response()->json([
                     'status' => True,
-                    'message' => "The request has been updated successfully."
+                    'message' => "The request has been updated successfully.",
                     ], 200);
                 }
             }
