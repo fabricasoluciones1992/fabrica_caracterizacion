@@ -72,8 +72,8 @@ class Controller extends BaseController
         }
     }
 
-    
-    public function lastEnrollments($stu_id){
+
+    public static function lastEnrollments($stu_id){
         $data = DB::table('viewEnrollments')
             ->where('stu_id', $stu_id)
             ->orderBy('stu_enr_id', 'desc')
@@ -85,7 +85,7 @@ class Controller extends BaseController
             ->leftJoin('history_scholarships', 'viewStudents.stu_id', '=', 'history_scholarships.stu_id')
             ->leftJoin('scholarships', 'history_scholarships.sch_id', '=', 'scholarships.sch_id')
             ->select(
-                'viewStudents.*', 
+                'viewStudents.*',
                 'history_scholarships.his_sch_id',
                 'history_scholarships.sch_id',
                 'scholarships.sch_name',
@@ -93,12 +93,12 @@ class Controller extends BaseController
             )
             ->where('viewStudents.stu_id', $stu_id)
             ->get();
-        
+
         return $data;
     }
-    
-    
-    
+
+
+
     public function viewStudentSol($code) {
         $codigoStu = DB::select("SELECT * FROM viewSolicitudes
         WHERE per_document = $code
@@ -115,7 +115,7 @@ class Controller extends BaseController
             ],200);
         }
     }
-    
+
 
     public function viewStudentBie($code) {
         $codigoStu = DB::select("SELECT * FROM viewAssitances
