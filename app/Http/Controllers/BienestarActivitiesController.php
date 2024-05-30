@@ -107,16 +107,6 @@ class BienestarActivitiesController extends Controller
 
 public function update(Request $request, $id)
 {
-    $occupiedQuotas = DB::table('assistances')
-        ->where('bie_act_id', $id)
-        ->count();
-
-    if ($request->bie_act_quotas <= $occupiedQuotas) {
-        return response()->json([
-            'status' => false,
-            'message' => 'Cannot update to full quotas. There are currently ' . $occupiedQuotas . ' pre-registrations.'
-        ]);
-    }
 
     $bienestarActivity = BienestarActivity::find($id);
 
@@ -144,6 +134,16 @@ public function update(Request $request, $id)
                     'message' => $validator->errors()->all()
                 ]);
             } else {
+                            $occupiedQuotas = DB::table('assistances')
+                    ->where('bie_act_id', $id)
+                    ->count();
+                
+                if ($request->bie_act_quotas < $occupiedQuotas) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Cannot update to full quotas. There are currently ' . $occupiedQuotas . ' pre-registrations.'
+                    ]);
+                }
                 $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
                 $bienestarActivity->bie_act_name = $request->bie_act_name;
                 $bienestarActivity->bie_act_quotas = $request->bie_act_quotas;
