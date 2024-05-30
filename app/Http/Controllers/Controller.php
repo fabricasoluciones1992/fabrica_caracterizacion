@@ -72,23 +72,33 @@ class Controller extends BaseController
         }
     }
 
-    // public function viewStudentMed($code) {
-    //     $codigoStu = DB::select("SELECT * FROM Vista_Historial_Medico_Estudiante
-    //     WHERE stu_id = $code
-    //     ");
-    //     if ($codigoStu == null) {
-    //         return response()->json([
-    //            'status' => false,
-    //             "data" => ['message' => 'The searched student was not found']
-    //         ],400);
-    //     } else {
-    //         return response()->json([
-    //             'status' => true,
-    //             'data' => $codigoStu
-    //         ],200);
-    //     }
-    // }
-
+    
+    public function lastEnrollments($stu_id){
+        $data = DB::table('viewEnrollments')
+            ->where('stu_id', $stu_id)
+            ->orderBy('stu_enr_id', 'desc')
+            ->first();
+        return $data;
+    }
+    public function lastScholarships($stu_id){
+        $data = DB::table('viewStudents')
+            ->leftJoin('history_scholarships', 'viewStudents.stu_id', '=', 'history_scholarships.stu_id')
+            ->leftJoin('scholarships', 'history_scholarships.sch_id', '=', 'scholarships.sch_id')
+            ->select(
+                'viewStudents.*', 
+                'history_scholarships.his_sch_id',
+                'history_scholarships.sch_id',
+                'scholarships.sch_name',
+                'scholarships.sch_description'
+            )
+            ->where('viewStudents.stu_id', $stu_id)
+            ->get();
+        
+        return $data;
+    }
+    
+    
+    
     public function viewStudentSol($code) {
         $codigoStu = DB::select("SELECT * FROM viewSolicitudes
         WHERE per_document = $code
@@ -105,6 +115,7 @@ class Controller extends BaseController
             ],200);
         }
     }
+    
 
     public function viewStudentBie($code) {
         $codigoStu = DB::select("SELECT * FROM viewAssitances

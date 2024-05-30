@@ -64,6 +64,10 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('type/solicitudes', SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
     Route::get('/documentTypeFilter', [Controller::class, 'docsTypesId'])->name('docs_types_id');
     Route::get('view/employees', [Controller::class, 'viewEmployees'])->name('view_employees');
+    Route::get('last/Enrollments/{stu_id}', [Controller::class, 'lastEnrollments'])->name('last_Enrollments');
+    Route::get('last/Scholarships/{stu_id}', [Controller::class, 'lastScholarships'])->name('last_Scholarships');
+
+
     Route::get('view/careers', [Controller::class, 'viewCareers'])->name('view_employees');
     Route::get('view/types/student', [Controller::class, 'viewTypesStudent'])->name('view_employees');
 });
