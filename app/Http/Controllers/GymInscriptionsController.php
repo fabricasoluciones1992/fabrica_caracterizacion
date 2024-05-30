@@ -27,8 +27,8 @@ class GymInscriptionsController extends Controller
             if ($request->acc_administrator == 1) {
 
                 $rules = [
-
-                    'per_id' =>'required|exists:persons|numeric'
+                    //este es el unico por que si debe ser unique
+                    'per_id' =>'required|exists:persons|unique:persons|numeric'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 
