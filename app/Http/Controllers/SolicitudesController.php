@@ -27,9 +27,9 @@ public function store(Request $request)
     if ($request->acc_administrator == 1) {
         $rules = [
             'sol_date' => 'date',
-            'rea_typ_id' => 'required|integer',
-            'sol_typ_id' => 'required|integer',
-            'stu_id' => 'required|integer',
+            'rea_typ_id' => 'required|exists:reason_types|integer',
+            'sol_typ_id' => 'required|exists:solicitude_types|integer',
+            'stu_id' => 'required|exists:students|integer',
 
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -126,9 +126,9 @@ public function show($id)
 
                     'sol_date' =>'date',
                     'sol_status'=> 'required|string|in:0,1,2,3',
-                    'rea_typ_id' =>'required|unique:reason_types|integer',
-                    'sol_typ_id' =>'required|unique:solicitude_types|integer',
-                    'stu_id' =>'required|unique:students|integer'
+                    'rea_typ_id' =>'required|exists:reason_types|integer',
+                    'sol_typ_id' =>'required|exists:solicitude_types|integer',
+                    'stu_id' =>'required|exists:students|integer'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
