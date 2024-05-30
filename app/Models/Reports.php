@@ -313,7 +313,7 @@ class Reports extends Model
                 $students = DB::table('gym_assistances as gy')
                 ->join('viewEnrollments as ve', 'gy.per_id', '=', 've.per_id')
                 ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                ->select('gy.gym_ass_id', 've.stu_journey as Jornada', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.per_document as Documento', 've.per_name as Nombre', 've.per_lastname as Apellido', 'gy.gym_ass_date as Fecha de asistencia')
+                ->select('gy.gym_ass_id', 've.stu_journey as Jornada', 've.per_id','ve.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.per_document as Documento', 've.per_name as Nombre', 've.per_lastname as Apellido', 'gy.gym_ass_date as Fecha de asistencia')
                 ->where('ve.per_id', '=', $data->data)
                 ->where('ve.car_name', '=', $lastStudent->car_name)
                 ->distinct('gy.gym_ass_id')
