@@ -72,7 +72,6 @@ class Controller extends BaseController
         }
     }
 
-
     public static function lastEnrollments($stu_id){
         $data = DB::table('viewEnrollments')
             ->where('stu_id', $stu_id)
@@ -237,4 +236,14 @@ public function viewTypesStudent(){
         ]);
     }
 }
+public function validate_exists($data, $table, $column, $PK, $pk){
+    $values = DB::table($table)->get([$PK, $column]);
+    foreach ($values as $value) {
+        if ($value->$column == $data && $value->$PK != $pk) {
+            return 0;
+        }
+    }
+    return 1;
 }
+}
+
