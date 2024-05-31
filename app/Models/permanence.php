@@ -19,10 +19,13 @@ class permanence extends Model
         'act_id'
     ];
     public $timestamps = false;
-    public static function select(){
-        $permanences = DB::select("SELECT * FROM viewPermanences");
-        return $permanences;
-    }
+    public static function select()
+{
+    $permanences = DB::select("SELECT * FROM viewPermanences ORDER BY sol_date DESC");
+
+    return $permanences;
+}
+
     public static function search($id){
         $permanence = DB::select("SELECT * FROM viewPermanences WHERE perm_id = $id");
         return $permanence[0];

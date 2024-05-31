@@ -28,7 +28,7 @@ class PermanencesController extends Controller
             $rules = [
 
                 'perm_date' =>'required|date',
-                'perm_description' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9\s]+$/',
+                'perm_description' => 'required|string|min:1|max:50',
                 'emp_id' =>'required|exists:employees|integer|min:1',
                 'perm_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'sol_id' =>'required|exists:solicitudes|integer|min:1',
@@ -102,7 +102,7 @@ class PermanencesController extends Controller
 
                     'perm_date' =>'required|date',
                     'emp_id' =>'required|exists:employees|integer|min:1',
-                    'perm_description' => 'required|string|min:1|min:50|regex:/^[a-zA-Z0-9\s]+$/',
+                    'perm_description' => 'required|string|min:1|min:50',
                     'sol_id' =>'required|exists:solicitudes|integer|min:1',
                     'act_id' =>'required|exists:actions|integer|min:1',
                     'perm_status'=>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'

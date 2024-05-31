@@ -20,27 +20,29 @@ class solicitudes extends Model
         'stu_id'
     ];
     public $timestamps = false;
-    public static function select(){
-        $solicitudes = DB::select("SELECT * FROM viewSolicitudes");
-        
-        $solicitudesType0 = [];
-        $solicitudesType1 = [];
+    public static function select()
+{
+    $solicitudes = DB::select("SELECT * FROM viewSolicitudes ORDER BY sol_date DESC");
 
-        foreach ($solicitudes as $solicitud) {
-            $solicitud->status_name = solicitudes::getStatusName($solicitud->sol_status);
+    $solicitudesType0 = [];
+    $solicitudesType1 = [];
 
-            if ($solicitud->rea_typ_type == 0) {
-                $solicitudesType0[] = $solicitud;
-            } elseif ($solicitud->rea_typ_type == 1) {
-                $solicitudesType1[] = $solicitud;
-            }
+    foreach ($solicitudes as $solicitud) {
+        $solicitud->status_name = solicitudes::getStatusName($solicitud->sol_status);
+
+        if ($solicitud->rea_typ_type == 0) {
+            $solicitudesType0[] = $solicitud;
+        } elseif ($solicitud->rea_typ_type == 1) {
+            $solicitudesType1[] = $solicitud;
         }
-
-        return [
-            'reason' => $solicitudesType0,
-            'factor' => $solicitudesType1,
-        ];
     }
+
+    return [
+        'reason' => $solicitudesType0,
+        'factor' => $solicitudesType1,
+    ];
+}
+
 
     public static function getStatusName($status) {
         switch ($status) {
