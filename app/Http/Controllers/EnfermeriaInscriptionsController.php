@@ -28,11 +28,11 @@ class EnfermeriaInscriptionsController extends Controller
                 'enf_ins_weight' => 'required|numeric',
                 'enf_ins_height' => 'required|numeric',
                 'enf_ins_imc' => 'required|numeric',
-                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
-                'per_id'=> 'required|exists:persons|integer',
-                
+                'enf_ins_vaccination' => 'required|string|min:1|max:100|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                'per_id'=> 'required|unique:persons|integer',
+
             ];
-            
+
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
                 return response()->json([
@@ -40,12 +40,12 @@ class EnfermeriaInscriptionsController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             }else{
-                
+
 
                 $enfIn = new enfermeria_inscription($request->input());
                 $enfIn->save();
                 Controller::NewRegisterTrigger("An insertion was made in the enfermeria inscriptions table'$enfIn->id'",3,$request->use_id);
-                
+
                 return response()->json([
                     'status' => True,
                     'message' => "The enfermeria inscriptions has been created successfully.",
@@ -55,10 +55,10 @@ class EnfermeriaInscriptionsController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Access denied. This reason can only be performed by active administrators.'
-            ], 403); 
+            ], 403);
         }
     }
-   
+
     public function show($id)
     {
         $enfIn = enfermeria_inscription::search($id);
@@ -91,9 +91,9 @@ class EnfermeriaInscriptionsController extends Controller
                 'enf_ins_weight' => 'required|integer',
                 'enf_ins_height' => 'required|integer',
                 'enf_ins_imc' => 'required|numeric',
-                'enf_ins_vaccination' => 'required|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
-                'per_id'=>'required|exists:persons|integer'
-                
+                'enf_ins_vaccination' => 'required|string|min:1|max:100|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                'per_id'=>'required|unique:persons|integer'
+
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -102,17 +102,17 @@ class EnfermeriaInscriptionsController extends Controller
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
-                    
- 
+
+
                     $enfIn->enf_ins_weight = $request->enf_ins_weight;
                     $enfIn->enf_ins_height = $request->enf_ins_height;
                     $enfIn->enf_ins_imc = $request->enf_ins_imc;
                     $enfIn->enf_ins_vaccination = $request->enf_ins_vaccination;
                     $enfIn->per_id = $request->per_id;
-                   
+
 
                     $enfIn->save();
-                    
+
                     Controller::NewRegisterTrigger("An update was made in the enfermeria inscriptions table", 4, $request->use_id);
                     return response()->json([
                     'status' => True,

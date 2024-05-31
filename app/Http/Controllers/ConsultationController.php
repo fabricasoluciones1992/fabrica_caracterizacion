@@ -13,25 +13,25 @@ class ConsultationController extends Controller
     public function index()
     {
         $consultations = DB::select("
-        SELECT 
-            consultations.*, 
-            ViewPersons.per_id, 
-            ViewPersons.per_name, 
-            ViewPersons.per_lastname, 
-            ViewPersons.per_document, 
-            ViewPersons.per_expedition, 
-            ViewPersons.per_birthdate, 
-            ViewPersons.per_direction, 
-            ViewPersons.per_rh, 
-            ViewPersons.civ_sta_id, 
-            ViewPersons.mul_id, 
+        SELECT
+            consultations.*,
+            ViewPersons.per_id,
+            ViewPersons.per_name,
+            ViewPersons.per_lastname,
+            ViewPersons.per_document,
+            ViewPersons.per_expedition,
+            ViewPersons.per_birthdate,
+            ViewPersons.per_direction,
+            ViewPersons.per_rh,
+            ViewPersons.civ_sta_id,
+            ViewPersons.mul_id,
             ViewPersons.doc_typ_id,
-            ViewPersons.doc_typ_name,  
-            ViewPersons.use_id, 
-            ViewPersons.eps_id, 
+            ViewPersons.doc_typ_name,
+            ViewPersons.use_id,
+            ViewPersons.eps_id,
             ViewPersons.gen_id
-            
-        FROM consultations 
+
+        FROM consultations
         INNER JOIN ViewPersons ON consultations.per_id = ViewPersons.per_id
     ");        return response()->json([
             'status' => true,
@@ -41,11 +41,13 @@ class ConsultationController extends Controller
     public function store(Request $request)
     {
         if ($request->acc_administrator == 1) {
+            date_default_timezone_set('America/Bogota');
             $rules = [
 
                 'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                 'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
-                'per_id' => 'required|exists:persons|integer'
+                'per_id' => 'required|exists:persons|integer',
+                'use_id' => 'required|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -58,9 +60,10 @@ class ConsultationController extends Controller
                 $request->merge(['cons_date' => $currentDate]);
                 $consultation = new Consultation($request->input());
                 $consultation->cons_date = date('Y-m-d');
+                $consultation->cons_time = date('h:i:s');
                 $consultation->save();
                 Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$request->use_id);
-                
+
                 return response()->json([
                     'status' => True,
                     'message' => "The consultations has been created successfully.",
@@ -70,7 +73,7 @@ class ConsultationController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Access denied. This reason can only be performed by active administrators.'
-            ], 403); 
+            ], 403);
         }
     }
 
@@ -94,6 +97,7 @@ class ConsultationController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->acc_administrator == 1) {
+            date_default_timezone_set('America/Bogota');
             $consultation = Consultation::find($id);
             if ($consultation == null) {
                 return response()->json([
@@ -102,11 +106,11 @@ class ConsultationController extends Controller
                 ], 400);
             } else {
                 $rules = [
-
-                    'cons_date' => 'date',
                     'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                     'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
-                    
+                    'per_id' => 'required|exists:persons|integer',
+                    'use_id' => 'required|exists:users'
+
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -117,12 +121,11 @@ class ConsultationController extends Controller
                 } else {
                     $currentDate = now()->toDateString();
                     $request->merge(['cons_date' => $currentDate]);
- 
-                    $consultation->cons_date = $request->cons_date;
+
                     $consultation->cons_reason = $request->cons_reason;
                     $consultation->cons_description = $request->cons_description;
                     $consultation->save();
-                    
+
                     Controller::NewRegisterTrigger("An update was made in the consultations table", 4, $request->use_id);
                     return response()->json([
                     'status' => True,
