@@ -60,7 +60,7 @@ class ConsultationController extends Controller
                 $request->merge(['cons_date' => $currentDate]);
                 $consultation = new Consultation($request->input());
                 $consultation->cons_date = date('Y-m-d');
-                $consultation->cons_time = date('h:i:s');
+                $consultation->cons_time = date('H:i:s');
                 $consultation->save();
                 Controller::NewRegisterTrigger("An insertion was made in the consultations table'$consultation->id'",3,$request->use_id);
 
