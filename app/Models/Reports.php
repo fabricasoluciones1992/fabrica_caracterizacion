@@ -19,13 +19,13 @@ class Reports extends Model
                     ->select(
                         'stu_id as Id Estudiante',
                         'stu_typ_name as Tipo de Estudiante',
-                        'stu_journey as Jornada',
+                        'stu_enr_journey as Jornada',
                         'per_document as Documento',
                         'per_name as Nombres',
                         'per_lastname as Apellidos',
                         'use_mail as Correo',
                         'car_name as Programa',
-                        'promotion as Promoción'
+                        'pro_name as Promoción'
                     )
                     ->where('stu_typ_id', '=', $data->data)
                     ->where('use_status', '=', 1)
@@ -39,13 +39,13 @@ class Reports extends Model
                     ->select(
                         'stu_id as Id estudiante',
                         'stu_typ_name as Tipo estudiante',
-                        'stu_journey as Jornada',
+                        'stu_enr_journey as Jornada',
                         'per_document as Documento',
                         'per_name as Nombre',
                         'per_lastname as Apellido',
                         'use_mail as Correo electronico',
                         'car_name as Nombre carrera',
-                        'promotion as Promocion'
+                        'pro_name as Promocion'
                     )
                     ->where('car_id', '=', $data->data)
                     ->where('use_status', '=', 1)
@@ -63,7 +63,7 @@ class Reports extends Model
                         'viewSolicitudes.rea_typ_name as Tipo razón',
                         'viewSolicitudes.sol_typ_name as Tipo solicitud',
                         'viewSolicitudes.sol_date as Fecha solicitud',
-                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Programa',
                         'ViewPersons.use_mail as Correo'
                     )
@@ -85,8 +85,8 @@ class Reports extends Model
                         'viewAssitances.per_lastname as Apellido persona',
                         'viewAssitances.per_document as Documento persona',
                         'viewAssitances.use_mail as Correo electrónico',
-                        'viewAssitances.stu_journey as Jornada estudiante',
-                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'viewAssitances.bie_act_date as Fecha actividad',
                         'viewAssitances.bie_act_hour as Hora actividad',
@@ -108,8 +108,8 @@ class Reports extends Model
                         'viewAssitances.per_lastname as Apellido persona',
                         'viewAssitances.per_document as Documento persona',
                         'viewAssitances.use_mail as Correo electrónico',
-                        'viewAssitances.stu_journey as Jornada estudiante',
-                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'viewAssitances.bie_act_date as Fecha actividad',
                         'viewAssitances.bie_act_hour as Hora actividad',
@@ -137,8 +137,8 @@ class Reports extends Model
                         'viewStudents.per_birthdate as Fecha nacimiento',
                         'viewStudents.per_direction as Dirección persona',
                         'viewStudents.eps_name as Nombre EPS',
-                        'viewStudents.stu_journey as Jornada estudiante',
-                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'consultations.cons_reason as Motivo consulta',
                         'consultations.cons_description as Descripción consulta',
