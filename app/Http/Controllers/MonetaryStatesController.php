@@ -114,7 +114,9 @@ class MonetaryStatesController extends Controller
                     'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+                $validate = Controller::validate_exists($request->mon_sta_name, 'monetary_states', 'mon_sta_name', 'mon_sta_id', $id);
+
+                if ($validator->fails()||$validate==0) {
                     return response()->json([
                         'status' => False,
                         'message' => $validator->errors()->all()

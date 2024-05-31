@@ -13,7 +13,7 @@ class BienestarActivitiesController extends Controller
 {
     public function index()
 {
-    $bienestarActivities = BienestarActivity::select();
+    $bienestarActivities = BienestarActivity::all();
 
     foreach ($bienestarActivities as $activity) {
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
@@ -23,6 +23,10 @@ class BienestarActivitiesController extends Controller
                                 ->select('vA.*')
                                 ->where('vA.bie_act_id', $activity->bie_act_id)
                                 ->get();
+
+        foreach ($assistancesStudents as $assistance) {
+            $assistance->last_enrollment = BienestarActivity::lastEnrollment($assistance->stu_id);
+        }
 
         $activity->assistances = $assistancesStudents;
     }
@@ -128,7 +132,9 @@ public function update(Request $request, $id)
             ];
 
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->bie_act_name, 'bienestar_activities', 'bie_act_name', 'bie_act_id', $id);
+
+            if ($validator->fails()||$validate==0) {
                 return response()->json([
                     'status' => false,
                     'message' => $validator->errors()->all()

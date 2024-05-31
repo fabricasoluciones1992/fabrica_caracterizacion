@@ -62,4 +62,12 @@ public static function findByUse($id){
     $solicitudes = DB::select("SELECT * FROM viewAssitances WHERE per_id = ?",[$id]);
     return $solicitudes;
 }
+public static function lastEnrollment($stu_id){
+    $data = DB::table('viewEnrollments')
+        ->where('stu_id', $stu_id)
+        ->orderBy('stu_enr_id', 'desc')
+        ->select('pro_id', 'promotion', 'car_id', 'car_name')
+        ->first();
+    return $data;
+}
 }

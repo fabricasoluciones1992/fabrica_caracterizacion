@@ -110,7 +110,9 @@ class SolicitudesTypesController extends Controller
                         'sol_typ_name' => 'required|string|min:1|max:100|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                     ];
                     $validator = Validator::make($request->input(), $rules);
-                    if ($validator->fails()) {
+                    $validate = Controller::validate_exists($request->sol_typ_name, 'solicitude_types', 'sol_typ_name', 'sol_typ_id', $id);
+
+                    if ($validator->fails()||$validate==0) {
                         return response()->json([
                             'status' => false,
                             'message' => $validator->errors()->all()

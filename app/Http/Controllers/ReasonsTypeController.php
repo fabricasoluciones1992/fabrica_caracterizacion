@@ -93,7 +93,9 @@ class ReasonsTypeController extends Controller
 
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+                $validate = Controller::validate_exists($request->rea_typ_name, 'reason_types', 'rea_typ_name', 'rea_typ_id', $id);
+
+                if ($validator->fails()||$validate==0) {
                     return response()->json([
                         'status' => False,
                         'message' => $validator->errors()->all()

@@ -32,8 +32,7 @@ class DiseasesController extends Controller
             $disease = new Disease(($request->input()));
             $disease->save();
             Controller::NewRegisterTrigger("An insertion was made in the Diseases table'$disease->dis_id'", 3, $request->use_id);
-            // $id = $disease->dis_id;
-            // $bienestar_news=DiseasesController::Getbienestar_news($id);
+            
             return response()->json([
                 'status' => true,
                 'message' => "The Disease: " . $disease->dis_name . " has been created.",
@@ -41,25 +40,10 @@ class DiseasesController extends Controller
             ], 200);
         }
     }
-//     public function Getbienestar_news($id)
-// {
-//     $dis_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Diseases table\'$dis_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
     public function show($id)
     {
         $disease = Disease::find($id);
-        // $bienestar_news=DiseasesController::Getbienestar_news($id);
 
         if ($disease == null) {
             return response()->json([
@@ -67,8 +51,7 @@ class DiseasesController extends Controller
                 'data' => ['message' => 'The disease requested not found'],
             ], 400);
         } else {
-            // $disease->new_date = $bienestar_news->bie_new_date;
-            // $disease->createdBy = $bienestar_news->per_name;
+            
             return response()->json([
                 'status' => true,
                 'data' => $disease

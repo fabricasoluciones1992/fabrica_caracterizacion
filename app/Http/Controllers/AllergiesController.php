@@ -105,7 +105,9 @@ class AllergiesController extends Controller
                     'all_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+                $validate = Controller::validate_exists($request->all_name, 'allergies', 'all_name', 'all_id', $id);
+
+                if ($validator->fails()||$validate==0) {
                     return response()->json([
                         'status' => False,
                         'message' => $validator->errors()->all()

@@ -111,7 +111,9 @@ class BienestarActivityTypesController extends Controller
 
                     ];
                     $validator = Validator::make($request->input(), $rules);
-                    if ($validator->fails()) {
+                    $validate = Controller::validate_exists($request->bie_act_typ_name, 'bienestar_activity_types', 'bie_act_typ_name', 'bie_act_typ_id', $id);
+
+                    if ($validator->fails()||$validate==0) {
                         return response()->json([
                             'status' => False,
                             'message' => $validator->errors()->all()
