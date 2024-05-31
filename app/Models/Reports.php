@@ -31,6 +31,16 @@ class Reports extends Model
                     ->where('use_status', '=', 1)
                     ->get();
 
+                    foreach ($students as $student) {
+                        if ($student->Jornada == 0) {
+                            $student->Jornada = "diurno";
+                        } elseif($student->Jornada == 1) {
+                            $student->Jornada = "nocturno";
+                        }else{
+                            $student->Jornada = "N/A";
+                        }
+                        
+                    }
                 return $students;
                 break;
 
@@ -51,6 +61,16 @@ class Reports extends Model
                     ->where('use_status', '=', 1)
                     ->get();
 
+                    foreach ($students as $student) {
+                        if ($student->Jornada == 0) {
+                            $student->Jornada = "diurno";
+                        } elseif($student->Jornada == 1) {
+                            $student->Jornada = "nocturno";
+                        }else{
+                            $student->Jornada = "N/A";
+                        }
+                        
+                    }
                 return $students;
                 break;
 
@@ -85,7 +105,7 @@ class Reports extends Model
                         'viewAssitances.per_lastname as Apellido persona',
                         'viewAssitances.per_document as Documento persona',
                         'viewAssitances.use_mail as Correo electrónico',
-                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.stu_enr_journey as Jornada',
                         'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'viewAssitances.bie_act_date as Fecha actividad',
@@ -96,7 +116,17 @@ class Reports extends Model
                     ->where('viewAssitances.bie_act_typ_id', '=', 9)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
-
+                    
+                foreach ($students as $student) {
+                    if ($student->Jornada == 0) {
+                        $student->Jornada = "diurno";
+                    } elseif($student->Jornada == 1) {
+                        $student->Jornada = "nocturno";
+                    }else{
+                        $student->Jornada = "N/A";
+                    }
+                    
+                }
                 return $students;
 
                 break;
@@ -137,7 +167,7 @@ class Reports extends Model
                         'viewStudents.per_birthdate as Fecha nacimiento',
                         'viewStudents.per_direction as Dirección persona',
                         'viewStudents.eps_name as Nombre EPS',
-                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.stu_enr_journey as Jornada',
                         'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'consultations.cons_reason as Motivo consulta',
@@ -150,6 +180,16 @@ class Reports extends Model
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
 
+                    foreach ($students as $student) {
+                        if ($student->Jornada == 0) {
+                            $student->Jornada = "diurno";
+                        } elseif($student->Jornada == 1) {
+                            $student->Jornada = "nocturno";
+                        }else{
+                            $student->Jornada = "N/A";
+                        }
+                        
+                    }
                 return $students;
                 break;
             default:
