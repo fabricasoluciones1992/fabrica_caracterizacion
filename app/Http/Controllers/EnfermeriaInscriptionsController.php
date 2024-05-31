@@ -32,6 +32,7 @@ class EnfermeriaInscriptionsController extends Controller
                 'per_id'=> 'required|exists:persons|integer',
                 
             ];
+            
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
                 return response()->json([
@@ -44,8 +45,7 @@ class EnfermeriaInscriptionsController extends Controller
                 $enfIn = new enfermeria_inscription($request->input());
                 $enfIn->save();
                 Controller::NewRegisterTrigger("An insertion was made in the enfermeria inscriptions table'$enfIn->id'",3,$request->use_id);
-                // $id = $enfIn->id;
-                // $bienestar_news=enfermeria_inscriptionController::Getbienestar_news($id);
+                
                 return response()->json([
                     'status' => True,
                     'message' => "The enfermeria inscriptions has been created successfully.",
@@ -58,23 +58,10 @@ class EnfermeriaInscriptionsController extends Controller
             ], 403); 
         }
     }
-    private function calculateIMC($weight, $height)
-    {
-        $imc = $weight / (($height / 100) * ($height / 100));
-        if ($imc < 18.5) {
-            return 'Bajo';
-        } elseif ($imc >= 18.5 && $imc < 25) {
-            return 'Normal';
-        } elseif ($imc >= 25 && $imc < 30) {
-            return 'Sobrepeso';
-        } else {
-            return 'Obesidad';
-        }
-    }
+   
     public function show($id)
     {
-        $enfIn = enfermeria_inscription::find($id);
-        // $bienestar_news=enfermeria_inscriptionController::Getbienestar_news($id);
+        $enfIn = enfermeria_inscription::search($id);
 
         if ($enfIn == null) {
             return response()->json([
@@ -82,8 +69,7 @@ class EnfermeriaInscriptionsController extends Controller
                 "data" => ['message' => 'The searched enfermeria inscriptions was not found']
             ], 400);
         } else {
-            // $enfIn->new_date = $bienestar_news->bie_new_date;
-            // $enfIn->createdBy = $bienestar_news->per_name;
+
             return response()->json([
                 'status' => true,
                 'data' => $enfIn

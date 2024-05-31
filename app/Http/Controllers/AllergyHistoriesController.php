@@ -24,6 +24,7 @@ class AllergyHistoriesController extends Controller
                     'per_id' =>'required|exists:persons|numeric',
                     'all_id' =>'required|exists:allergies|numeric',
                 ];
+                
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
                     return response()->json([
@@ -31,6 +32,16 @@ class AllergyHistoriesController extends Controller
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
+                    $existingAllergie = AllergyHistory::where('per_id', $request->per_id)
+                                          ->where('all_id', $request->all_id)
+                                          ->first();
+
+                if ($existingAllergie) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'A Allergie with the same characteristics already exists.'
+                    ], 409);
+                }
                     $aHistory = new AllergyHistory($request->input());
                     $aHistory->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Allergies Histories table'$aHistory->all_his_id'",3,$request->use_id);

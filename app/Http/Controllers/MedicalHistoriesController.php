@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class MedicalHistoriesController extends Controller
 {
-    public function index()//unique
+    public function index()
 {
     $mHistory = MedicalHistory::select();
 
@@ -33,6 +33,7 @@ class MedicalHistoriesController extends Controller
 
 
                 ];
+                
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
                     return response()->json([
@@ -40,12 +41,21 @@ class MedicalHistoriesController extends Controller
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
+                    $existingdisease = MedicalHistory::where('per_id', $request->per_id)
+                                          ->where('dis_id', $request->dis_id)
+                                          ->first();
+
+                if ($existingdisease) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'A disease with the same characteristics already exists.'
+                    ], 409);
+                }
                     $mHistory = new MedicalHistory($request->input());
                     $mHistory->med_his_status=1;
                     $mHistory->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Medical Histories table'$mHistory->med_his_id'",3, $request->use_id);
-                    // $id = $mHistory->med_his_id;
-                    // $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
+
                     return response()->json([
                         'status' => True,
                         'message' => "The Medical history has been created successfully.",
@@ -60,34 +70,18 @@ class MedicalHistoriesController extends Controller
             }
         
     }
-//     public function Getbienestar_news($id)
-// {
-//     $med_his_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Medical Histories table\'$med_his_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
 
     public function show($id)
 {
     $mHistory = MedicalHistory::find($id);
-    // $bienestar_news=MedicalHistoriesController::Getbienestar_news($id);
     if ($mHistory == null) {
         return response()->json([
             'status' => false,
             'data' => ['message' => 'The requested Medical Histories was not found']
         ],400);
     }else{
-        // $mHistory->new_date = $bienestar_news->bie_new_date;
-        // $mHistory->createdBy = $bienestar_news->per_name;
+
         return response()->json([
             'status' => true,
             'data' => $mHistory
