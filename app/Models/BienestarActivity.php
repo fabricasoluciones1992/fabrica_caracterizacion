@@ -20,7 +20,7 @@ class BienestarActivity extends Model
     public $timestamps = false;
     public static function select(){
         $bienestarActivity = DB::select("
-        SELECT ba.bie_act_id, ba.bie_act_status,ba.bie_act_hour, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name, bat.bie_act_typ_id 
+        SELECT ba.bie_act_id, ba.bie_act_status,ba.bie_act_hour, ba.bie_act_date, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_id ,bat.bie_act_typ_name
         FROM bienestar_activities ba
         INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id");
     return $bienestarActivity;
@@ -66,7 +66,7 @@ public static function lastEnrollment($stu_id){
     $data = DB::table('viewEnrollments')
         ->where('stu_id', $stu_id)
         ->orderBy('stu_enr_id', 'desc')
-        ->select('pro_id', 'promotion', 'car_id', 'car_name')
+        ->select('pro_id', 'stu_enr_semester','pro_name', 'car_id', 'car_name')
         ->first();
     return $data;
 }

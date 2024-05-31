@@ -13,7 +13,7 @@ class BienestarActivitiesController extends Controller
 {
     public function index()
 {
-    $bienestarActivities = BienestarActivity::all();
+    $bienestarActivities = BienestarActivity::select();
 
     foreach ($bienestarActivities as $activity) {
         $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
@@ -60,6 +60,19 @@ class BienestarActivitiesController extends Controller
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
+                    $existingActivity = BienestarActivity::where('bie_act_date', $request->bie_act_date)
+                        ->where('bie_act_quotas', $request->bie_act_quotas)
+                        ->where('bie_act_name', $request->bie_act_name)
+                        ->where('bie_act_typ_id', $request->bie_act_typ_id)
+                        ->where('bie_act_hour', $request->bie_act_hour)
+                        ->first();
+
+                    if ($existingActivity) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'A bienestar activity with the same characteristics already exists.'
+                        ], 409);
+                    }
                     $bienestarActivity = new BienestarActivity($request->input());
                     $bienestarActivity->bie_act_status=1;
                     $bienestarActivity->save();
@@ -83,7 +96,7 @@ class BienestarActivitiesController extends Controller
    
     public function show($id)
     {
-        $bienestarActivity = BienestarActivity::find($id);
+        $bienestarActivity = BienestarActivity::search($id);
     
         if (empty($bienestarActivity)) {
             return response()->json([
@@ -100,6 +113,9 @@ class BienestarActivitiesController extends Controller
         ->get();
 
         $bienestarActivity->assistances = $assistancesStudents;
+        foreach ($assistancesStudents as $assistance) {
+            $assistance->last_enrollment = BienestarActivity::lastEnrollment($assistance->stu_id);
+        }
     
         return response()->json([
             'status' => true,
