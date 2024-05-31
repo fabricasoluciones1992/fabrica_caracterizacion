@@ -21,7 +21,7 @@ class permanence extends Model
     public $timestamps = false;
     public static function select()
 {
-    $permanences = DB::select("SELECT * FROM viewPermanences ORDER BY sol_date DESC");
+    $permanences = DB::select("SELECT * FROM viewPermanences ORDER BY perm_date DESC");
 
     return $permanences;
 }
