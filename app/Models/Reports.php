@@ -19,13 +19,13 @@ class Reports extends Model
                     ->select(
                         'stu_id as Id Estudiante',
                         'stu_typ_name as Tipo de Estudiante',
-                        'stu_journey as Jornada',
+                        'stu_enr_journey as Jornada',
                         'per_document as Documento',
                         'per_name as Nombres',
                         'per_lastname as Apellidos',
                         'use_mail as Correo',
                         'car_name as Programa',
-                        'promotion as Promoción'
+                        'pro_name as Promoción'
                     )
                     ->where('stu_typ_id', '=', $data->data)
                     ->where('use_status', '=', 1)
@@ -39,13 +39,13 @@ class Reports extends Model
                     ->select(
                         'stu_id as Id estudiante',
                         'stu_typ_name as Tipo estudiante',
-                        'stu_journey as Jornada',
+                        'stu_enr_journey as Jornada',
                         'per_document as Documento',
                         'per_name as Nombre',
                         'per_lastname as Apellido',
                         'use_mail as Correo electronico',
                         'car_name as Nombre carrera',
-                        'promotion as Promocion'
+                        'pro_name as Promocion'
                     )
                     ->where('car_id', '=', $data->data)
                     ->where('use_status', '=', 1)
@@ -63,7 +63,7 @@ class Reports extends Model
                         'viewSolicitudes.rea_typ_name as Tipo razón',
                         'viewSolicitudes.sol_typ_name as Tipo solicitud',
                         'viewSolicitudes.sol_date as Fecha solicitud',
-                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Programa',
                         'ViewPersons.use_mail as Correo'
                     )
@@ -85,8 +85,8 @@ class Reports extends Model
                         'viewAssitances.per_lastname as Apellido persona',
                         'viewAssitances.per_document as Documento persona',
                         'viewAssitances.use_mail as Correo electrónico',
-                        'viewAssitances.stu_journey as Jornada estudiante',
-                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'viewAssitances.bie_act_date as Fecha actividad',
                         'viewAssitances.bie_act_hour as Hora actividad',
@@ -108,8 +108,8 @@ class Reports extends Model
                         'viewAssitances.per_lastname as Apellido persona',
                         'viewAssitances.per_document as Documento persona',
                         'viewAssitances.use_mail as Correo electrónico',
-                        'viewAssitances.stu_journey as Jornada estudiante',
-                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'viewAssitances.bie_act_date as Fecha actividad',
                         'viewAssitances.bie_act_hour as Hora actividad',
@@ -137,8 +137,8 @@ class Reports extends Model
                         'viewStudents.per_birthdate as Fecha nacimiento',
                         'viewStudents.per_direction as Dirección persona',
                         'viewStudents.eps_name as Nombre EPS',
-                        'viewStudents.stu_journey as Jornada estudiante',
-                        'viewEnrollments.promotion as Promoción',
+                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'consultations.cons_reason as Motivo consulta',
                         'consultations.cons_description as Descripción consulta',
@@ -180,7 +180,7 @@ class Reports extends Model
                 $students = DB::table('viewAssitances as vs')
                 ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
                 ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                ->select('vs.ass_id as Numero_asistencia', 'vs.per_id as Numero_persona', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 'vs.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha_actividad', 'vs.bie_act_name as Actividad', 'vs.bie_act_hour as Hora_de_la_actividad', 'vs.stu_typ_name as Tipo_estudiante','vs.ass_status as Asistencia')
+                ->select('vs.ass_id as Numero_asistencia', 'vs.per_id as Numero_persona', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 've.stu_enr_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha_actividad', 'vs.bie_act_name as Actividad', 'vs.bie_act_hour as Hora_de_la_actividad', 'vs.stu_typ_name as Tipo_estudiante','vs.ass_status as Asistencia')
                 ->where('ve.per_id', '=', $data->data)
                 ->where('ve.car_name', '=', $lastStudent->car_name)
                 ->get();
@@ -213,7 +213,7 @@ class Reports extends Model
                 $students = DB::table('viewAssitances as vs')
                 ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
                 ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                ->select('vs.ass_id as Numero_asistencia', 'vs.per_id as Numero_persona', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 'vs.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha_actividad', 'vs.bie_act_name as Actividad', 'vs.bie_act_hour as Hora_de_la_actividad', 'vs.bie_act_typ_id as Numero_actividad','vs.stu_typ_name as Tipo_estudiante')
+                ->select('vs.ass_id as Numero_asistencia', 'vs.per_id as Numero_persona', 'vs.per_name as Nombre', 'vs.per_lastname as Apellido', 'vs.per_document as Documento', 'vs.use_mail as Correo', 've.stu_enr_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'vs.bie_act_date as Fecha_actividad', 'vs.bie_act_name as Actividad', 'vs.bie_act_hour as Hora_de_la_actividad', 'vs.bie_act_typ_id as Numero_actividad','vs.stu_typ_name as Tipo_estudiante')
                 ->where('vs.bie_act_typ_id', '=', 1)
                 ->where('ve.per_id', '=', $data->data)
                 ->where('ve.car_name', '=', $lastStudent->car_name)
@@ -256,7 +256,7 @@ class Reports extends Model
                 ->join('promotions as pr', 'pr.pro_id', '=', 've.pro_id')
                 ->join('viewSolicitudes as vs','vs.per_id', '=', 'vp.per_id')
                 // ->join('telephones as te','te.per_id','=','vp.per_id')
-                ->select('ve.stu_typ_name as Tipo_de_estudiante','vp.per_id as Numero_persona', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 'st.stu_journey as Jornada', 'vp.per_document as Documento', 'vp.perm_description as Observación','vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo_institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha_de_gestión', 'vp.rea_typ_name as Motivo_de_estado')
+                ->select('ve.stu_typ_name as Tipo_de_estudiante','vp.per_id as Numero_persona', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.stu_enr_journey as Jornada', 'vp.per_document as Documento', 'vp.perm_description as Observación','vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo_institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha_de_gestión', 'vp.rea_typ_name as Motivo_de_estado')
                 ->where('vs.rea_typ_type', '=', 1)
                 ->where('vs.per_id', '=', $data->data)
                 ->where('ve.car_name', '=', $lastStudent->car_name)
@@ -286,7 +286,7 @@ class Reports extends Model
                     ->join('actions as a', 'a.act_id', '=', 'per.act_id')
                     ->join('promotions as pr', 'pr.pro_id', '=', 've.pro_id')
                     // ->join('telephones as te','te.per_id','=','vp.per_id')
-                    ->select('ve.stu_typ_name as Tipo_de_estudiante','vp.per_id as Numero_persona', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 'st.stu_journey as Jornada', 'vp.per_document as Documento', 'vp.perm_description as Observación','vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo_institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha_de_gestión','a.act_name as Acción_de_permanencia', 'vp.rea_typ_name as Motivo_de_estado')
+                    ->select('ve.stu_typ_name as Tipo_de_estudiante','vp.per_id as Numero_persona', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.stu_enr_journey as Jornada', 'vp.per_document as Documento', 'vp.perm_description as Observación','vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo_institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha_de_gestión','a.act_name as Acción_de_permanencia', 'vp.rea_typ_name as Motivo_de_estado')
                     ->where('vp.per_id', '=', $data->data)
                     ->where('ve.car_name', '=', $lastStudent->car_name)
                     ->get();
@@ -313,7 +313,7 @@ class Reports extends Model
                 $students = DB::table('gym_assistances as gy')
                 ->join('viewEnrollments as ve', 'gy.per_id', '=', 've.per_id')
                 ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
-                ->select('gy.gym_ass_id as Numero_asistencia_gimnasio', 've.stu_journey as Jornada', 've.per_id as Numero_persona','ve.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.per_document as Documento', 've.per_name as Nombre', 've.per_lastname as Apellido', 'gy.gym_ass_date as Fecha_de_asistencia')
+                ->select('gy.gym_ass_id as Numero_asistencia_gimnasio', 've.stu_enr_journey as Jornada', 've.per_id as Numero_persona','ve.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.per_document as Documento', 've.per_name as Nombre', 've.per_lastname as Apellido', 'gy.gym_ass_date as Fecha_de_asistencia')
                 ->where('ve.per_id', '=', $data->data)
                 ->where('ve.car_name', '=', $lastStudent->car_name)
                 ->distinct('gy.gym_ass_id')
@@ -333,7 +333,7 @@ class Reports extends Model
                     ->join('viewEnrollments as ve', 'vt.per_id', '=', 've.per_id')
                     ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
                     ->join('enfermeria_inscriptions as en', 'en.per_id', '=', 'vt.per_id')
-                    ->select('vt.stu_typ_name as Tipo_de_estudiante', 'vt.stu_id as Numero_estudiante', 'vt.per_name as Nombre', 'vt.per_lastname as Apellido', 'vt.per_document as Documento', 'vt.per_rh as Grupo_sanguíneo', 'vt.per_birthdate as Fecha_de_nacimiento', 'vt.per_direction as Direccion', 'vt.eps_name as EPS', 'vt.stu_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'co.cons_reason as Razón_consulta', 'co.cons_description as Descripción_consulta', 'co.cons_date as Fecha_consulta','en.enf_ins_height as Altura','en.enf_ins_weight as Peso','en.enf_ins_vaccination as Vacunas')
+                    ->select('vt.stu_typ_name as Tipo_de_estudiante', 'vt.stu_id as Numero_estudiante', 'vt.per_name as Nombre', 'vt.per_lastname as Apellido', 'vt.per_document as Documento', 'vt.per_rh as Grupo_sanguíneo', 'vt.per_birthdate as Fecha_de_nacimiento', 'vt.per_direction as Direccion', 'vt.eps_name as EPS', 've.stu_enr_journey as Jornada', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.car_name as Carrera', 'co.cons_reason as Razón_consulta', 'co.cons_description as Descripción_consulta', 'co.cons_date as Fecha_consulta','en.enf_ins_height as Altura','en.enf_ins_weight as Peso','en.enf_ins_vaccination as Vacunas')
                     ->where('ve.per_id', '=', $data->data)
                     ->where('ve.car_name', '=', $lastStudent->car_name)
                     ->where('ve.stu_enr_status', '=', 1)
@@ -348,7 +348,7 @@ class Reports extends Model
                     ->join('actions as a', 'a.act_id', '=', 'per.act_id')
                     ->join('promotions as pr', 'pr.pro_id', '=', 've.pro_id')
                     // ->join('telephones as te','te.per_id','=','vp.per_id')
-                    ->select('vp.per_id as Numero_persona', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 'st.stu_journey as Jornada', 'vp.per_document as Documento', 'vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo_institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha_de_gestión', 'vp.rea_typ_name as Motivo_de_estado')
+                    ->select('vp.per_id as Numero_persona', 'vp.act_name as Acción', 've.car_name as Carrera', 'pr.pro_name as Promoción', 'pr.pro_group as Grupo', 've.stu_enr_journey as Jornada', 'vp.per_document as Documento', 'vp.per_name as Nombre', 'vp.per_lastname as Apellido', 've.use_mail as Correo_institucional', 'vp.sol_typ_name as Solicitud', 'vp.perm_date as Fecha_de_gestión', 'vp.rea_typ_name as Motivo_de_estado')
                     ->where('a.act_id', '=', $data->data)
                     ->get();
 

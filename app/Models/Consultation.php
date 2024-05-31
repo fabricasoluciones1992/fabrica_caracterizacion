@@ -12,18 +12,19 @@ class Consultation extends Model
     protected $primaryKey = "cons_id";
     protected $fillable = [
         'cons_date',
+        'cons_time',
         'cons_reason',
         'cons_description',
         'per_id'
-        
+
     ];
     public $timestamps = false;
 
 
 public static function search($id)
 {
-    $consultations=DB::select("SELECT cons_id,cons_date,cons_reason,cons_description 
-    FROM consultations 
+    $consultations=DB::select("SELECT cons_id,cons_date,cons_time,cons_reason,cons_description
+    FROM consultations
     WHERE cons_id=$id");
     return $consultations[0];
 }
