@@ -12,8 +12,8 @@ class Gym_assistance extends Model
     protected $primaryKey = "gym_ass_id";
     protected $fillable = [
         'gym_ass_date',
-
-        'per_id',
+        'gym_ass_start',
+        'per_id'
     ];
     public $timestamps = false;
     public static function select() {

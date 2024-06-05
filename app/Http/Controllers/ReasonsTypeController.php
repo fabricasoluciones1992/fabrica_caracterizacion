@@ -21,18 +21,19 @@ class ReasonsTypeController extends Controller
         
     }
     
-    public function store(Request $request)
+    public function store(Request $request)//pendiente
     {
             if ($request->acc_administrator == 1) {
                 $rules = [
 
-                    'rea_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                    'rea_typ_type' => 'required|integer|in:0,1'
+                    'rea_typ_name' => 'required|string|exists:reason_types|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'rea_typ_type' => 'required|integer|exists:reason_types|in:0,1'
 
                     
                 ];
                 
                 $validator = Validator::make($request->input(), $rules);
+
                 if ($validator->fails()) {
                     return response()->json([
                         'status' => False,
@@ -42,8 +43,7 @@ class ReasonsTypeController extends Controller
                     $reasont = new ReasonType($request->input());
                     $reasont->save();
                     Controller::NewRegisterTrigger("An insertion was made in the reasons table'$reasont->rea_typ_id'",3,$request->use_id);
-                    // $id = $reasont->rea_id;
-                    // $bienestar_news=ReasonsTController::Getbienestar_news($id);
+                    
                     return response()->json([
                         'status' => True,
                         'message' => "The reason type ".$reasont->rea_typ_name." has been successfully created.",
