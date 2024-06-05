@@ -21,6 +21,7 @@ class Gym_assistance extends Model
             SELECT 
                 ga.gym_ass_id, 
                 ga.gym_ass_date,
+                ga.gym_ass_start,
                 pe.per_name,
                 pe.per_document,
                 pe.per_lastname,
@@ -41,6 +42,8 @@ class Gym_assistance extends Model
         SELECT 
         ga.gym_ass_id, 
         ga.gym_ass_date,
+        ga.gym_ass_start,
+
         pe.per_name,
         pe.per_document,
         pe.per_lastname,
