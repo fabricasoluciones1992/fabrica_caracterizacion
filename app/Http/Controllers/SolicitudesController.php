@@ -24,7 +24,7 @@ class SolicitudesController extends Controller
 
 public function store(Request $request)
 {
-    if ($request->acc_administrator == 1) {
+    
         $rules = [
             'sol_date' => 'date',
             'rea_typ_id' => 'required|exists:reason_types|integer',
@@ -51,42 +51,9 @@ public function store(Request $request)
                 'message' => "The request has been created successfully.",
             ], 200);
         }
-    } else {
-        $student = \DB::table('viewStudents')->where('stu_id', $request->use_id)->first();
-
-        if ($student) {
-            $rules = [
-                'sol_date' => 'date',
-                'rea_typ_id' => 'required|integer',
-                'sol_typ_id' => 'required|integer',
-                'stu_id' => 'required|integer'
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                ]);
-            } else {
-                $currentDate = now()->toDateString();
-                $request->merge(['sol_date' => $currentDate]);
-                $solicitud = new solicitudes($request->input());
-                $solicitud->sol_status = 0;
-                $solicitud->save();
-                Controller::NewRegisterTrigger("An insertion was made in the solicitudes table '$solicitud->sol_id'", 3, $request->use_id);
-
-                return response()->json([
-                    'status' => True,
-                    'message' => "The request has been created successfully.",
-                ], 200);
-            }
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Access denied. You must be an active student to create a request.'
-            ], 403);
-        }
-    }
+    
+        
+    
 }
 
 
