@@ -88,7 +88,6 @@ public function show($id)
             } else {
                 $rules = [
 
-                    'sol_date' =>'date',
                     'sol_status'=> 'required|integer',
                     'rea_typ_id' =>'required|exists:reason_types|integer',
                     'sol_typ_id' =>'required|exists:solicitude_types|integer',
