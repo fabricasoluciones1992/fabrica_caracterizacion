@@ -26,8 +26,8 @@ class ReasonsTypeController extends Controller
             if ($request->acc_administrator == 1) {
                 $rules = [
 
-                    'rea_typ_name' => 'required|string|exists:reason_types|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
-                    'rea_typ_type' => 'required|integer|exists:reason_types|in:0,1'
+                    'rea_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'rea_typ_type' => 'required|integer|in:0,1'
 
                     
                 ];
