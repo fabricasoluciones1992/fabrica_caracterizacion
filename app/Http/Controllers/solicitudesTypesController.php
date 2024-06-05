@@ -54,27 +54,12 @@ class SolicitudesTypesController extends Controller
             }
         
     }
-//     public function Getbienestar_news($id)
-// {
-//     $sol_typ_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the solicitudes types table\'$sol_typ_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
 
     public function show($id)
     {
         
             $solicitudTypes = SolicitudeType::find($id);
-            // $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
 
             if ($solicitudTypes == null) {
                 return response()->json([
@@ -82,8 +67,7 @@ class SolicitudesTypesController extends Controller
                     'data' => ['message' => 'The requested solicitudes types was not found']
                 ], 400);
             } else {
-                // $solicitudTypes->new_date = $bienestar_news->bie_new_date;
-                // $solicitudTypes->createdBy = $bienestar_news->per_name;
+                
                 return response()->json([
                     'status' => true,
                     'data' => $solicitudTypes
