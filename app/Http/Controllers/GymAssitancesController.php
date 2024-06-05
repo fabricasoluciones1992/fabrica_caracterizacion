@@ -25,6 +25,7 @@ class GymAssitancesController extends Controller
 
                 $rules = [
                     'per_id' =>'required|exists:persons|integer'
+
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -36,6 +37,7 @@ class GymAssitancesController extends Controller
                 } else {
                     $gymAs = new Gym_assistance($request->input());
                     $gymAs->gym_ass_date = now()->toDateString(); 
+                    $gymAs->gym_ass_start = now()->toTimeString(); 
                     $gymAs->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Gym assistances table'$gymAs->gym_ass_id'",3,$request->use_id);
                     return response()->json([
