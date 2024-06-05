@@ -49,7 +49,7 @@ class MedicalHistoriesController extends Controller
                     return response()->json([
                         'status' => false,
                         'message' => 'A disease with the same characteristics already exists.'
-                    ], 409);
+                    ]);
                 }
                     $mHistory = new MedicalHistory($request->input());
                     $mHistory->med_his_status=1;

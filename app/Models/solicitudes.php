@@ -22,7 +22,7 @@ class solicitudes extends Model
     public $timestamps = false;
     public static function select()
 {
-    $solicitudes = DB::select("SELECT * FROM viewSolicitudes ORDER BY sol_date DESC");
+    $solicitudes = DB::select("SELECT * FROM viewSolicitudes ORDER BY sol_id DESC");
 
     $solicitudesType0 = [];
     $solicitudesType1 = [];

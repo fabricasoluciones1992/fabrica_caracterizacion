@@ -40,7 +40,7 @@ class AllergyHistoriesController extends Controller
                     return response()->json([
                         'status' => false,
                         'message' => 'A Allergie with the same characteristics already exists.'
-                    ], 409);
+                    ]);
                 }
                     $aHistory = new AllergyHistory($request->input());
                     $aHistory->save();
