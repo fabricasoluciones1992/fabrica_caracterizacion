@@ -27,8 +27,7 @@ class PermanencesController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
 
-                'perm_date' =>'required|date',
-                'perm_description' => 'required|string|min:1|max:255',
+                'perm_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                 'emp_id' =>'required|exists:employees|integer|min:1',
                 'perm_status'=>'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'sol_id' =>'required|exists:solicitudes|integer|min:1',
@@ -41,10 +40,11 @@ class PermanencesController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             } else {
-                $currentDate = now()->toDateString();
-                $request->merge(['perm_date' => $currentDate]);
+                
 
                 $permanence = new Permanence($request->input());
+                $permanence->perm_date = now()->toDateString(); 
+
                 $permanence->save();
                 Controller::NewRegisterTrigger("An insertion was made in the permanences table'$permanence->perm_id'", 3,$request->use_id);
                 // $id = $permanence->perm_id;
@@ -100,9 +100,8 @@ class PermanencesController extends Controller
             } else {
                 $rules = [
 
-                    'perm_date' =>'required|date',
                     'emp_id' =>'required|exists:employees|integer|min:1',
-                    'perm_description' => 'required|string|min:1|max:255',
+                    'perm_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                     'sol_id' =>'required|exists:solicitudes|integer|min:1',
                     'act_id' =>'required|exists:actions|integer|min:1',
                     'perm_status'=>'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
@@ -116,9 +115,10 @@ class PermanencesController extends Controller
                 } else {
                     Controller::NewRegisterTrigger("An update was made in the permanences table", 4,$request->use_id);
 
-                    $permanences->perm_date = $request->perm_date;
+                    
                     $permanences->perm_description = $request->perm_description;
                     $permanences->emp_id = $request->emp_id;
+                    $permanences->perm_date = now()->toDateString(); 
 
                     $permanences->sol_id = $request->sol_id;
                     $permanences->perm_status = $request->perm_status;
