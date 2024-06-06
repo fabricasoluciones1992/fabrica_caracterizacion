@@ -149,7 +149,7 @@ public function show($id)
             ],500);
         }
     }
-    public function filtredPesolicitud($id)
+public function filtredPesolicitud($id)
 {
     try {
         $solicitudes = solicitudes::findBysol($id);
@@ -165,7 +165,27 @@ public function show($id)
             'message' => "Error occurred while found elements"
         ], 500);
     }
-}public function filtreduser($id, $rea_typ_type = null)
+    
+}
+public function filtredStatusSol($id)
+{
+    try {
+        $solicitudes = solicitudes::findBystatus($id);
+        
+        
+        return response()->json([
+            'status' => true,
+            'data' => $solicitudes
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
+    }
+    
+}
+public function filtreduser($id, $rea_typ_type = null)
 {
     try {
         if ($rea_typ_type !== null) {

@@ -72,7 +72,13 @@ class solicitudes extends Model
     
     return $solicitud;
 }
-    
+public static function findBystatus($id){
+    $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE sol_status = ?",[$id]);
+    foreach ($solicitudes as $solicitud) {
+        $solicitud->status_name = solicitudes::getStatusName($solicitud->sol_status);
+    }
+    return $solicitudes;
+}
     public static function findBysol($id){
         $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = ?",[$id]);
         foreach ($solicitudes as $solicitud) {

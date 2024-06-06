@@ -41,6 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('enfermeria/inscriptions', EnfermeriaInscriptionsController::class)->names('enfermeria.inscription')->parameter('', 'enfermeria.inscription');
     Route::get('filtredforTSolicitud/{sol_typ_id}/{sol_typ_name}', [PermanencesController::class, 'filtredforTSolicitud'])->name('filtredforTSolicitud');
     Route::get('filtredPesolicitud/{id}', [SolicitudesController::class, 'filtredPesolicitud'])->name('filtredPesolicitud');
+    Route::get('filtredStatusSol/{id}', [SolicitudesController::class, 'filtredStatusSol'])->name('filtredStatusSol');
+
     Route::get('filtredPsolicitud/{id}', [PermanencesController::class, 'filtredPsolicitud'])->name('filtredPsolicitud');
     Route::get('filtreduser/{id}/{rea_typ_type?}', [SolicitudesController::class, 'filtreduser'])->name('filtreduser');
     Route::get('filtreduserP/{id}', [BienestarActivitiesController::class, 'filtreduserP'])->name('filtreduserP');
