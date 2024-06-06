@@ -50,13 +50,17 @@ class BienestarActivity extends Model
     }
     public static function category($id){
         $bienestarActivity = DB::select("
-        SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date,ba.bie_act_hour, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name 
-        FROM bienestar_activities ba
-        INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
-        WHERE ba.bie_act_typ_id = $id
-    ");
-    return $bienestarActivity;
+            SELECT ba.bie_act_id, ba.bie_act_status, ba.bie_act_date, ba.bie_act_hour, ba.bie_act_quotas, ba.bie_act_name, bat.bie_act_typ_name 
+            FROM bienestar_activities ba
+            INNER JOIN bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
+            WHERE ba.bie_act_typ_id = $id
+            AND ba.bie_act_date >= CURDATE()
+            ORDER BY ba.bie_act_date DESC
+        ");
+        return $bienestarActivity;
     }
+    
+    
 
 
 
