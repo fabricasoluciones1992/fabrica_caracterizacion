@@ -176,7 +176,13 @@ public function reportsIndi(Request $request){
         'data' => $data
     ]);
 }
-
+public function reportStudent(Request $request){
+    $data = Reports::reportStudent($request);
+    return response()->json([
+        'status' => true,
+        'data' => $data
+    ]);
+}
 public function docsTypesId(){
 
     $data = DB::table('document_types')->get();

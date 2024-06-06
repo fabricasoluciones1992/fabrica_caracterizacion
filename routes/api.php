@@ -52,6 +52,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('persons/filtred/{id}/{docTypeId}', [Controller::class, 'filtredforDocument'])->name('filtredforDocument');
     Route::resource('permanences', PermanencesController::class)->names('permanences')->parameter('', 'permanences');
     Route::post('/reports', [Controller::class, 'reports'])->name('reports');
+    Route::post('/report/student', [Controller::class, 'reportStudent'])->name('reports');
     Route::post('/reports/individual', [Controller::class, 'reportsIndi'])->name('reports');
     Route::resource('reasons/types', ReasonsTypeController::class)->names('reasons.types')->parameter('', 'reasons_types');
     Route::resource('solicitudes', SolicitudesController::class)->names('solicitudes')->parameter('', 'solicitudes');
