@@ -27,10 +27,19 @@ class GymInscriptionsController extends Controller
             if ($request->acc_administrator == 1) {
 
                 $rules = [
-                    'per_id' =>'required|exists:persons|unique:persons|numeric'
+                    'per_id' =>'required|exists:persons|numeric'
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                
+                $existingInsg = DB::table('gym_inscriptions')
+                            ->where('per_id', $request->per_id)
+                            ->first();
+
+                    if ($existingInsg) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'The person is already inscription in the gym'
+                        ]);
+                    }
                 if ($validator->fails()) {
                     return response()->json([
                     'status' => False,
@@ -99,6 +108,16 @@ public function update(Request $request, $id)
                 'data' => ['message' => 'The searched Gym inscriptions was not found']
             ], 400);
         } else {
+            $existingInsg = DB::table('gym_inscriptions')
+                            ->where('per_id', $request->per_id)
+                            ->first();
+
+                    if ($existingInsg) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'The person is already inscription in the gym'
+                        ]);
+                    }
             $rules = [
                     'per_id' =>'required|exists:persons|numeric'
             ];
