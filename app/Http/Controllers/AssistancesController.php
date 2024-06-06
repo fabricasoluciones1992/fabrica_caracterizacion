@@ -12,18 +12,19 @@ class AssistancesController extends Controller
 {
     public function index()
     {
-        
+
         $assistances = Assistance::select();
 
         return response()->json([
             'status' => true,
             'data' => $assistances
         ],200);
-    
+
 
     }
     public function store(Request $request)
 {
+
     $rules = [
         'use_id' =>'required|exists:users|integer',
         'bie_act_id' =>'required|exists:bienestar_activities|integer',
@@ -98,7 +99,7 @@ class AssistancesController extends Controller
 
     public function show($id)
     {
-        
+
         $assistances =  Assistance::search($id);
 
 
@@ -109,7 +110,7 @@ class AssistancesController extends Controller
                 'data' => ['message' => 'The searched assistance was not found']
             ],400);
         }else{
- 
+
             return response()->json([
                 'status' => true,
                 'data' => $assistances
@@ -121,7 +122,7 @@ class AssistancesController extends Controller
         $activity = BienestarActivity::find($request->bie_act_id);
         $currentQuotas = $activity->countQuotas($request->bie_act_id);
         $assistances = assistance::find($id);
-        
+
         if ($request->acc_administrator== 1) {
             $assistances = assistance::find($id);
             if ($assistances == null) {
@@ -146,7 +147,7 @@ class AssistancesController extends Controller
                     ]);
                 }
                  else {
-                    
+
                     $existingAssistance = DB::table('assistances')
                             ->where('bie_act_id', $request->bie_act_id)
                             ->where('stu_id', $request->stu_id)
@@ -159,8 +160,8 @@ class AssistancesController extends Controller
                             'message' => 'The student is already registered for this activity'
                         ]);
                     }
-                    
-                    $assistances->ass_date = now()->toDateString(); 
+
+                    $assistances->ass_date = now()->toDateString();
                     $assistances->ass_status = $request->ass_status;
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;
@@ -177,9 +178,9 @@ class AssistancesController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Access denied. This action can only be performed by active administrators.'
-            ], 403); 
+            ], 403);
         }
-    
+
 }
 
     public function destroy(Request $request,$id)
@@ -193,7 +194,7 @@ class AssistancesController extends Controller
                     'status' => True,
                     'message' => 'The requested assistances has been change successfully'
                 ]);
-            
+
 
     }
     public function destroyAR(Request $request,$id)
@@ -211,6 +212,9 @@ class AssistancesController extends Controller
 
     public function uploadFile(Request $request)
     {
+        //debe buscar en persons por per_document = documento del archivo. per_id agregar al request y depues llamar al store dentro del foreach y enviar el request
+        $count = 0;
+        $responses[] = [];
         if ($request->hasFile('file')) {
             $file = $request->file('file');
 
@@ -218,16 +222,49 @@ class AssistancesController extends Controller
 
             $csvData = array_map('str_getcsv', file($file->path()));
 
-            foreach ($csvData as $row) {
-                
-                $assistance = new Assistance();
-                $assistance->ass_date = date('Y-m-d');
-                $assistance->ass_status = 1;
-                $assistance->stu_id = intval($row[0]);
-                $assistance->bie_act_id = $request->bie_act_id;
-                $assistance->ass_reg_status = 1;
-                $assistance->save();
+            foreach ($csvData as $index => $row) {
+                if ($index === 0 ) {
+                    continue;
+                }
+
+                $person = db::table('persons')->where('per_document', $row)->first();
+
+
+
+
+                // $assistance = new Assistance();
+                // $assistance->ass_date = date('Y-m-d');
+                // $assistance->ass_status = 1;
+                // $assistance->stu_id = intval($row[0]);
+                // $assistance->bie_act_id = $request->bie_act_id;
+                // $assistance->ass_reg_status = 1;
+                // $assistance->save();
+
+                $request->merge(['use_id' => $person->use_id]);
+                $assistance = AssistancesController::store($request);
+                $data = json_decode($assistance->getContent(), true);
+                $status = $data;
+                if($status["status"] == false){
+                    $responses[] = [
+                     $data["message"].'. Id: '.$person->per_document
+                    ];
+                }else{
+                    $count +1;
+                };
+
             }
+            $responses[0] = [
+                "status" => true,
+                "message" => "The file has been uploaded successfully with ".$count." new registers"
+            ];
+            return response()->json([
+               'status' => true,
+               'message' => $responses
+            ], 200);
+
+
+
+
         }else{
             return response()->json(['error' => 'No CSV file found in request'], 400);
         }
