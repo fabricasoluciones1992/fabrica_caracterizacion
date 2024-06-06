@@ -249,7 +249,7 @@ class AssistancesController extends Controller
                      $data["message"].'. Id: '.$person->per_document
                     ];
                 }else{
-                    $count +1;
+                    $count = $count + 1;
                 };
 
             }
