@@ -40,58 +40,76 @@ class BienestarActivitiesController extends Controller
 
 
 
+public function store(Request $request)
+{
+    if ($request->acc_administrator == 1) {
 
-    public function store(Request $request)
-    {
-            if ($request->acc_administrator == 1) {
+        $rules = [
+            'bie_act_date' =>'required|date',
+            'bie_act_quotas' => 'required|numeric|min:1',
+            'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÑÁÉÍÓÚÜáéíóúü\s]+$/',
+            'bie_act_typ_id' =>'required|exists:bienestar_activity_types|numeric',
+            'bie_act_hour' => 'required|date_format:H:i'
+        ];
 
-                $rules = [
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+            ]);
+        }
 
-                    'bie_act_date' =>'required|date',
-                    'bie_act_quotas' => 'required|numeric|min:1',
-                    'bie_act_name' => 'required|string|max:255|regex:/^[a-zA-Z0-9ÑÁÉÍÓÚÜáéíóúü\s]+$/',
-                    'bie_act_typ_id' =>'required|exists:bienestar_activity_types|numeric',
-                    'bie_act_hour' => 'required|date_format:H:i'
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                    ]);
-                } else {
-                    $existingActivity = BienestarActivity::where('bie_act_date', $request->bie_act_date)
-                        ->where('bie_act_quotas', $request->bie_act_quotas)
-                        ->where('bie_act_name', $request->bie_act_name)
-                        ->where('bie_act_typ_id', $request->bie_act_typ_id)
-                        ->where('bie_act_hour', $request->bie_act_hour)
-                        ->first();
+        $currentDate = now()->toDateString();
+        $currentTime = now()->format('H:i');
+        $activityDate = $request->bie_act_date;
+        $activityHour = $request->bie_act_hour;
 
-                    if ($existingActivity) {
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'A bienestar activity with the same characteristics already exists.'
-                        ], 409);
-                    }
-                    $bienestarActivity = new BienestarActivity($request->input());
-                    $bienestarActivity->bie_act_status=1;
-                    $bienestarActivity->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table'$bienestarActivity->bie_act_id'",3,$request->use_id);
-                   
-                    return response()->json([
-                        'status' => True,
-                        'message' => "The bienestar activity has been created successfully.",
+        if ($activityDate == $currentDate && $activityHour < $currentTime) {
+            return response()->json([
+                'status' => false,
+                'message' => 'The activity hour must be after the current time for today.'
+            ], 400);
+        }
 
-                    ],200);
-                }
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Access denied. This action can only be performed by active administrators.'
-                ], 403); 
-            }
-        
+        if ($activityDate != $currentDate && ($activityHour < '08:00' || $activityHour > '19:00')) {
+            return response()->json([
+                'status' => false,
+                'message' => 'The activity hour must be between 08:00 and 19:00 for dates other than today.'
+            ], 400);
+        }
+
+        $existingActivity = BienestarActivity::where('bie_act_date', $request->bie_act_date)
+            ->where('bie_act_quotas', $request->bie_act_quotas)
+            ->where('bie_act_name', $request->bie_act_name)
+            ->where('bie_act_typ_id', $request->bie_act_typ_id)
+            ->where('bie_act_hour', $request->bie_act_hour)
+            ->first();
+
+        if ($existingActivity) {
+            return response()->json([
+                'status' => false,
+                'message' => 'A bienestar activity with the same characteristics already exists.'
+            ], 409);
+        }
+
+        $bienestarActivity = new BienestarActivity($request->input());
+        $bienestarActivity->bie_act_status = 1;
+        $bienestarActivity->save();
+        Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities table '$bienestarActivity->bie_act_id'", 3, $request->use_id);
+
+        return response()->json([
+            'status' => True,
+            'message' => "The bienestar activity has been created successfully.",
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => false,
+            'message' => 'Access denied. This action can only be performed by active administrators.'
+        ], 403); 
     }
+}
+
 
    
     public function show($id)
