@@ -40,8 +40,6 @@ class AllergiesController extends Controller
                     $allergie = new Allergie($request->input());
                     $allergie->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Allergies table'$allergie->all_id'",3,$request->use_id);
-                    // $id = $allergie->all_id;
-                    // $bienestar_news=AllergiesController::Getbienestar_news($id);
 
                     return response()->json([
                         'status' => True,
@@ -57,27 +55,12 @@ class AllergiesController extends Controller
             }
         
     }
-//     public function Getbienestar_news($id)
-// {
-//     $all_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Allergies table\'$all_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
     public function show($id)
     {
 
         $allergie = Allergie::find($id);
         
-        // $bienestar_news=AllergiesController::Getbienestar_news($id);
 
             if ($allergie == null) {
                 return response()->json([
@@ -86,8 +69,6 @@ class AllergiesController extends Controller
                 ],400);
             }else{
 
-                // $allergie->new_date = $bienestar_news->bie_new_date;
-                // $allergie->per_name = $bienestar_news->per_name;
                 return response()->json([
                     'status' => true,
                     'data' => $allergie

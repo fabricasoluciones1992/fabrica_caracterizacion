@@ -42,8 +42,7 @@ class MonetaryStatesController extends Controller
                 $monState->mon_sta_status=1;
                 $monState->save();
                 Controller::NewRegisterTrigger("An insertion was made in the monetary states table'$monState->mon_sta_id'", 3,$request->use_id);
-                // $id = $monState->mon_sta_id;
-                // $bienestar_news=MonetaryStatesController::Getbienestar_news($id);
+ 
                 return response()->json([
                     'status' => True,
                     'message' => "The economic state type '".$monState->mon_sta_name."' has been created successfully.",
@@ -58,27 +57,12 @@ class MonetaryStatesController extends Controller
         }
     
 }
-// public function Getbienestar_news($id)
-// {
-//     $mon_sta_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the monetary states table\'$mon_sta_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
 
     public function show($id)
     {
          
         $monState = MonetaryState::find($id);
-        // $bienestar_news=MonetaryStatesController::Getbienestar_news($id);
 
         if ($monState == null) {
             return response()->json([
@@ -86,8 +70,7 @@ class MonetaryStatesController extends Controller
                 'data' => ['message' => 'The requested economic state was not found']
             ], 400);
         } else {
-            // $monState->new_date = $bienestar_news->bie_new_date;
-            //     $monState->createdBy = $bienestar_news->per_name;
+         
             return response()->json([
                 'status' => true,
                 'data' => $monState
@@ -141,18 +124,12 @@ class MonetaryStatesController extends Controller
     
 }
 
-    public function destroy(Request $request,$id)
-    {
-        $monState = MonetaryState::find($id);
-        
-            $newMS=($monState->mon_sta_status==1)?0:1;
-                $monState->mon_sta_status = $newMS;
-                $monState->save();
-                Controller::NewRegisterTrigger("An change status was made in the permanences table",2,$request->use_id);
-                return response()->json([
-                    'status' => True,
-                    'message' => 'The requested economic state has been change status successfully'
-                ]);
-                
-    }
+public function destroy(Request $request, $id)
+{
+
+    return response()->json([
+        'status' => false,
+        'message' => 'Function not available.'
+    ]);
+}
 }

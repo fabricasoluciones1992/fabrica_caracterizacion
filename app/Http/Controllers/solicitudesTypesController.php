@@ -38,8 +38,7 @@ class SolicitudesTypesController extends Controller
                     $solicitudTypes->sol_typ_status=1;
                     $solicitudTypes->save();
                     Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table'$solicitudTypes->sol_typ_id'", 3, $request->use_id);
-                    // $id = $solicitudTypes->sol_typ_id;
-                    // $bienestar_news=SolicitudesTypesController::Getbienestar_news($id);
+                   
                     return response()->json([
                         'status' => true,
                         'message' => "The solicitud type '".$solicitudTypes->sol_typ_name."' has been created successfully.",

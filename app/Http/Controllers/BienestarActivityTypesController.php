@@ -40,8 +40,7 @@ class BienestarActivityTypesController extends Controller
                     $bienestarActType->bie_act_typ_status=1;
                     $bienestarActType->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Bienestar Activities types table'$bienestarActType->bie_act_typ_id'",3,$request->use_id);
-                    // $id = $bienestarActType->bie_act_typ_id;
-                    // $bienestar_news=BienestarActivityTypesController::Getbienestar_news($id);
+                   
                     return response()->json([
                         'status' => true,
                         'message' => "The bienestar activity type '".$bienestarActType->bie_act_typ_name."' has been created successfully.",
@@ -56,26 +55,11 @@ class BienestarActivityTypesController extends Controller
             }
         
     }
-//     public function Getbienestar_news($id)
-// {
-//     $bie_act_typ_id = $id;
-//     $bienestar_news = DB::table('bienestar_news')
-//         ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//         ->select('bie_new_date', 'persons.per_name')
-//         ->whereRaw("TRIM(bie_new_description) LIKE 'An insertion was made in the Bienestar Activities types table\'$bie_act_typ_id\''")
-//         ->get();
 
-//     if ($bienestar_news->count() > 0) {
-//         return $bienestar_news[0];
-//     } else {
-//         return null;
-//     }
-// }
     public function show($id)
     {
         
             $bienestarActType = BienestarActivity::category($id);
-            // $bienestar_news=BienestarActivityTypesController::Getbienestar_news($id);
 
             if ($bienestarActType == null) {
                 return response()->json([
@@ -83,8 +67,7 @@ class BienestarActivityTypesController extends Controller
                     'data' => ['message' => 'The requested bienestar activity type was not found']
                 ],400);
             } else {
-                // $bienestarActType->new_date = $bienestar_news->bie_new_date;
-                // $bienestarActType->createdBy = $bienestar_news->per_name;
+
                 return response()->json([
                     'status' => true,
                     'data' => $bienestarActType

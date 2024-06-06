@@ -21,7 +21,7 @@ class ReasonsTypeController extends Controller
         
     }
     
-    public function store(Request $request)//pendiente
+    public function store(Request $request)
     {
             if ($request->acc_administrator == 1) {
                 $rules = [
@@ -63,7 +63,6 @@ class ReasonsTypeController extends Controller
     {
 
         $reasont = ReasonType::find($id);
-        // $bienestar_news=ReasonsTController::Getbienestar_news($id);
 
             
             if ($reasont == null) {
@@ -72,8 +71,7 @@ class ReasonsTypeController extends Controller
                     'data' => ['message' => 'The requested reason was not found']
                 ],400);
             }else{
-                // $reasont->new_date = $bienestar_news->bie_new_date;
-                // $reasont->createdBy = $bienestar_news->per_name;
+
                 return response()->json([
                     'status' => true,
                     'data' => $reasont
