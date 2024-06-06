@@ -26,7 +26,6 @@ public function store(Request $request)
 {
     
         $rules = [
-            'sol_date' => 'date',
             'rea_typ_id' => 'required|exists:reason_types|integer',
             'sol_typ_id' => 'required|exists:solicitude_types|integer',
             'stu_id' => 'required|exists:students|integer',
@@ -39,9 +38,8 @@ public function store(Request $request)
                 'message' => $validator->errors()->all()
             ]);
         } else {
-            $currentDate = now()->toDateString();
-            $request->merge(['sol_date' => $currentDate]);
             $solicitud = new solicitudes($request->input());
+            $solicitud->sol_date = now()->toDateString(); 
             $solicitud->sol_status = 0;
             $solicitud->save();
             Controller::NewRegisterTrigger("An insertion was made in the solicitudes table '$solicitud->sol_id'", 3, $request->use_id);
@@ -100,11 +98,7 @@ public function show($id)
                     'message' => $validator->errors()->all()
                     ]);
                 } else {
-                    $currentDate = now()->toDateString();
- 
-                    $request->merge(['sol_date' => $currentDate]);
- 
-                    $solicitude->sol_date = $request->sol_date;
+                    $solicitude->sol_date = now()->toDateString(); 
                     $solicitude->sol_status = $request->sol_status;
                     $solicitude->rea_typ_id = $request->rea_typ_id;
                     $solicitude->sol_typ_id = $request->sol_typ_id;

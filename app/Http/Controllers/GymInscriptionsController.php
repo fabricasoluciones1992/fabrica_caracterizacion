@@ -27,7 +27,6 @@ class GymInscriptionsController extends Controller
             if ($request->acc_administrator == 1) {
 
                 $rules = [
-                    //este es el unico por que si debe ser unique
                     'per_id' =>'required|exists:persons|unique:persons|numeric'
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -44,8 +43,7 @@ class GymInscriptionsController extends Controller
 
                     $gymIn->save();
                     Controller::NewRegisterTrigger("An insertion was made in the Gym inscriptions table'$gymIn->gym_ins_id'",3,$request->use_id);
-                    // $id = $gymIn->gym_ins_id;
-                    // $bienestar_news=GymInscriptionsController::Getbienestar_news($id);
+                    
                     return response()->json([
                         'status' => True,
                         'message' => "The Gym inscriptions has been created successfully.",

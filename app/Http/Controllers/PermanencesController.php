@@ -27,7 +27,7 @@ class PermanencesController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
 
-                'perm_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                'perm_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s\-,.;\/]+$/',
                 'emp_id' =>'required|exists:employees|integer|min:1',
                 'perm_status'=>'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 'sol_id' =>'required|exists:solicitudes|integer|min:1',
@@ -47,8 +47,6 @@ class PermanencesController extends Controller
 
                 $permanence->save();
                 Controller::NewRegisterTrigger("An insertion was made in the permanences table'$permanence->perm_id'", 3,$request->use_id);
-                // $id = $permanence->perm_id;
-                // $bienestar_news=PermanencesController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
                     'message' => "The permanences has been created successfully.",
@@ -101,7 +99,7 @@ class PermanencesController extends Controller
                 $rules = [
 
                     'emp_id' =>'required|exists:employees|integer|min:1',
-                    'perm_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                    'perm_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s\-,.;\/]+$/',
                     'sol_id' =>'required|exists:solicitudes|integer|min:1',
                     'act_id' =>'required|exists:actions|integer|min:1',
                     'perm_status'=>'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'

@@ -118,7 +118,8 @@ class AssistancesController extends Controller
     }
     public function update(Request $request, $id)
     {
-        
+        $activity = BienestarActivity::find($request->bie_act_id);
+        $currentQuotas = $activity->countQuotas($request->bie_act_id);
         $assistances = assistance::find($id);
         
         if ($request->acc_administrator== 1) {
@@ -132,23 +133,34 @@ class AssistancesController extends Controller
                 $rules = [
 
                     'stu_id' =>'required|integer|exists:students|min:1',
-                    'ass_date' =>'date',
                     'ass_status' =>'required|integer',
                     'bie_act_id' =>'required|integer|exists:bienestar_activities|min:1',
 
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+                if ($validator->fails() || $currentQuotas >= $activity->bie_act_quotas) {
+                    $errorMessage = $validator->fails() ? $validator->errors()->all() : 'The activity has reached its maximum capacity';
                     return response()->json([
-                        'status' => False,
-                        'message' => $validator->errors()->all()
+                        'status' => false,
+                        'message' => $errorMessage
                     ]);
-                } else {
-                    $currentDate = now()->toDateString();
+                }
+                 else {
+                    
+                    $existingAssistance = DB::table('assistances')
+                            ->where('bie_act_id', $request->bie_act_id)
+                            ->where('stu_id', $request->stu_id)
+                            ->where('ass_status', $request->ass_status)
+                            ->first();
 
-                    $request->merge(['ass_date' => $currentDate]);
-
-                    $assistances->ass_date = $request->ass_date;
+                        if ($existingAssistance) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'The student is already registered for this activity'
+                        ]);
+                    }
+                    
+                    $assistances->ass_date = now()->toDateString(); 
                     $assistances->ass_status = $request->ass_status;
                     $assistances->stu_id = $request->stu_id;
                     $assistances->bie_act_id = $request->bie_act_id;

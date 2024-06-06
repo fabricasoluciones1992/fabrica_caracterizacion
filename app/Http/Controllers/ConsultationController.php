@@ -44,8 +44,8 @@ class ConsultationController extends Controller
             date_default_timezone_set('America/Bogota');
             $rules = [
 
-                'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
-                'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s\-,.;\/]+$/',
+                'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s\-,.;\/]+$/',
                 'per_id' => 'required|exists:persons|integer',
                 'use_id' => 'required|exists:users'
             ];
@@ -106,8 +106,8 @@ class ConsultationController extends Controller
                 ], 400);
             } else {
                 $rules = [
-                    'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
-                    'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+                    'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s\-,.;\/]+$/',
+                    'cons_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s\-,.;\/]+$/',
                     'per_id' => 'required|exists:persons|integer',
                     'use_id' => 'required|exists:users'
 

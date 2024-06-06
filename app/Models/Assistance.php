@@ -28,9 +28,5 @@ class Assistance extends Model
     }
    
 
-public static function countQuotas($id)
-{
-    $quotas = DB::select("SELECT COUNT(*) as quotas FROM assistances where bie_act_id = ".$id);
-    return $quotas[0]->quotas;
-}
+
 }
