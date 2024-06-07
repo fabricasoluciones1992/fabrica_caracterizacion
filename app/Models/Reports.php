@@ -340,7 +340,28 @@ class Reports extends Model
         for ($i=1; $i < 7 ; $i++){
             $data->merge(['option'=>$i]);
             $info = Reports::select($data);
-            array_push($information, $info);
+           switch ($i) {
+            case 1:
+                $information['assistances'] = $info;
+                break;
+            case 2:
+                $information['Conversatorios'] = $info;
+                break;
+            case 3:
+                $information['Orientacion'] = $info;
+                break;
+            case 4:
+                $information['Permaniencias'] = $info;
+                break;
+            case 5:
+                $information['Gimnasio'] = $info;
+                break;
+            case 6:
+                $information['Salud'] = $info;
+                break;
+            default:
+                break;
+           }
         }
         return $information;
     }
