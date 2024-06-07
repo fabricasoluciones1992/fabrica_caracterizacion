@@ -32,9 +32,6 @@ class BienestarActivity extends Model
         bienestar_activities ba
     INNER JOIN 
         bienestar_activity_types bat ON bat.bie_act_typ_id = ba.bie_act_typ_id
-    WHERE 
-        ba.bie_act_date >= CURDATE()
-    ORDER BY ba.bie_act_date DESC
     ");
         return $bienestarActivity;
     }
