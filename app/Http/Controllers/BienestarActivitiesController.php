@@ -69,14 +69,14 @@ public function store(Request $request)
             return response()->json([
                 'status' => false,
                 'message' => 'The activity hour must be after the current time for today.'
-            ], 400);
+            ]);
         }
 
         if ($activityDate != $currentDate && ($activityHour < '08:00' || $activityHour > '19:00')) {
             return response()->json([
                 'status' => false,
                 'message' => 'The activity hour must be between 08:00 and 19:00 for dates other than today.'
-            ], 400);
+            ]);
         }
 
         $existingActivity = BienestarActivity::where('bie_act_date', $request->bie_act_date)
