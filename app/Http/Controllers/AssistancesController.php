@@ -118,71 +118,72 @@ class AssistancesController extends Controller
         }
     }
     public function update(Request $request, $id)
-    {
-        $activity = BienestarActivity::find($id);
-        $currentQuotas = $activity->countQuotas($id);
-        $assistances = assistance::find($id);
+{
+    $activity = BienestarActivity::find($request->bie_act_id);
+    $currentQuotas = $activity->countQuotas($request->bie_act_id);
+    $assistances = Assistance::find($id);
 
-        if ($request->acc_administrator== 1) {
-            $assistances = assistance::find($id);
-            if ($assistances == null) {
-                return response()->json([
-                    'status' => false,
-                    'data' => ['message' => 'The searched assistance was not found']
-                ],400);
-            } else {
-                $rules = [
-
-                    'stu_id' =>'required|integer|exists:students|min:1',
-                    'ass_status' =>'required|integer',
-                    'bie_act_id' =>'required|integer|exists:bienestar_activities|min:1',
-
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails() || $currentQuotas >= $activity->bie_act_quotas) {
-                    $errorMessage = $validator->fails() ? $validator->errors()->all() : 'The activity has reached its maximum capacity';
-                    return response()->json([
-                        'status' => false,
-                        'message' => $errorMessage
-                    ]);
-                }
-                 else {
-
-                    $existingAssistance = DB::table('assistances')
-                            ->where('bie_act_id', $request->bie_act_id)
-                            ->where('stu_id', $request->stu_id)
-                            ->where('ass_status', $request->ass_status)
-                            ->first();
-
-                        if ($existingAssistance) {
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'The student is already registered for this activity'
-                        ]);
-                    }
-                    
-
-                    $assistances->ass_date = now()->toDateString();
-                    $assistances->ass_status = $request->ass_status;
-                    $assistances->stu_id = $request->stu_id;
-                    $assistances->bie_act_id = $request->bie_act_id;
-                    $assistances->save();
-                    Controller::NewRegisterTrigger("An update was made in assistances table", 4, $request->use_id);
-
-                    return response()->json([
-                        'status' => True,
-                        'message' => "The assistance has been updated."
-                    ],200);
-                }
-            }
-        } else {
+    if ($request->acc_administrator == 1) {
+        if ($assistances == null) {
             return response()->json([
                 'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
-            ], 403);
-        }
+                'data' => ['message' => 'The searched assistance was not found']
+            ], 400);
+        } else {
+            $rules = [
+                'stu_id' => 'required|integer|exists:students|min:1',
+                'ass_status' => 'required|integer',
+                'bie_act_id' => 'required|integer|exists:bienestar_activities|min:1',
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->all()
+                ]);
+            } 
+            
+            if ($currentQuotas >= $activity->bie_act_quotas) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The activity has reached its maximum capacity'
+                ]);
+            }
 
+            $existingAssistance = DB::table('assistances')
+                ->where('bie_act_id', $request->bie_act_id)
+                ->where('stu_id', $request->stu_id)
+                ->where('ass_status', $request->ass_status)
+                ->first();
+
+            if ($existingAssistance) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The student is already registered for this activity'
+                ]);
+            }
+
+            $assistances->ass_date = now()->toDateString();
+            $assistances->ass_status = $request->ass_status;
+            $assistances->stu_id = $request->stu_id;
+            $assistances->bie_act_id = $request->bie_act_id;
+            $assistances->save();
+            Controller::NewRegisterTrigger("An update was made in assistances table", 4, $request->use_id);
+
+            return response()->json([
+                'status' => true,
+                'message' => "The assistance has been updated."
+            ], 200);
+        }
+    } else {
+        return response()->json([
+            'status' => false,
+            'message' => 'Access denied. This action can only be performed by active administrators.'
+        ], 403);
+    }
 }
+
 
     public function destroy(Request $request,$id)
     {
