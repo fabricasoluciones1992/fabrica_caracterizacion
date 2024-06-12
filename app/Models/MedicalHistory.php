@@ -33,25 +33,5 @@ class MedicalHistory extends Model
         WHERE mh.med_his_id = $id");
         return $mHistory[0];
     }
-//     public static function Getbienestar_news()
-// {
-//     $mHistories = MedicalHistory::select();
-//     foreach ($mHistories as $mHistory) {
-//         $news = DB::table('bienestar_news')
-//                     ->join('persons', 'bienestar_news.use_id', '=', 'persons.use_id')
-//                     ->where('bie_new_description', "An insertion was made in the Medical Histories table'$mHistory->med_his_id'")
-//                     ->select('bie_new_date', 'per_name')
-//                     ->get();
 
-//         if ($news->isNotEmpty()) {
-//             $mHistory->new_date = $news[0]->bie_new_date;
-//             $mHistory->createdBy = $news[0]->per_name;
-//         } else {
-//             $mHistory->new_date = null;
-//             $mHistory->createdBy = null;
-//         }
-//     }
-    
-//     return $mHistories;
-// }
 }

@@ -80,7 +80,7 @@ public static function findBystatus($id){
     return $solicitudes;
 }
     public static function findBysol($id){
-        $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = ?",[$id]);
+        $solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = '$id'");
         foreach ($solicitudes as $solicitud) {
             $solicitud->status_name = solicitudes::getStatusName($solicitud->sol_status);
         }
