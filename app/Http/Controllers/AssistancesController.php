@@ -119,8 +119,8 @@ class AssistancesController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $activity = BienestarActivity::find($request->bie_act_id);
-        $currentQuotas = $activity->countQuotas($request->bie_act_id);
+        $activity = BienestarActivity::find($id);
+        $currentQuotas = $activity->countQuotas($id);
         $assistances = assistance::find($id);
 
         if ($request->acc_administrator== 1) {
@@ -160,6 +160,7 @@ class AssistancesController extends Controller
                             'message' => 'The student is already registered for this activity'
                         ]);
                     }
+                    
 
                     $assistances->ass_date = now()->toDateString();
                     $assistances->ass_status = $request->ass_status;
