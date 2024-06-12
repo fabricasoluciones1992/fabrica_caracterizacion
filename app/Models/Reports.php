@@ -154,6 +154,16 @@ class Reports extends Model
                     ->where('viewAssitances.bie_act_id', '=', $data->data)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
+                    foreach ($students as $student) {
+                        if ($student->Jornada == 0) {
+                            $student->Jornada = "diurno";
+                        } elseif($student->Jornada == 1) {
+                            $student->Jornada = "nocturno";
+                        }else{
+                            $student->Jornada = "N/A";
+                        }
+
+                    }
                 return $students;
                 break;
             case "6";
