@@ -40,7 +40,7 @@ class Reports extends Model
                         }else{
                             $student->Jornada = "N/A";
                         }
-                        
+
                     }
                 return $students;
                 break;
@@ -70,7 +70,7 @@ class Reports extends Model
                         }else{
                             $student->Jornada = "N/A";
                         }
-                        
+
                     }
                 return $students;
                 break;
@@ -117,7 +117,7 @@ class Reports extends Model
                     ->where('viewAssitances.bie_act_typ_id', '=', 9)
                     ->where('viewEnrollments.stu_enr_status', '=', 1)
                     ->get();
-                    
+
                 foreach ($students as $student) {
                     if ($student->Jornada == 0) {
                         $student->Jornada = "diurno";
@@ -126,7 +126,7 @@ class Reports extends Model
                     }else{
                         $student->Jornada = "N/A";
                     }
-                    
+
                 }
                 return $students;
 
@@ -189,7 +189,7 @@ class Reports extends Model
                         }else{
                             $student->Jornada = "N/A";
                         }
-                        
+
                     }
                 return $students;
                 break;
@@ -219,6 +219,12 @@ class Reports extends Model
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
                     $stu->telefono = $tel;
+                    switch($stu->Jornada){
+                        case 0:
+                            $stu->Jornada ='Diurno';
+                        case 1:
+                            $stu->Jornada ='Nocturno';
+                    }
                 }
             return $students;
             case "2":
@@ -235,6 +241,12 @@ class Reports extends Model
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
                     $stu->telefono = $tel;
+                    switch($stu->Jornada){
+                        case 0:
+                            $stu->Jornada ='Diurno';
+                        case 1:
+                            $stu->Jornada ='Nocturno';
+                    }
                 }
                 return $students;
                 break;
@@ -256,6 +268,12 @@ class Reports extends Model
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
                     $stu->telefono = $tel;
+                    switch($stu->Jornada){
+                        case 0:
+                            $stu->Jornada ='Diurno';
+                        case 1:
+                            $stu->Jornada ='Nocturno';
+                    }
                 }
                 return $students;
                 break;
@@ -275,6 +293,12 @@ class Reports extends Model
                     foreach ($students as $stu) {
                         $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
                         $stu->telefono = $tel;
+                        switch($stu->Jornada){
+                            case 0:
+                                $stu->Jornada ='Diurno';
+                            case 1:
+                                $stu->Jornada ='Nocturno';
+                        }
                     }
                 return $students;
                 break;
@@ -292,6 +316,12 @@ class Reports extends Model
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
                     $stu->telefono = $tel;
+                    switch($stu->Jornada){
+                        case 0:
+                            $stu->Jornada ='Diurno';
+                        case 1:
+                            $stu->Jornada ='Nocturno';
+                    }
                 }
                 return $students;
                 break;
@@ -308,6 +338,16 @@ class Reports extends Model
                     ->where('ve.car_name', '=', $lastStudent->car_name)
                     ->where('ve.stu_enr_status', '=', 1)
                     ->get();
+
+                    foreach($students as $stu){
+                    switch($stu->Jornada){
+                        case 0:
+                            $stu->Jornada ='Diurno';
+                        case 1:
+                            $stu->Jornada ='Nocturno';
+                    }
+
+                    }
                 return $students;
                 break;
             case "7":
@@ -323,6 +363,12 @@ class Reports extends Model
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
                     $stu->telefono = $tel;
+                    switch($stu->Jornada){
+                        case 0:
+                            $stu->Jornada ='Diurno';
+                        case 1:
+                            $stu->Jornada ='Nocturno';
+                    }
                 }
                 return $students;
                 break;
