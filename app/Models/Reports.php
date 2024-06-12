@@ -218,7 +218,7 @@ class Reports extends Model
                 ->get();
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
-                    $stu->telefono = $tel;
+                    $stu->telefono = ($tel == null) ? 'No hay telefonos' : $tel;
                     switch($stu->Jornada){
                         case 0:
                             $stu->Jornada ='Diurno';
@@ -240,7 +240,7 @@ class Reports extends Model
                 ->get();
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
-                    $stu->telefono = $tel;
+                    $stu->telefono = ($tel == null) ? 'No hay telefonos' : $tel;
                     switch($stu->Jornada){
                         case 0:
                             $stu->Jornada ='Diurno';
@@ -267,7 +267,7 @@ class Reports extends Model
                 ->get();
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
-                    $stu->telefono = $tel;
+                    $stu->telefono = ($tel == null) ? 'No hay telefonos' : $tel;
                     switch($stu->Jornada){
                         case 0:
                             $stu->Jornada ='Diurno';
@@ -292,7 +292,7 @@ class Reports extends Model
                     ->get();
                     foreach ($students as $stu) {
                         $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
-                        $stu->telefono = $tel;
+                        $stu->telefono = ($tel == null) ? 'No hay telefonos' : $tel;
                         switch($stu->Jornada){
                             case 0:
                                 $stu->Jornada ='Diurno';
@@ -315,7 +315,7 @@ class Reports extends Model
                 ->get();
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
-                    $stu->telefono = $tel;
+                    $stu->telefono = ($tel == null) ? 'No hay telefonos' : $tel;
                     switch($stu->Jornada){
                         case 0:
                             $stu->Jornada ='Diurno';
@@ -362,7 +362,7 @@ class Reports extends Model
                     ->get();
                 foreach ($students as $stu) {
                     $tel = DB::table('telephones as tel')->where('tel.per_id', '=', $stu->Numero_persona)->select('tel_number as Teléfono', 'tel_description as Descripcion teléfono')->max('tel_number');
-                    $stu->telefono = $tel;
+                    $stu->telefono = ($tel == null) ? 'No hay telefonos' : $tel;
                     switch($stu->Jornada){
                         case 0:
                             $stu->Jornada ='Diurno';
