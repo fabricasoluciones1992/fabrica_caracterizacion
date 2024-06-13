@@ -16,31 +16,36 @@ class Reports extends Model
     {
         switch ($data->option) {
             case "1":
-                $students = DB::table('viewEnrollments')
+                $students = DB::table('viewStudents')
                     ->select(
-                        'stu_id as Id Estudiante',
+                        'stu_id as ID',
                         'stu_typ_name as Tipo de Estudiante',
-                        'stu_enr_journey as Jornada',
                         'per_document as Documento',
                         'per_name as Nombres',
                         'per_lastname as Apellidos',
                         'use_mail as Correo',
-                        'car_name as Programa',
-                        'pro_name as Promoción'
                     )
                     ->where('stu_typ_id', '=', $data->data)
                     ->where('use_status', '=', 1)
                     ->get();
-
                     foreach ($students as $student) {
-                        if ($student->Jornada == 0) {
-                            $student->Jornada = "diurno";
-                        } elseif($student->Jornada == 1) {
-                            $student->Jornada = "nocturno";
+                        $lastStudent = Controller::lastEnrollments($student->ID);
+                        if ($lastStudent == []) {
+                            $student->Promocion = "N/A";
+                            $student->Carrera = "N/A";
+                            $student->Jornada  = "N/A";
                         }else{
-                            $student->Jornada = "N/A";
+                            $student->Promocion = $lastStudent->pro_name;
+                            $student->Carrera = $lastStudent->car_name;
+                            $student->Jornada  = $lastStudent->stu_enr_journey;
+                            if ($student->Jornada == 0) {
+                                $student->Jornada = "diurno";
+                            } elseif($student->Jornada == 1) {
+                                $student->Jornada = "nocturno";
+                            }else{
+                                $student->Jornada = "N/A";
+                            }
                         }
-
                     }
                 return $students;
                 break;
