@@ -202,16 +202,20 @@ class AssistancesController extends Controller
     public function destroyAR(Request $request, $id)
 {
     $assistances = Assistance::find($id);
-    if ($assistances) {
-        $activity = BienestarActivity::find($assistances->bie_act_id);
-        $currentQuotas = $activity->countQuotas($assistances->bie_act_id);
 
-        if ($currentQuotas >= $activity->bie_act_quotas) {
-            return response()->json([
-                'status' => false,
-                'message' => 'The activity has reached its maximum capacity'
-            ]);
+    if ($assistances) {
+        if ($assistances->ass_reg_status == 1) {
+            $activity = BienestarActivity::find($assistances->bie_act_id);
+            $currentQuotas = $activity->countQuotas($assistances->bie_act_id);
+
+            if ($currentQuotas >= $activity->bie_act_quotas) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The activity has reached its maximum capacity'
+                ]);
+            }
         }
+
         $newAsg = ($assistances->ass_reg_status == 1) ? 0 : 1;
         $assistances->ass_reg_status = $newAsg;
         $assistances->save();
@@ -229,6 +233,7 @@ class AssistancesController extends Controller
         ], 404);
     }
 }
+
 
 
     public function uploadFile(Request $request)
