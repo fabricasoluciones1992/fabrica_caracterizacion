@@ -149,7 +149,6 @@ public function update(Request $request, $id)
     $bienestarActivity = BienestarActivity::find($id);
 
     if ($request->acc_administrator == 1) {
-        $bienestarActivity = BienestarActivity::find($id);
         if ($bienestarActivity == null) {
             return response()->json([
                 'status' => false,
@@ -164,6 +163,7 @@ public function update(Request $request, $id)
                 'bie_act_date' => 'required|date',
                 'bie_act_hour' => 'required',
             ];
+            
 
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->bie_act_name, 'bienestar_activities', 'bie_act_name', 'bie_act_id', $id);
@@ -182,6 +182,25 @@ public function update(Request $request, $id)
                     return response()->json([
                         'status' => false,
                         'message' => 'Cannot update to full quotas. There are currently ' . $occupiedQuotas . ' pre-registrations.'
+                    ]);
+                }
+                $currentDate = now()->toDateString();
+            
+                $currentTime = now()->format('H:i');
+                $activityDate = $request->bie_act_date;
+                $activityHour = $request->bie_act_hour;
+        
+                if ($activityDate == $currentDate && $activityHour < $currentTime) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'The activity hour must be after the current time for today.'
+                    ]);
+                }
+        
+                if ($activityDate != $currentDate && ($activityHour < '08:00' || $activityHour > '19:00')) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'The activity hour must be between 08:00 and 19:00 for dates other than today.'
                     ]);
                 }
                 $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
