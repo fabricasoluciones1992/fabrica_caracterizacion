@@ -204,7 +204,9 @@ class AssistancesController extends Controller
     $assistances = Assistance::find($id);
 
     if ($assistances) {
-        if ($assistances->ass_reg_status == 1) {
+        $newAsg = ($assistances->ass_reg_status == 1) ? 0 : 1;
+
+        if ($newAsg == 1) {
             $activity = BienestarActivity::find($assistances->bie_act_id);
             $currentQuotas = $activity->countQuotas($assistances->bie_act_id);
 
@@ -216,7 +218,6 @@ class AssistancesController extends Controller
             }
         }
 
-        $newAsg = ($assistances->ass_reg_status == 1) ? 0 : 1;
         $assistances->ass_reg_status = $newAsg;
         $assistances->save();
 
@@ -233,7 +234,6 @@ class AssistancesController extends Controller
         ], 404);
     }
 }
-
 
 
     public function uploadFile(Request $request)
