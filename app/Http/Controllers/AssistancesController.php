@@ -199,18 +199,42 @@ class AssistancesController extends Controller
 
 
     }
-    public function destroyAR(Request $request,$id)
-    {
-        $assistances = assistance::find($id);
-        $newAsg=($assistances->ass_reg_status==1)?0:1;
-                $assistances->ass_reg_status =$newAsg;
-                $assistances->save();
-                Controller::NewRegisterTrigger("An change status was made in the bienestar activity type table",2,$request->use_id);
+    public function destroyAR(Request $request, $id)
+{
+    $assistances = Assistance::find($id);
+
+    if ($assistances) {
+        $newAsg = ($assistances->ass_reg_status == 1) ? 0 : 1;
+
+        if ($newAsg == 1) {
+            $activity = BienestarActivity::find($assistances->bie_act_id);
+            $currentQuotas = $activity->countQuotas($assistances->bie_act_id);
+
+            if ($currentQuotas >= $activity->bie_act_quotas) {
                 return response()->json([
-                    'status' => True,
-                    'message' => 'The requested asisstance register has been change successfully'
+                    'status' => false,
+                    'message' => 'The activity has reached its maximum capacity'
                 ]);
+            }
+        }
+
+        $assistances->ass_reg_status = $newAsg;
+        $assistances->save();
+
+        Controller::NewRegisterTrigger("A change status was made in the bienestar activity type table", 2, $request->use_id);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'The requested assistance register has been changed successfully'
+        ]);
+    } else {
+        return response()->json([
+            'status' => false,
+            'message' => 'The requested assistance was not found'
+        ], 404);
     }
+}
+
 
     public function uploadFile(Request $request)
     {
