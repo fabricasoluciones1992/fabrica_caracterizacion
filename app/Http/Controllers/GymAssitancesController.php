@@ -36,6 +36,7 @@ public function store(Request $request)
         } else {
             $isEnrolled = DB::table('gym_inscriptions')
                             ->where('per_id', $request->per_id)
+                            ->where('gym_ins_status', '1')
                             ->exists();
             
             if (!$isEnrolled) {

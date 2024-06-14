@@ -140,7 +140,25 @@ class Controller extends BaseController
     public function filtredforDocument($id, $docTypeId)
 {
     try {
+        //===== QUE SE SUPONE QUE ENTONCES HACE ESTA FUNCION??=====
         $persons = Controller::findByDocument($id, $docTypeId);
+
+        return response()->json([
+            'status' => true,
+            'data' => $persons
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
+    }
+}
+
+public function filtredAssistance($id, $docTypeId)
+{
+    try {
+        $persons = DB::table('gym_inscriptions')->where('gym_ins_status', '=', '1')->get();
 
         return response()->json([
             'status' => true,
