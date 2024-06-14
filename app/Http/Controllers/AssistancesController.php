@@ -136,14 +136,14 @@ class AssistancesController extends Controller
                 'bie_act_id' => 'required|integer|exists:bienestar_activities|min:1',
             ];
             $validator = Validator::make($request->input(), $rules);
-            
+
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
                     'message' => $validator->errors()->all()
                 ]);
-            } 
-            
+            }
+
             if ($currentQuotas >= $activity->bie_act_quotas) {
                 return response()->json([
                     'status' => false,
@@ -248,14 +248,28 @@ class AssistancesController extends Controller
 
             $csvData = array_map('str_getcsv', file($file->path()));
 
-            foreach ($csvData as $index => $row) {
-                if ($index === 0 ) {
+            foreach ($csvData as $row) {
+                if (empty(trim($row[0]))) {
+                    continue;
+                }
+
+                $document = trim($row[0]);
+                // Verificar si el documento es un número válido
+                if (!is_numeric($document) || intval($document) <= 0) {
+                    $responses[] = [
+                        "Datos invalidos: ".$document
+                    ];
                     continue;
                 }
 
                 $person = db::table('persons')->where('per_document', $row)->first();
+                if($person == null){
+                    $responses[] = [
+                        "Datos invalidos: ".$row[0]
+                    ];
+                    continue;
 
-
+                }
 
 
                 // $assistance = new Assistance();
