@@ -78,10 +78,10 @@ class Reports extends Model
                         array_push($students, $finalStudent[0]);
                     }
                 }
-                    
+
                 return $students;
                 break;
-                    
+
             case "3":
                 $students = DB::table('viewSolicitudes')
                     ->select(
@@ -241,6 +241,12 @@ class Reports extends Model
                             $stu->Jornada ='Diurno';
                         case 1:
                             $stu->Jornada ='Nocturno';
+                    }
+                    switch($stu->Asistencia){
+                        case 0:
+                            $stu->Asistencia ='No asistió';
+                        case 1:
+                            $stu->Asistencia ='Asistió';
                     }
                 }
             return $students;
