@@ -24,7 +24,7 @@ class Controller extends BaseController
         DB::statement("CALL bie_new_register('" . addslashes($bie_new_description) . "', $new_typ_id, $use_id)");
     }
 
-
+//filtro rango de fechas
 
 
     public function student($id) {
