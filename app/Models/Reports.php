@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\For_;
+use stdClass;
 
 class Reports extends Model
 {
@@ -51,35 +52,36 @@ class Reports extends Model
                 break;
 
             case "2":
-                $students = DB::table('viewEnrollments')
-                    ->select(
-                        'stu_id as Id estudiante',
-                        'stu_typ_name as Tipo estudiante',
-                        'stu_enr_journey as Jornada',
-                        'per_document as Documento',
-                        'per_name as Nombre',
-                        'per_lastname as Apellido',
-                        'use_mail as Correo electronico',
-                        'car_name as Nombre carrera',
-                        'pro_name as Promocion'
-                    )
-                    ->where('car_id', '=', $data->data)
-                    ->where('use_status', '=', 1)
-                    ->get();
-
-                    foreach ($students as $student) {
-                        if ($student->Jornada == 0) {
-                            $student->Jornada = "diurno";
-                        } elseif($student->Jornada == 1) {
-                            $student->Jornada = "nocturno";
+                $preStudens = DB::table('students')->get();
+                $students = array();
+                foreach ($preStudens as $student) {
+                    $lastStudent = Controller::lastEnrollments($student->stu_id);
+                    $finalStudent = array();
+                    if ($lastStudent && $lastStudent->car_id == $data->data) {
+                        $finalStudent[0] = new stdClass();
+                        $finalStudent[0]->{'Id estudiante'} = $lastStudent->stu_id ;
+                        $finalStudent[0]->{'Tipo Estudiante'} = $lastStudent->stu_typ_name;
+                        $finalStudent[0]->Jornada = $lastStudent->stu_enr_journey ;
+                        if ($finalStudent[0]->Jornada == 0) {
+                            $finalStudent[0]->Jornada = "diurno";
+                        } elseif($finalStudent[0]->Jornada == 1) {
+                            $finalStudent[0]->Jornada = "nocturno";
                         }else{
-                            $student->Jornada = "N/A";
+                            $finalStudent[0]->Jornada = "N/A";
                         }
-
+                        $finalStudent[0]->Documento = $lastStudent->per_document ;
+                        $finalStudent[0]->Nombre = $lastStudent->per_name ;
+                        $finalStudent[0]->Apellido = $lastStudent->per_lastname ;
+                        $finalStudent[0]->{'Correo Electronico'} = $lastStudent->use_mail ;
+                        $finalStudent[0]->{'Nombre Carrera'} = $lastStudent->car_name ;
+                        $finalStudent[0]->Promocion = $lastStudent->pro_name ;
+                        array_push($students, $finalStudent[0]);
                     }
+                }
+                    
                 return $students;
                 break;
-
+                    
             case "3":
                 $students = DB::table('viewSolicitudes')
                     ->select(
@@ -144,7 +146,7 @@ class Reports extends Model
                         'viewAssitances.per_lastname as Apellido persona',
                         'viewAssitances.per_document as Documento persona',
                         'viewAssitances.use_mail as Correo electrónico',
-                        'viewEnrollments.stu_enr_journey as Jornada estudiante',
+                        'viewEnrollments.stu_enr_journey as Jornada',
                         'viewEnrollments.pro_name as Promoción',
                         'viewEnrollments.car_name as Nombre carrera',
                         'viewAssitances.bie_act_date as Fecha actividad',
