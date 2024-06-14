@@ -65,7 +65,7 @@ public function store(Request $request)
         $activityDate = $request->bie_act_date;
         $activityHour = $request->bie_act_hour;
 
-        if ($activityDate == $currentDate && $activityHour < $currentTime) {
+        if ($activityDate == $currentDate && $activityHour < $currentTime && ($activityHour < '08:00' || $activityHour > '19:00')) {
             return response()->json([
                 'status' => false,
                 'message' => 'The activity hour must be after the current time for today.'
@@ -190,7 +190,7 @@ public function update(Request $request, $id)
                 $activityDate = $request->bie_act_date;
                 $activityHour = $request->bie_act_hour;
         
-                if ($activityDate == $currentDate && $activityHour < $currentTime) {
+                if ($activityDate == $currentDate && $activityHour < $currentTime && ($activityHour < '08:00' || $activityHour > '19:00')) {
                     return response()->json([
                         'status' => false,
                         'message' => 'The activity hour must be after the current time for today.'

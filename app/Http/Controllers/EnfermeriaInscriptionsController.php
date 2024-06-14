@@ -25,9 +25,9 @@ class EnfermeriaInscriptionsController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
 
-                'enf_ins_weight' => 'required|numeric',
-                'enf_ins_height' => 'required|numeric',
-                'enf_ins_imc' => 'required|numeric',
+                'enf_ins_weight' => 'required|numeric|min:0',
+                'enf_ins_height' => 'required|numeric|min:0',
+                'enf_ins_imc' => 'required|numeric|min:0',
                 'enf_ins_vaccination' => 'required|string|min:1|max:100|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                 'per_id'=> 'required|exists:persons|integer',
 
@@ -88,9 +88,9 @@ class EnfermeriaInscriptionsController extends Controller
             } else {
                 $rules = [
 
-                'enf_ins_weight' => 'required|integer',
-                'enf_ins_height' => 'required|integer',
-                'enf_ins_imc' => 'required|numeric',
+                    'enf_ins_weight' => 'required|numeric|min:0',
+                    'enf_ins_height' => 'required|numeric|min:0',
+                    'enf_ins_imc' => 'required|numeric|min:0',
                 'enf_ins_vaccination' => 'required|string|min:1|max:100|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                 'per_id'=>'required|integer'
 

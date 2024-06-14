@@ -29,7 +29,8 @@ class ConsultationController extends Controller
             ViewPersons.doc_typ_name,
             ViewPersons.use_id,
             ViewPersons.eps_id,
-            ViewPersons.gen_id
+            ViewPersons.gen_id,
+            ViewPersons.use_mail
 
         FROM consultations
         INNER JOIN ViewPersons ON consultations.per_id = ViewPersons.per_id
