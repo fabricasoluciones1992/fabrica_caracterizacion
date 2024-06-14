@@ -25,40 +25,61 @@ class Gym_assistance extends Model
                 pe.per_name,
                 pe.per_document,
                 pe.per_lastname,
-               
                 pe.doc_typ_id,
-                pe.doc_typ_name
-
+                pe.doc_typ_name,
+                pe.use_mail
             FROM 
                 gym_assistances ga
             INNER JOIN 
                 ViewPersons pe ON pe.per_id = ga.per_id
+            
         ");
         return $gymAss;
     }
     
     public static function find($id){
         $gymAss = DB::select("
-        SELECT 
-        ga.gym_ass_id, 
-        ga.gym_ass_date,
-        ga.gym_ass_start,
-
-        pe.per_name,
-        pe.per_document,
-        pe.per_lastname,
-        
-        pe.doc_typ_id,
-        pe.doc_typ_name
-    FROM 
-        gym_assistances ga
-    INNER JOIN 
-        persons pe ON pe.per_id = ga.per_id
+       SELECT 
+                ga.gym_ass_id, 
+                ga.gym_ass_date,
+                ga.gym_ass_start,
+                pe.per_name,
+                pe.per_document,
+                pe.per_lastname,
+                pe.doc_typ_id,
+                pe.doc_typ_name,
+                pe.use_mail
+            FROM 
+                gym_assistances ga
+            INNER JOIN 
+                ViewPersons pe ON pe.per_id = ga.per_id
         WHERE ga.gym_ass_id = $id
     ");
     return $gymAss[0];
     }
+    public static function selectByDate($date) {
+        $gymAss = DB::select("
+            SELECT 
+                ga.gym_ass_id, 
+                ga.gym_ass_date,
+                ga.gym_ass_start,
+                pe.per_name,
+                pe.per_document,
+                pe.per_lastname,
+                pe.doc_typ_id,
+                pe.doc_typ_name,
+                pe.use_mail
+            FROM 
+                gym_assistances ga
+            INNER JOIN 
+                ViewPersons pe ON pe.per_id = ga.per_id
+            WHERE
+                ga.gym_ass_date = ?
+        ", [$date]);
     
-
+        return $gymAss;
+    }
+    
+    
 
 }
