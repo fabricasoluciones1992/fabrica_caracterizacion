@@ -132,16 +132,12 @@ class Controller extends BaseController
             ],200);
         }
     }
-    public static function findByDocument($id, $docTypeId){
-        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = '$id' AND doc_typ_id = $docTypeId");
-        return $persons;
-    }
+     
 
     public function filtredforDocument($id, $docTypeId)
 {
     try {
-        //===== QUE SE SUPONE QUE ENTONCES HACE ESTA FUNCION??=====
-        $persons = Controller::findByDocument($id, $docTypeId);
+        $persons =  DB::select("SELECT * FROM ViewPersons WHERE per_document = '$id' AND doc_typ_id = $docTypeId");
 
         return response()->json([
             'status' => true,

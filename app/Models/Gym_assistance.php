@@ -32,6 +32,8 @@ class Gym_assistance extends Model
                 gym_assistances ga
             INNER JOIN 
                 ViewPersons pe ON pe.per_id = ga.per_id
+            ORDER BY gym_ass_date DESC
+
             
         ");
         return $gymAss;

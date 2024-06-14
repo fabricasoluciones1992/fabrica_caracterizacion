@@ -33,6 +33,7 @@ class ConsultationController extends Controller
 
         FROM consultations
         INNER JOIN ViewPersons ON consultations.per_id = ViewPersons.per_id
+        ORDER BY cons_date DESC
     ");        return response()->json([
             'status' => true,
             'data' => $consultations
@@ -41,7 +42,6 @@ class ConsultationController extends Controller
     public function store(Request $request)
     {
         if ($request->acc_administrator == 1) {
-            date_default_timezone_set('America/Bogota');
             $rules = [
 
                 'cons_reason' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s\-,.;\/]+$/',
@@ -56,6 +56,16 @@ class ConsultationController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             }else{
+                $isEnrolled = DB::table('gym_inscriptions')
+                            ->where('per_id', $request->per_id)
+                            ->exists();
+            
+                if (!$isEnrolled) {
+                    return response()->json([
+                        'status' => False,
+                        'message' => 'User is not enrolled in the gym. Cannot register assistance.'
+                    ], 400);
+                }
                 $currentDate = now()->toDateString();
                 $request->merge(['cons_date' => $currentDate]);
                 $consultation = new Consultation($request->input());
