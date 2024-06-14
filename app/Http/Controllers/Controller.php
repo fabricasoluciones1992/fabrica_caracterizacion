@@ -27,8 +27,8 @@ class Controller extends BaseController
 //filtro rango de fechas
 
 
-    public function student($id) {
-        $students = DB::select("SELECT * FROM viewStudents WHERE per_document = $id");
+    public function student($id,$docTypeId) {
+        $students = DB::select("SELECT * FROM viewStudents WHERE per_document = '$id' AND doc_typ_id = $docTypeId");
         return $students;
     }
     public function login(Request $request){

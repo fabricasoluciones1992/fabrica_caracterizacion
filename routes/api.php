@@ -61,7 +61,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/student/activities/{code}', [Controller::class, 'viewStudentBie'])->name('student.viewStudentBie');
     Route::get('/student/medical/{code}', [Controller::class, 'viewStudentMed'])->name('student.viewStudentMed');
     Route::get('/student/solicitudes/{code}', [Controller::class, 'viewStudentSol'])->name('student.viewStudentSol');
-    Route::get('/students/{id}', [Controller::class, 'student'])->name('studentById');
+    Route::get('/students/{id}/{docTypeId}', [Controller::class, 'student'])->name('studentById');
     Route::post('upload/assistances', [AssistancesController::class, 'uploadFile'])->name('upload.assistances');
     Route::resource('gym/assistances', GymAssitancesController::class)->names('gym.assistances')->parameter('', 'gym_assistances');
     Route::resource('gym/inscriptions', GymInscriptionsController::class)->names('gym.inscriptions')->parameter('', 'gym_inscriptions');
