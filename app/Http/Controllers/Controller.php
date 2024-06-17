@@ -151,15 +151,23 @@ class Controller extends BaseController
     }
 }
 
-public function filtredAssistance()
+public function filtredAssistance($id, $docTypeId)
 {
     try {
-        $persons = DB::table('gym_inscriptions')->where('gym_ins_status', '=', '1')->get();
+        $person =  DB::select("SELECT * FROM ViewPersons WHERE per_document = '$id' AND doc_typ_id = $docTypeId");
 
-        return response()->json([
-            'status' => true,
-            'data' => $persons
-        ], 200);
+        $inscription = DB::table('gym_inscriptions')->where('gym_ins_status', '=', '1')->where('per_id', '=', $person[0]->per_id)->get();
+        if ($inscription) {
+            return response()->json([
+                'status' => true,
+                'data' => $person
+            ], 200);
+        }else{
+            return response()->json([
+                'status' => true,
+                'data' => 'User is not enrolled in the gym. Cannot register assistance.'
+            ], 200);
+        }
     } catch (\Throwable $th) {
         return response()->json([
             'status' => false,
