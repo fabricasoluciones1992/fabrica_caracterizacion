@@ -59,9 +59,9 @@ class Gym_assistance extends Model
     ");
     return $gymAss[0];
     }
-    public static function selectByGymAss($date) {
+    public static function selectByGymAss($startDate,$endDate) {
         $gymAss = DB::select("
-            SELECT 
+           SELECT 
                 ga.gym_ass_id, 
                 ga.gym_ass_date,
                 ga.gym_ass_start,
@@ -76,8 +76,8 @@ class Gym_assistance extends Model
             INNER JOIN 
                 ViewPersons pe ON pe.per_id = ga.per_id
             WHERE
-                ga.gym_ass_date = ?
-        ", [$date]);
+                ga.gym_ass_date BETWEEN ? AND ?
+        ", [$startDate,$endDate]);
     
         return $gymAss;
     }
