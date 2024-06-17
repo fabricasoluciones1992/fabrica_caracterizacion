@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('allergies', AllergiesController::class)->names('allergies')->parameter('', 'allergies');
     Route::resource('allergy/histories', AllergyHistoriesController::class)->names('allergy.histories')->parameter('', 'allergy_histories');
     Route::resource('assistances', AssistancesController::class)->names('assistences')->parameter('', 'assistences');
-    Route::get('assistance/filtred', [Controller::class, 'filtredAssistance'])->name('filtredAssistance');
+    Route::get('assistance/filtred/{id}/{docTypeId}', [Controller::class, 'filtredAssistance'])->name('filtredAssistance');
     Route::resource('bienestar/activities/types', BienestarActivityTypesController::class)->names('bienestar.activities.types')->parameter('', 'bienestar_activities_types');
     Route::resource('bienestar/activity', BienestarActivitiesController::class)->names('bienestar.activities')->parameter('', 'bienestar_activities');
     Route::resource('consultation', ConsultationController::class)->names('consultation')->parameter('', 'consultation');
@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('type/solicitudes', SolicitudesTypesController::class)->names('type.solicitudes')->parameter('', 'type_solicitudes');
     Route::get('/documentTypeFilter', [Controller::class, 'docsTypesId'])->name('docs_types_id');
     Route::get('view/employees', [Controller::class, 'viewEmployees'])->name('view_employees');
-    Route::get('FiltredDate/{date}', [GymAssitancesController::class, 'FiltredDate'])->name('FiltredDate');
+    Route::post('FiltredDate', [GymAssitancesController::class, 'FiltredDate'])->name('FiltredDate');
     Route::get('last/Enrollments/{stu_id}', [Controller::class, 'lastEnrollments'])->name('last_Enrollments');
     Route::get('last/Scholarships/{stu_id}', [Controller::class, 'lastScholarships'])->name('last_Scholarships');
 
