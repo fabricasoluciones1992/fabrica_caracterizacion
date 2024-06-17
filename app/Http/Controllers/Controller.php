@@ -157,7 +157,7 @@ public function filtredAssistance($id, $docTypeId)
         $person =  DB::select("SELECT * FROM ViewPersons WHERE per_document = '$id' AND doc_typ_id = $docTypeId");
 
         $inscription = DB::table('gym_inscriptions')->where('gym_ins_status', '=', '1')->where('per_id', '=', $person[0]->per_id)->get();
-        if ($inscription) {
+        if ($inscription != '[]') {
             return response()->json([
                 'status' => true,
                 'data' => $person

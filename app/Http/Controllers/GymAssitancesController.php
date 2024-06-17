@@ -23,7 +23,7 @@ public function store(Request $request)
 {
     if ($request->acc_administrator == 1) {
         $rules = [
-            'per_id' => 'required|exists:persons,per_id|integer'
+            'per_id' => 'required|exists:persons|integer'
         ];
         
         $validator = Validator::make($request->input(), $rules);
@@ -157,6 +157,31 @@ public function FiltredDate($date)
             'message' => "Error occurred while found elements"
         ], 500);
     }
+    
+}
+public function FiltredDateRange(Request $request)
+{
+        $rules = [
+            'start_date' => 'required|date|before_or_equal:end_date',
+            'end_date' => 'required|date|after_or_equal:start_date'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->all()
+            ], 400);
+        }
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $gymAss = Gym_assistance::selectByDateRange($startDate,$endDate);
+
+        return response()->json([
+            'status' => true,
+            'data' => $gymAss
+        ], 200);
+    
     
 }
 
