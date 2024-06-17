@@ -57,14 +57,14 @@ class ConsultationController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             }else{
-                $isEnrolled = DB::table('gym_inscriptions')
+                $isEnrolled = DB::table('enfermeria_inscriptions')
                             ->where('per_id', $request->per_id)
                             ->exists();
             
                 if (!$isEnrolled) {
                     return response()->json([
                         'status' => False,
-                        'message' => 'User is not enrolled in the gym. Cannot register assistance.'
+                        'message' => 'User is not enrolled in the Enfermeria. Cannot register assistance.'
                     ], 400);
                 }
                 $currentDate = now()->toDateString();
