@@ -64,18 +64,10 @@ public function store(Request $request)
         $currentTime = now()->format('H:i');
         $activityDate = $request->bie_act_date;
         $activityHour = $request->bie_act_hour;
-
-        if ($activityDate == $currentDate && $activityHour < $currentTime && ($activityHour < '08:00' || $activityHour > '19:00')) {
+        if ($activityDate == $currentDate && $activityHour < $currentTime || ($activityHour < '08:00' || $activityHour > '19:00')) {
             return response()->json([
                 'status' => false,
-                'message' => 'The activity hour must be after the current time for today.'
-            ]);
-        }
-
-        if ($activityDate != $currentDate && ($activityHour < '08:00' || $activityHour > '19:00')) {
-            return response()->json([
-                'status' => false,
-                'message' => 'The activity hour must be between 08:00 and 19:00 for dates other than today.'
+                'message' => 'the time and date of the activity are not allowed .'
             ]);
         }
 
@@ -190,17 +182,10 @@ public function update(Request $request, $id)
                 $activityDate = $request->bie_act_date;
                 $activityHour = $request->bie_act_hour;
         
-                if ($activityDate == $currentDate && $activityHour < $currentTime && ($activityHour < '08:00' || $activityHour > '19:00')) {//changes
+                if ($activityDate == $currentDate && $activityHour < $currentTime || ($activityHour < '08:00' || $activityHour > '19:00')) {
                     return response()->json([
                         'status' => false,
                         'message' => 'The activity hour must be after the current time for today.'
-                    ]);
-                }
-        
-                if ($activityDate != $currentDate && ($activityHour < '08:00' || $activityHour > '19:00')) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'The activity hour must be between 08:00 and 19:00 for dates other than today.'
                     ]);
                 }
                 $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;

@@ -161,6 +161,7 @@ public function FiltredDate($date)
 }
 public function FiltredDateRange(Request $request)
 {
+    if ($request->acc_administrator == 1) {
         $rules = [
             'start_date' => 'required|date|before_or_equal:end_date',
             'end_date' => 'required|date|after_or_equal:start_date'
@@ -176,7 +177,12 @@ public function FiltredDateRange(Request $request)
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $gymAss = Gym_assistance::selectByDateRange($startDate,$endDate);
-
+    } else {
+        return response()->json([
+            'status' => False,
+            'message' => 'Access denied. This action can only be performed by active administrators.'
+        ], 403); 
+    }
         return response()->json([
             'status' => true,
             'data' => $gymAss
