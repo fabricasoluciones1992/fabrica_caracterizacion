@@ -132,7 +132,7 @@ class Controller extends BaseController
             ],200);
         }
     }
-     
+
 
     public function filtredforDocument($id, $docTypeId)
 {
@@ -193,10 +193,17 @@ public function reports(Request $request){
 }
 public function reportsIndi(Request $request){
     $data = Reports::select($request);
-    return response()->json([
-        'status' => true,
-        'data' => $data
-    ]);
+    if ($data == '[]') {
+        return response()->json([
+            'status' => false,
+            'data' => "No data found"
+        ]);
+    }else{
+        return response()->json([
+            'status' => true,
+            'data' => $data
+        ]);
+    }
 }
 public function reportStudent(Request $request){
     $data = Reports::reportStudent($request);
