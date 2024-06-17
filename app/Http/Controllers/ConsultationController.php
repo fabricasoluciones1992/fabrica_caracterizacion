@@ -65,7 +65,7 @@ class ConsultationController extends Controller
                     return response()->json([
                         'status' => False,
                         'message' => 'User is not enrolled in the Enfermeria. Cannot register assistance.'
-                    ], 400);
+                    ]);
                 }
                 $currentDate = now()->toDateString();
                 $request->merge(['cons_date' => $currentDate]);
@@ -108,7 +108,6 @@ class ConsultationController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->acc_administrator == 1) {
-            date_default_timezone_set('America/Bogota');
             $consultation = Consultation::find($id);
             if ($consultation == null) {
                 return response()->json([

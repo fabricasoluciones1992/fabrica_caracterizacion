@@ -40,7 +40,20 @@ class EnfermeriaInscriptionsController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             }else{
+                $existingEf = DB::table('enfermeria_inscriptions')
+                ->where('enf_ins_weight', $request->enf_ins_weight)
+                ->where('enf_ins_height', $request->enf_ins_height)
+                ->where('enf_ins_imc', $request->enf_ins_imc)
+                ->where('enf_ins_vaccination', $request->enf_ins_vaccination)
+                ->where('per_id', $request->per_id)
+                ->first();
 
+            if ($existingEf) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The student is already registered in the enfermeria'
+                ]);
+            }
 
                 $enfIn = new enfermeria_inscription($request->input());
                 $enfIn->save();
