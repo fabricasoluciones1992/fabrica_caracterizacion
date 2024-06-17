@@ -151,7 +151,7 @@ class Controller extends BaseController
     }
 }
 
-public function filtredAssistance($id, $docTypeId)
+public function filtredAssistance()
 {
     try {
         $persons = DB::table('gym_inscriptions')->where('gym_ins_status', '=', '1')->get();

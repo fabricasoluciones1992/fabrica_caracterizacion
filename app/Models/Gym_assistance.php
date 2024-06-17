@@ -59,7 +59,7 @@ class Gym_assistance extends Model
     ");
     return $gymAss[0];
     }
-    public static function selectByDate($date) {
+    public static function selectByGymAss($date) {
         $gymAss = DB::select("
             SELECT 
                 ga.gym_ass_id, 
