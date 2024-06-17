@@ -225,7 +225,13 @@ class Reports extends Model
         switch ($data->option) {
             case "1":
                 $student = db::table('students')->where('per_id', '=', $data->data)->first();
+                if($student == null){
+                    return "[]";
+                }
                 $lastStudent = Controller::lastEnrollments($student->stu_id);
+                if($lastStudent == null){
+                    return "[]";
+                }
                 $students = DB::table('viewAssitances as vs')
                 ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
                 ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
@@ -252,7 +258,13 @@ class Reports extends Model
             return $students;
             case "2":
                 $student = db::table('students')->where('per_id', '=', $data->data)->first();
+                if($student == null){
+                    return "[]";
+                }
                 $lastStudent = Controller::lastEnrollments($student->stu_id);
+                if($lastStudent == null){
+                    return "[]";
+                }
                 $students = DB::table('viewAssitances as vs')
                 ->join('viewEnrollments as ve', 'vs.per_id', '=', 've.per_id')
                 ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
@@ -275,7 +287,13 @@ class Reports extends Model
                 break;
             case "3":
                 $student = db::table('students')->where('per_id', '=', $data->data)->first();
+                if($student == null){
+                    return "[]";
+                }
                 $lastStudent = Controller::lastEnrollments($student->stu_id);
+                if($lastStudent == null){
+                    return "[]";
+                }
                 $students = DB::table('viewPermanences as vp')
                 ->join('viewEnrollments as ve', 've.per_id', '=', 'vp.per_id')
                 ->join('students as st', 'st.per_id', '=', 'vp.per_id')
@@ -302,7 +320,13 @@ class Reports extends Model
                 break;
             case "4":
                 $student = db::table('students')->where('per_id', '=', $data->data)->first();
+                if($student == null){
+                    return "[]";
+                }
                 $lastStudent = Controller::lastEnrollments($student->stu_id);
+                if($lastStudent == null){
+                    return "[]";
+                }
                 $students = DB::table('viewPermanences as vp')
                     ->join('viewEnrollments as ve', 've.per_id', '=', 'vp.per_id')
                     ->join('students as st', 'st.per_id', '=', 'vp.per_id')
@@ -327,7 +351,13 @@ class Reports extends Model
                 break;
             case "5":
                 $student = db::table('students')->where('per_id', '=', $data->data)->first();
+                if($student == null){
+                    return "[]";
+                }
                 $lastStudent = Controller::lastEnrollments($student->stu_id);
+                if($lastStudent == null){
+                    return "[]";
+                }
                 $students = DB::table('gym_assistances as gy')
                 ->join('viewEnrollments as ve', 'gy.per_id', '=', 've.per_id')
                 ->join('promotions as pr', 've.pro_id', '=', 'pr.pro_id')
@@ -350,7 +380,13 @@ class Reports extends Model
                 break;
             case "6":
                 $student = db::table('students')->where('per_id', '=', $data->data)->first();
+                if($student == null){
+                    return "[]";
+                }
                 $lastStudent = Controller::lastEnrollments($student->stu_id);
+                if($lastStudent == null){
+                    return "[]";
+                }
                 $students = DB::table('viewStudents as vt')
                     ->join('consultations as co', 'vt.per_id', '=', 'co.per_id')
                     ->join('viewEnrollments as ve', 'vt.per_id', '=', 've.per_id')
