@@ -25,11 +25,11 @@ class EnfermeriaInscriptionsController extends Controller
         if ($request->acc_administrator == 1) {
             $rules = [
 
-                'enf_ins_weight' => 'required|numeric|min:0',
-                'enf_ins_height' => 'required|numeric|min:0',
+                'enf_ins_weight' => 'required|numeric|min:0|max:200',
+                'enf_ins_height' => 'required|numeric|min:0|max:200',
                 'enf_ins_imc' => 'required|numeric|min:0',
                 'enf_ins_vaccination' => 'required|string|min:1|max:100|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
-                'per_id'=> 'required|exists:persons|integer',
+                'per_id'=> 'required|unique:persons|integer',
 
             ];
 
@@ -40,20 +40,7 @@ class EnfermeriaInscriptionsController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             }else{
-                $existingEf = DB::table('enfermeria_inscriptions')
-                ->where('enf_ins_weight', $request->enf_ins_weight)
-                ->where('enf_ins_height', $request->enf_ins_height)
-                ->where('enf_ins_imc', $request->enf_ins_imc)
-                ->where('enf_ins_vaccination', $request->enf_ins_vaccination)
-                ->where('per_id', $request->per_id)
-                ->first();
-
-            if ($existingEf) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'The student is already registered in the enfermeria'
-                ]);
-            }
+                
 
                 $enfIn = new enfermeria_inscription($request->input());
                 $enfIn->save();
@@ -101,8 +88,8 @@ class EnfermeriaInscriptionsController extends Controller
             } else {
                 $rules = [
 
-                    'enf_ins_weight' => 'required|numeric|min:0',
-                    'enf_ins_height' => 'required|numeric|min:0',
+                    'enf_ins_weight' => 'required|numeric|min:0|max:200',
+                    'enf_ins_height' => 'required|numeric|min:0|max:200',
                     'enf_ins_imc' => 'required|numeric|min:0',
                 'enf_ins_vaccination' => 'required|string|min:1|max:100|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                 'per_id'=>'required|integer'
