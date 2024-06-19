@@ -170,10 +170,11 @@ public function update(Request $request, $id)
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->bie_act_name, 'bienestar_activities', 'bie_act_name', 'bie_act_id', $id);
 
-            if ($validator->fails()||$validate==0) {
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
-                    'status' => false,
-                    'message' => $validator->errors()->all()
+                    'status' => False,
+                    'message' => $msg
                 ]);
             } else {
                             $occupiedQuotas = DB::table('assistances')
