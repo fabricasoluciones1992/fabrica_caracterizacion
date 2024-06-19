@@ -82,7 +82,7 @@ public function store(Request $request)
             return response()->json([
                 'status' => false,
                 'message' => 'A bienestar activity with the same characteristics already exists.'
-            ], 409);
+            ]);
         }
 
         $bienestarActivity = new BienestarActivity($request->input());
@@ -185,7 +185,7 @@ public function update(Request $request, $id)
                 if ($activityDate == $currentDate && $activityHour < $currentTime || ($activityHour < '08:00' || $activityHour > '19:00')) {
                     return response()->json([
                         'status' => false,
-                        'message' => 'The activity hour must be after the current time for today.'
+                        'message' => 'the time and date of the activity are not allowed .'
                     ]);
                 }
                 $bienestarActivity->bie_act_typ_id = $request->bie_act_typ_id;
