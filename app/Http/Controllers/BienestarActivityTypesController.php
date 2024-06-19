@@ -104,10 +104,11 @@ class BienestarActivityTypesController extends Controller
                     $validator = Validator::make($request->input(), $rules);
                     $validate = Controller::validate_exists($request->bie_act_typ_name, 'bienestar_activity_types', 'bie_act_typ_name', 'bie_act_typ_id', $id);
 
-                    if ($validator->fails()||$validate==0) {
+                    if ($validator->fails() || $validate == 0) {
+                        $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                         return response()->json([
                             'status' => False,
-                            'message' => $validator->errors()->all()
+                            'message' => $msg
                         ]);
                     } else {
                         $bienestarActTypes->bie_act_typ_name = $request->bie_act_typ_name;

@@ -99,10 +99,11 @@ class MonetaryStatesController extends Controller
                 $validator = Validator::make($request->input(), $rules);
                 $validate = Controller::validate_exists($request->mon_sta_name, 'monetary_states', 'mon_sta_name', 'mon_sta_id', $id);
 
-                if ($validator->fails()||$validate==0) {
+                if ($validator->fails() || $validate == 0) {
+                    $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                     return response()->json([
                         'status' => False,
-                        'message' => $validator->errors()->all()
+                        'message' => $msg
                     ]);
                 } else {
                     $monState->mon_sta_name = $request->mon_sta_name;

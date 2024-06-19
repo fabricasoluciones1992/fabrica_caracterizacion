@@ -95,10 +95,11 @@ class SolicitudesTypesController extends Controller
                     $validator = Validator::make($request->input(), $rules);
                     $validate = Controller::validate_exists($request->sol_typ_name, 'solicitude_types', 'sol_typ_name', 'sol_typ_id', $id);
 
-                    if ($validator->fails()||$validate==0) {
+                    if ($validator->fails() || $validate == 0) {
+                        $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                         return response()->json([
-                            'status' => false,
-                            'message' => $validator->errors()->all()
+                            'status' => False,
+                            'message' => $msg
                         ]);
                     } else {
                         $solicitudTypes->sol_typ_name = $request->sol_typ_name;

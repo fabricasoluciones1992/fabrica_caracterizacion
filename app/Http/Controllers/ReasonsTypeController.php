@@ -86,17 +86,18 @@ class ReasonsTypeController extends Controller
         if ($request->acc_administrator == 1) {
                 $rules = [
 
-                    'rea_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'rea_typ_name' => 'required|exists:reason_types|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                     'rea_typ_type' => 'required|integer|in:0,1'
 
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 $validate = Controller::validate_exists($request->rea_typ_name, 'reason_types', 'rea_typ_name', 'rea_typ_id', $id);
 
-                if ($validator->fails()||$validate==0) {
+                if ($validator->fails() || $validate == 0) {
+                    $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                     return response()->json([
                         'status' => False,
-                        'message' => $validator->errors()->all()
+                        'message' => $msg
                     ]);
                 }else{
                     $reasont->rea_typ_name = $request->rea_typ_name;

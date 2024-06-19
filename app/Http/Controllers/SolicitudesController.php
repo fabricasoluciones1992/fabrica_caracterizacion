@@ -37,7 +37,19 @@ public function store(Request $request)
                 'status' => False,
                 'message' => $validator->errors()->all()
             ]);
+            
         } else {
+            $existingActivity = Solicitudes::where('rea_typ_id', $request->rea_typ_id)
+            ->where('sol_typ_id', $request->sol_typ_id)
+            ->where('stu_id', $request->stu_id)
+            ->first();
+
+        if ($existingActivity) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Has already been taken.'
+            ]);
+        }
             $solicitud = new solicitudes($request->input());
             $solicitud->sol_date = now()->toDateString(); 
             $solicitud->sol_status = 0;
