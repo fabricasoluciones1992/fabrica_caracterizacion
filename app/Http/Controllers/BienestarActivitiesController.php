@@ -84,6 +84,16 @@ public function store(Request $request)
                 'message' => 'A bienestar activity with the same characteristics already exists.'
             ]);
         }
+                $existsBieActType = BienestarActivity::where('bie_act_name', $request->bie_act_name)
+            ->where('bie_act_typ_id', $request->bie_act_typ_id)
+            ->first();
+
+                if ($existsBieActType) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'An activity with the same name and type already exists.'
+                    ]);
+                }
 
         $bienestarActivity = new BienestarActivity($request->input());
         $bienestarActivity->bie_act_status = 1;
