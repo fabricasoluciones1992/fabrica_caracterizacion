@@ -83,12 +83,11 @@ class AllergiesController extends Controller
         if ($request->acc_administrator == 1) {
                 $rules = [
 
-                    'all_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
+                    'all_name' => 'required|unique:allergies|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                $validate = Controller::validate_exists($request->all_name, 'allergies', 'all_name', 'all_id', $id);
 
-                if ($validator->fails()||$validate==0) {
+                if ($validator->fails()) {
                     return response()->json([
                         'status' => False,
                         'message' => $validator->errors()->all()
