@@ -447,7 +447,7 @@ class Reports extends Model
             $info = Reports::select($data);
            switch ($i) {
             case 1:
-                $information['assistances'] = $info;
+                $information['Asistencias'] = $info;
                 break;
             case 2:
                 $information['Conversatorios'] = $info;
@@ -456,7 +456,7 @@ class Reports extends Model
                 $information['Orientacion'] = $info;
                 break;
             case 4:
-                $information['Permaniencias'] = $info;
+                $information['Permanencias'] = $info;
                 break;
             case 5:
                 $information['Gimnasio'] = $info;
