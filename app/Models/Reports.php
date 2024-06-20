@@ -456,7 +456,7 @@ class Reports extends Model
                 $information['Orientacion'] = $info;
                 break;
             case 4:
-                $information['Permaniencias'] = $info;
+                $information['Permanencias'] = $info;
                 break;
             case 5:
                 $information['Gimnasio'] = $info;
