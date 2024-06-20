@@ -65,7 +65,7 @@ class BienestarActivityTypesController extends Controller
                 return response()->json([
                     'status' => false,
                     'data' => ['message' => 'The requested bienestar activity type was not found']
-                ],400);
+                ]);
             } else {
                 foreach ($bienestarActType as $activity) {
                     $activity->quotas = BienestarActivity::countQuotas($activity->bie_act_id);
