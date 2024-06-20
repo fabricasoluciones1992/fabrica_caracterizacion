@@ -88,8 +88,8 @@ class EnfermeriaInscriptionsController extends Controller
             } else {
                 $rules = [
 
-                    'enf_ins_weight' => 'required|numeric|min:0|max:200',
-                    'enf_ins_height' => 'required|numeric|min:0|max:200',
+                    'enf_ins_weight' => 'required|numeric|min:0|max:250',
+                    'enf_ins_height' => 'required|numeric|min:0|max:250',
                     'enf_ins_imc' => 'required|numeric|min:0',
                 'enf_ins_vaccination' => 'required|string|min:1|max:100|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
                 'per_id'=>'required|integer'

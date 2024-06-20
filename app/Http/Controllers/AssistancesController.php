@@ -7,7 +7,7 @@ use App\Models\BienestarActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Contracts\Validation\Rule;
 class AssistancesController extends Controller
 {
     public function index()
@@ -256,7 +256,7 @@ class AssistancesController extends Controller
                 $document = trim($row[0]);
 
                 // Verificar si el documento es un número válido
-                if (!is_numeric($document) || intval($document) <= 0) {
+                if (preg_match('/[!@#$%^&*(),.?":{}|<>]/', $row[0])) {
                     return response()->json([
                         'status' => false,
                         'message' => "El archivo tiene datos invalidos."
