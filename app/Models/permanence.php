@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class permanence extends Model
+class Permanence extends Model
 {
     use HasFactory;
     protected $primaryKey = "perm_id";
@@ -21,23 +21,23 @@ class permanence extends Model
     public $timestamps = false;
     public static function select()
 {
-    $permanences = DB::select("SELECT * FROM viewPermanences ORDER BY perm_id DESC");
+    $Permanences = DB::select("SELECT * FROM viewPermanences ORDER BY perm_id DESC");
 
-    return $permanences;
+    return $Permanences;
 }
 
     public static function search($id){
-        $permanence = DB::select("SELECT * FROM viewPermanences WHERE perm_id = $id");
-        return $permanence[0];
+        $Permanence = DB::select("SELECT * FROM viewPermanences WHERE perm_id = $id");
+        return $Permanence[0];
     }
    
     public static function findBySolTyp($id,$sol_typ_name){
-        $permanence = DB::select("SELECT * FROM viewPermanences WHERE sol_typ_id = ? AND sol_typ_name = ?",[$id,$sol_typ_name]);
-        return $permanence;
+        $Permanence = DB::select("SELECT * FROM viewPermanences WHERE sol_typ_id = ? AND sol_typ_name = ?",[$id,$sol_typ_name]);
+        return $Permanence;
     }
-    public static function findByPsol($id){//
-        $permanence = DB::select("SELECT * FROM viewPermanences WHERE per_document = '$id'");
-        return $permanence;
+    public static function findByPsol($id){
+        $Permanence = DB::select("SELECT * FROM viewPermanences WHERE per_document = '$id'");
+        return $Permanence;
     }
 
 }

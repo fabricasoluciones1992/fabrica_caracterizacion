@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\enfermeria_inscription;
+use App\Models\Enfermeria_inscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +13,7 @@ class EnfermeriaInscriptionsController extends Controller
 {
     public function index()
     {
-        $enfIns = enfermeria_inscription::select();
+        $enfIns = Enfermeria_inscription::select();
         return response()->json([
             'status' => true,
             'data' => $enfIns
@@ -42,7 +42,7 @@ class EnfermeriaInscriptionsController extends Controller
             }else{
                 
 
-                $enfIn = new enfermeria_inscription($request->input());
+                $enfIn = new Enfermeria_inscription($request->input());
                 $enfIn->save();
                 Controller::NewRegisterTrigger("An insertion was made in the enfermeria inscriptions table'$enfIn->id'",3,$request->use_id);
 
@@ -61,7 +61,7 @@ class EnfermeriaInscriptionsController extends Controller
 
     public function show($id)
     {
-        $enfIn = enfermeria_inscription::search($id);
+        $enfIn = Enfermeria_inscription::search($id);
 
         if ($enfIn == null) {
             return response()->json([
@@ -79,7 +79,7 @@ class EnfermeriaInscriptionsController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->acc_administrator == 1) {
-            $enfIn = enfermeria_inscription::find($id);
+            $enfIn = Enfermeria_inscription::find($id);
             if ($enfIn == null) {
                 return response()->json([
                     'status' => false,
@@ -123,13 +123,13 @@ class EnfermeriaInscriptionsController extends Controller
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
+                'message' => 'Access denied. This Action can only be performed by active administrators.'
             ], 403);
         }
     }
     public function lastDisease($id)
     {
-        $lastDisease = enfermeria_inscription::lastDisease($id);
+        $lastDisease = Enfermeria_inscription::lastDisease($id);
 
         return response()->json([
             'status' => true,

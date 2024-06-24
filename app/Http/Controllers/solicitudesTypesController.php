@@ -11,10 +11,10 @@ class SolicitudesTypesController extends Controller
 {
     public function index()
     {        
-            $solicitudesTypes = SolicitudeType::all();
+            $SolicitudesTypes = SolicitudeType::all();
             return response()->json([
                 'status' => true,
-                'data' => $solicitudesTypes
+                'data' => $SolicitudesTypes
             ], 200);
         
     }
@@ -37,7 +37,7 @@ class SolicitudesTypesController extends Controller
                     $solicitudTypes = new SolicitudeType($request->input());
                     $solicitudTypes->sol_typ_status=1;
                     $solicitudTypes->save();
-                    Controller::NewRegisterTrigger("An insertion was made in the solicitudes types table'$solicitudTypes->sol_typ_id'", 3, $request->use_id);
+                    Controller::NewRegisterTrigger("An insertion was made in the Solicitudes types table'$solicitudTypes->sol_typ_id'", 3, $request->use_id);
                    
                     return response()->json([
                         'status' => true,
@@ -48,7 +48,7 @@ class SolicitudesTypesController extends Controller
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Access denied. This action can only be performed by active administrators.'
+                    'message' => 'Access denied. This Action can only be performed by active administrators.'
                 ], 403); 
             }
         
@@ -63,7 +63,7 @@ class SolicitudesTypesController extends Controller
             if ($solicitudTypes == null) {
                 return response()->json([
                     'status' => false,
-                    'data' => ['message' => 'The requested solicitudes types was not found']
+                    'data' => ['message' => 'The requested Solicitudes types was not found']
                 ], 400);
             } else {
                 
@@ -84,7 +84,7 @@ class SolicitudesTypesController extends Controller
                 if ($solicitudTypes == null) {
                     return response()->json([
                         'status' => false,
-                        'data' => ['message' => 'The requested solicitudes types was not found']
+                        'data' => ['message' => 'The requested Solicitudes types was not found']
                     ], 400);
                 } else {
 
@@ -104,7 +104,7 @@ class SolicitudesTypesController extends Controller
                     } else {
                         $solicitudTypes->sol_typ_name = $request->sol_typ_name;
                         $solicitudTypes->save();
-                        Controller::NewRegisterTrigger("An update was made in the solicitudes types table", 4,$request->use_id);
+                        Controller::NewRegisterTrigger("An update was made in the Solicitudes types table", 4,$request->use_id);
                         return response()->json([
                             'status' => true,
                             'message' => "The solicitud '".$solicitudTypes->sol_typ_name."' has been updated successfully."
@@ -114,7 +114,7 @@ class SolicitudesTypesController extends Controller
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Access denied. This action can only be performed by active administrators.'
+                    'message' => 'Access denied. This Action can only be performed by active administrators.'
                 ], 403); 
             }
         
@@ -128,10 +128,10 @@ class SolicitudesTypesController extends Controller
         $newST=($solicitudTypes->sol_typ_status ==1)?0:1;
                 $solicitudTypes->sol_typ_status = $newST;
                 $solicitudTypes->save();
-                Controller::NewRegisterTrigger("An change status was made in the solicitudes types table",2,$request->use_id);
+                Controller::NewRegisterTrigger("An change status was made in the Solicitudes types table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested solicitudes types has been change status successfully'
+                    'message' => 'The requested Solicitudes types has been change status successfully'
                 ]);
             
         

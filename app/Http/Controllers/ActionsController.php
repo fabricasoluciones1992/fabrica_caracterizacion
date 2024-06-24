@@ -12,12 +12,12 @@ class ActionsController extends Controller
 {
     public function index()
     {
-        $actions = action::all();
+        $Actions = Action::all();
 
 
         return response()->json([
             'status' => true,
-            'data' => $actions
+            'data' => $Actions
         ], 200);
     }
 
@@ -42,21 +42,21 @@ class ActionsController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             } else {
-                $action = new Action($request->input());
-                $action->act_status = 1;
-                $action->save();
+                $Action = new Action($request->input());
+                $Action->act_status = 1;
+                $Action->save();
                 Controller::NewRegisterTrigger("An insertion was made in the Actions table ", 3, $request->use_id);
-                // $id = $action->act_id;
+                // $id = $Action->act_id;
                 // $bienestar_news=ActionsController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
-                    'message' => "The Action type " . $action->act_name . " has been successfully created.",
+                    'message' => "The Action type " . $Action->act_name . " has been successfully created.",
                 ], 200);
             }
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
+                'message' => 'Access denied. This Action can only be performed by active administrators.'
             ], 403);
         }
 
@@ -67,9 +67,9 @@ class ActionsController extends Controller
     public function show($id)
     {
 
-        $action = action::find($id);
+        $Action = Action::find($id);
 
-        if ($action == null) {
+        if ($Action == null) {
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'The requested Action was not found']
@@ -78,7 +78,7 @@ class ActionsController extends Controller
 
             return response()->json([
                 'status' => true,
-                'data' => $action
+                'data' => $Action
             ]);
         }
 
@@ -86,7 +86,7 @@ class ActionsController extends Controller
     public function update(Request $request, $id)
     {
 
-        $action = action::find($id);
+        $Action = Action::find($id);
         if ($request->acc_administrator == 1) {
             $rules = [
 
@@ -101,30 +101,30 @@ class ActionsController extends Controller
                     'message' => $msg
                 ]);
             } else {
-                $action->act_name = $request->act_name;
-                $action->save();
-                Controller::NewRegisterTrigger("An update was made in the actions table", 4, $request->use_id);
+                $Action->act_name = $request->act_name;
+                $Action->save();
+                Controller::NewRegisterTrigger("An update was made in the Actions table", 4, $request->use_id);
 
                 return response()->json([
                     'status' => True,
-                    'data' => "The Action " . $action->act_name . " has been successfully updated."
+                    'data' => "The Action " . $Action->act_name . " has been successfully updated."
                 ], 200);
             }
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
+                'message' => 'Access denied. This Action can only be performed by active administrators.'
             ], 403);
         }
     }
 
     public function destroy(Request $request, $id)
     {
-        $action = action::find($id);
-        $newAction = ($action->act_status == 1) ? 0 : 1;
-        $action->act_status = $newAction;
-        $action->save();
-        Controller::NewRegisterTrigger("An changes status was made in the actions table", 2, $request->use_id);
+        $Action = Action::find($id);
+        $newAction = ($Action->act_status == 1) ? 0 : 1;
+        $Action->act_status = $newAction;
+        $Action->save();
+        Controller::NewRegisterTrigger("An changes status was made in the Actions table", 2, $request->use_id);
         return response()->json([
             'status' => True,
             'message' => 'The requested Action has been disabled successfully'

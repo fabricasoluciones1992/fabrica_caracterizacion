@@ -2,7 +2,7 @@
  
 namespace App\Http\Controllers;
  
-use App\Models\solicitudes;
+use App\Models\Solicitudes;
 
 use Facade\IgnitionContracts\Solution;
 use Illuminate\Http\Request;
@@ -13,11 +13,11 @@ class SolicitudesController extends Controller
 {
     public function index()
 {
-    $solicitudes = Solicitudes::select();
+    $Solicitudes = Solicitudes::select();
     return response()->json([
         'status' => true,
         'data' => [
-            'message' => $solicitudes,
+            'message' => $Solicitudes,
         ]
     ], 200);
 }
@@ -50,11 +50,11 @@ public function store(Request $request)
                 'message' => 'Has already been taken.'
             ]);
         }
-            $solicitud = new solicitudes($request->input());
+            $solicitud = new Solicitudes($request->input());
             $solicitud->sol_date = now()->toDateString(); 
             $solicitud->sol_status = 0;
             $solicitud->save();
-            Controller::NewRegisterTrigger("An insertion was made in the solicitudes table '$solicitud->sol_id'", 3, $request->use_id);
+            Controller::NewRegisterTrigger("An insertion was made in the Solicitudes table '$solicitud->sol_id'", 3, $request->use_id);
 
             return response()->json([
                 'status' => True,
@@ -89,7 +89,7 @@ public function show($id)
     public function update(Request $request, $id)
     { 
         if ($request->acc_administrator == 1) {
-            $solicitude = solicitudes::find($id);
+            $solicitude = Solicitudes::find($id);
             if ($solicitude == null) {
                 return response()->json([
                     'status' => false,
@@ -116,7 +116,7 @@ public function show($id)
                     $solicitude->sol_typ_id = $request->sol_typ_id;
                     $solicitude->stu_id = $request->stu_id;
                     $solicitude->save();
-                    Controller::NewRegisterTrigger("An update was made in the solicitudes table",4,$request->use_id);
+                    Controller::NewRegisterTrigger("An update was made in the Solicitudes table",4,$request->use_id);
  
                     return response()->json([
                     'status' => True,
@@ -127,21 +127,21 @@ public function show($id)
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Access denied. This action can only be performed by active administrators.'
+                'message' => 'Access denied. This Action can only be performed by active administrators.'
             ], 403);
         }
    
 }
     public function destroy(Request $request,$id)
     {
-        $solicitudes = solicitudes::find($id);
-        $newSol=($solicitudes->sol_status == 0) ? 3 : 0;
-                $solicitudes->sol_status = $newSol;
-                $solicitudes->save();
-                Controller::NewRegisterTrigger("An change status was made in the solicitudes table",2,$request->use_id);
+        $Solicitudes = Solicitudes::find($id);
+        $newSol=($Solicitudes->sol_status == 0) ? 3 : 0;
+                $Solicitudes->sol_status = $newSol;
+                $Solicitudes->save();
+                Controller::NewRegisterTrigger("An change status was made in the Solicitudes table",2,$request->use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => 'The requested solicitudes has been change status successfully'
+                    'message' => 'The requested Solicitudes has been change status successfully'
                 ]);
             
     }
@@ -149,10 +149,10 @@ public function show($id)
     {
         try {
             
-            $solicitudes = ($column == 'sol_date') ? DB::table('ViewSolicitudes')->OrderBy($column, 'DESC')->where($column, 'like', '%'.$data.'%')->take(100)->get() : DB::table('ViewSolicitudes')->OrderBy($column, 'DESC')->where($column, '=', $data)->take(100)->get();
+            $Solicitudes = ($column == 'sol_date') ? DB::table('ViewSolicitudes')->OrderBy($column, 'DESC')->where($column, 'like', '%'.$data.'%')->take(100)->get() : DB::table('ViewSolicitudes')->OrderBy($column, 'DESC')->where($column, '=', $data)->take(100)->get();
             return response()->json([
                'status' => true,
-                'data' => $solicitudes
+                'data' => $Solicitudes
             ],200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -164,12 +164,12 @@ public function show($id)
 public function filtredPesolicitud($id)
 {
     try {
-        $solicitudes = solicitudes::findBysol($id);
+        $Solicitudes = Solicitudes::findBysol($id);
         
         
         return response()->json([
             'status' => true,
-            'data' => $solicitudes
+            'data' => $Solicitudes
         ], 200);
     } catch (\Throwable $th) {
         return response()->json([
@@ -182,12 +182,12 @@ public function filtredPesolicitud($id)
 public function filtredStatusSol($id)
 {
     try {
-        $solicitudes = solicitudes::findBystatus($id);
+        $Solicitudes = Solicitudes::findBystatus($id);
         
         
         return response()->json([
             'status' => true,
-            'data' => $solicitudes
+            'data' => $Solicitudes
         ], 200);
     } catch (\Throwable $th) {
         return response()->json([
@@ -201,14 +201,14 @@ public function filtreduser($id, $rea_typ_type = null)
 {
     try {
         if ($rea_typ_type !== null) {
-            $solicitudes = solicitudes::findByUse($id, $rea_typ_type);
+            $Solicitudes = Solicitudes::findByUse($id, $rea_typ_type);
         } else {
-            $solicitudes = solicitudes::findByUse($id);
+            $Solicitudes = Solicitudes::findByUse($id);
         }
         
         return response()->json([
             'status' => true,
-            'data' => $solicitudes
+            'data' => $Solicitudes
         ], 200);
     } catch (\Throwable $th) {
         return response()->json([
