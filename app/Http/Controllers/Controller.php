@@ -32,7 +32,7 @@ class Controller extends BaseController
         return $students;
     }
     public function login(Request $request){
-        $response = Http::post('10.10.1.123/fabrica_general/public/index.php/api', [
+        $response = Http::post('10.10.1.123/fabrica_general/public/index.php/api/login/2', [
             "use_mail" => $request->use_mail,
             "use_password" => $request->use_password,
         ]);
