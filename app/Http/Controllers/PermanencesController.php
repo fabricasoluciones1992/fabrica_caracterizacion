@@ -98,13 +98,14 @@ class PermanencesController extends Controller
             } else {
                 $rules = [
 
-                    'emp_id' =>'required|exists:employees|integer|min:1',
+                    'emp_id' =>'required|integer|min:1',
                     'perm_description' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü\s\-,.;¿?:()\/]+$/',
-                    'sol_id' =>'required|exists:solicitudes|integer|min:1',
-                    'act_id' =>'required|exists:actions|integer|min:1',
+                    'sol_id' =>'required|integer|min:1',
+                    'act_id' =>'required|integer|min:1',
                     'perm_status'=>'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u'
                 ];
                 $validator = Validator::make($request->input(), $rules);
+                
                 if ($validator->fails()) {
                     return response()->json([
                         'status' => False,

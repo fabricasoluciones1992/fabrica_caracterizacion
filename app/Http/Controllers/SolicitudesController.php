@@ -99,9 +99,9 @@ public function show($id)
                 $rules = [
 
                     'sol_status'=> 'required|integer',
-                    'rea_typ_id' =>'required|exists:reason_types|integer',
-                    'sol_typ_id' =>'required|exists:solicitude_types|integer',
-                    'stu_id' =>'required|exists:students|integer'
+                    'rea_typ_id' =>'required|integer',
+                    'sol_typ_id' =>'required|integer',
+                    'stu_id' =>'required|integer'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
