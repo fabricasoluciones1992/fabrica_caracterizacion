@@ -64,10 +64,10 @@ class Enfermeria_inscription extends Model
 
     public static function search($id)
     {
-        $enfIns = DB::select("SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname, 
+        $enfIns = DB::select("SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname
         FROM enfermeria_inscriptions ef
         INNER JOIN ViewPersons pe ON pe.per_id = ef.per_id
-        WHERE enf_ins_id=$id");
+        WHERE enf_ins_id = $id");
         foreach ($enfIns as $enfIn) {
             $imc = $enfIn->enf_ins_imc;
             if ($imc < 18.5) {
