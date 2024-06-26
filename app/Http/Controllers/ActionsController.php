@@ -46,8 +46,6 @@ class ActionsController extends Controller
                 $Action->act_status = 1;
                 $Action->save();
                 Controller::NewRegisterTrigger("An insertion was made in the Actions table ", 3, $request->use_id);
-                // $id = $Action->act_id;
-                // $bienestar_news=ActionsController::Getbienestar_news($id);
                 return response()->json([
                     'status' => True,
                     'message' => "The Action type " . $Action->act_name . " has been successfully created.",
