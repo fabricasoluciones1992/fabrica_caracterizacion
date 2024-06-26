@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 class Action extends Model
 {
     use HasFactory;
-    
     protected $primaryKey = "act_id";
     protected $fillable = [
         'act_name',
