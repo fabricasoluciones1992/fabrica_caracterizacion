@@ -60,8 +60,6 @@ class Enfermeria_inscription extends Model
     return $enfIns;
 }
 
-
-
     public static function search($id)
     {
         $enfIns = DB::select("SELECT ef.enf_ins_id, ef.enf_ins_weight, ef.enf_ins_height, ef.enf_ins_imc, ef.enf_ins_vaccination, pe.per_id, pe.per_name, pe.per_lastname
