@@ -68,7 +68,7 @@ class Controller extends BaseController
             return response()->json([
                 'status' => false,
                 'message' => $response->json()['message']
-            ]);
+            ],400);
         }
     }
 
