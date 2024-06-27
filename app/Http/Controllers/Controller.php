@@ -36,15 +36,15 @@ class Controller extends BaseController
             "use_mail" => $request->use_mail,
             "use_password" => $request->use_password,
         ]);
-        $user=DB::table('users')->where("use_mail",'=',$request->use_mail)->first();
-        $user = User::find($user->use_id);
-        Auth::login($user);
+        
 
         if ($response->successful()) {
             $responseData = $response->json();
             $token = isset($responseData['token']) ? $responseData['token'] : null;
             if ($token !== null) {
-
+                $user=DB::table('users')->where("use_mail",'=',$request->use_mail)->first();
+                $user = User::find($user->use_id);
+                Auth::login($user);
 
                 return response()->json([
                     'status' => true,
