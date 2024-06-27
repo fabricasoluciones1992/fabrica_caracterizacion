@@ -61,7 +61,7 @@ class Controller extends BaseController
                 return response()->json([
                     'status' => false,
                     'message' => $response->json()
-                ]);
+                ],401);
             }
         } else {
             // Handle the case where the HTTP request was not successful
