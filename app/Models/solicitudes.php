@@ -63,7 +63,7 @@ class Solicitudes extends Model
     
     }
     public static function search($id){
-    $solicitud = DB::select("SELECT * FROM viewSolicitudes WHERE sol_id = $id");
+    $solicitud = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = $id");
 
     if (!empty($solicitud)) {
         $solicitud = $solicitud[0];

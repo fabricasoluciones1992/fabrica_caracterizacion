@@ -65,7 +65,7 @@ class PermanencesController extends Controller
     public function show($id)
     {
         
-        $Permanences =  Permanence::find($id);
+        $Permanences =  Permanence::search($id);
 
         if ($Permanences == null) {
             return response()->json([

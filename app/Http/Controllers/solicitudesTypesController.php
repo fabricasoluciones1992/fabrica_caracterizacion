@@ -10,13 +10,12 @@ use Illuminate\Support\Facades\Validator;
 class SolicitudesTypesController extends Controller
 {
     public function index()
-    {        
+    {
             $SolicitudesTypes = SolicitudeType::all();
             return response()->json([
                 'status' => true,
                 'data' => $SolicitudesTypes
             ], 200);
-        
     }
 
     public function store(Request $request)
