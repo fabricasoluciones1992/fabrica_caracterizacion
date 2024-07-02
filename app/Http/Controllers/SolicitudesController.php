@@ -38,8 +38,7 @@ public function store(Request $request)
             ]);
             
         } else {
-            $existingActivity = Solicitudes::where('rea_typ_id', $request->rea_typ_id)
-            ->where('sol_typ_id', $request->sol_typ_id)
+            $existingActivity = Solicitudes::where('sol_typ_id', $request->sol_typ_id)
             ->where('stu_id', $request->stu_id)
             ->first();
 
@@ -49,9 +48,12 @@ public function store(Request $request)
                 'message' => 'Has already been taken.'
             ]);
         }
-            $solicitud = new Solicitudes($request->input());
+            $solicitud = new Solicitudes();
             $solicitud->sol_date = now()->toDateString(); 
             $solicitud->sol_status = 0;
+            $solicitud->rea_typ_id = 1;
+            $solicitud->sol_typ_id = $request->sol_typ_id;
+            $solicitud->stu_id = $request->stu_id;
             $solicitud->save();
             Controller::NewRegisterTrigger("An insertion was made in the Solicitudes table '$solicitud->sol_id'", 3, $request->use_id);
 
