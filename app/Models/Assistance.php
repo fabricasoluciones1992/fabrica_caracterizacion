@@ -19,7 +19,7 @@ class Assistance extends Model
     ];
     public $timestamps = false;
     public static function select(){
-        $assistances = DB::select("SELECT * FROM `viewAssitances`");
+        $assistances = DB::select("SELECT * FROM `viewAssitances` LIMIT 100");
         return $assistances;
     }
     public static function search($id){
