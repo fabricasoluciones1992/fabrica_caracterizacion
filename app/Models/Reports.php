@@ -153,8 +153,8 @@ class Reports extends Model
                         'viewAssitances.bie_act_hour as Hora actividad',
                         'viewAssitances.stu_typ_name as Tipo estudiante',
                         'bie_act_name as Nombre actividad',
-                        'ass_reg_status as Estado registro',
-                        'ass_status as Estado asistencia'
+                        'ass_reg_status as Estado_registro',
+                        'ass_status as Estado_asistencia'
                     )
 
                     ->join('viewEnrollments', 'viewAssitances.per_id', '=', 'viewEnrollments.per_id')
@@ -169,6 +169,19 @@ class Reports extends Model
                         }else{
                             $student->Jornada = "N/A";
                         }
+
+                        if ($student->Estado_registro == 0) {
+                            $student->Estado_registro = "No registrado";
+                        } else {
+                            $student->Estado_registro = "Registrado";
+                        }
+
+                        if ($student->Estado_asistencia == 0) {
+                            $student->Estado_asistencia = "No asistió";
+                        } else {
+                            $student->Estado_asistencia = "Asistió";
+                        }
+                        
 
                     }
                 return $students;
