@@ -98,9 +98,10 @@ public function show($id)
                 ], 400);
             } else {
                 $rules = [
+                    'sol_typ_id' => 'required|exists:solicitude_types|integer',
 
                     'sol_status'=> 'required|exists:solicitudes|integer',
-                    'sol_typ_id' => 'required|exists:solicitude_types|integer',
+                    'rea_typ_id' => 'required|exists:reason_types|integer',
                     'stu_id' => 'required|exists:students|integer',
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -113,6 +114,8 @@ public function show($id)
                     $solicitude->sol_date = now()->toDateString(); 
                     $solicitude->sol_status = $request->sol_status;
                     $solicitude->sol_typ_id = $request->sol_typ_id;
+                    $solicitude->rea_typ_id = $request->rea_typ_id;
+
                     $solicitude->stu_id = $request->stu_id;
                     $solicitude->save();
                     Controller::NewRegisterTrigger("An update was made in the Solicitudes table",4,$request->use_id);
