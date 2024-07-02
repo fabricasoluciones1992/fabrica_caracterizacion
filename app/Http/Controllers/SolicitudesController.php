@@ -26,7 +26,6 @@ public function store(Request $request)
 {
     
         $rules = [
-            'rea_typ_id' => 'required|exists:reason_types|integer',
             'sol_typ_id' => 'required|exists:solicitude_types|integer',
             'stu_id' => 'required|exists:students|integer',
 
@@ -98,10 +97,9 @@ public function show($id)
             } else {
                 $rules = [
 
-                    'sol_status'=> 'required|integer',
-                    'rea_typ_id' =>'required|integer',
-                    'sol_typ_id' =>'required|integer',
-                    'stu_id' =>'required|integer'
+                    'sol_status'=> 'required|exists:solicitudes|integer',
+                    'sol_typ_id' => 'required|exists:solicitude_types|integer',
+                    'stu_id' => 'required|exists:students|integer',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -112,7 +110,6 @@ public function show($id)
                 } else {
                     $solicitude->sol_date = now()->toDateString(); 
                     $solicitude->sol_status = $request->sol_status;
-                    $solicitude->rea_typ_id = $request->rea_typ_id;
                     $solicitude->sol_typ_id = $request->sol_typ_id;
                     $solicitude->stu_id = $request->stu_id;
                     $solicitude->save();
@@ -200,11 +197,9 @@ public function filtredStatusSol($id)
 public function filtreduser($id, $rea_typ_type = null)
 {
     try {
-        if ($rea_typ_type !== null) {
-            $Solicitudes = Solicitudes::findByUse($id, $rea_typ_type);
-        } else {
+       
             $Solicitudes = Solicitudes::findByUse($id);
-        }
+        
         
         return response()->json([
             'status' => true,

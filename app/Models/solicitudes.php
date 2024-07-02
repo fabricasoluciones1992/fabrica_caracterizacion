@@ -86,12 +86,10 @@ public static function findBystatus($id){
         }
         return $Solicitudes;
     }
-    public static function findByUse($id, $rea_typ_type = null){
-        if ($rea_typ_type !== null) {
-            $Solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_id = ? AND rea_typ_type = ?", [$id, $rea_typ_type]);
-        } else {
-            $Solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_id = ?", [$id]);
-        }
+    public static function findByUse($id){
+        
+            $Solicitudes = DB::select("SELECT * FROM viewSolicitudes WHERE per_id = ? ORDER BY sol_date DESC", [$id]);
+        
         foreach ($Solicitudes as $solicitud) {
             $solicitud->status_name = Solicitudes::getStatusName($solicitud->sol_status);
         }
