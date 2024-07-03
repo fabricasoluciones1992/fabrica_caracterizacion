@@ -66,7 +66,6 @@ class PermanencesController extends Controller
     {
         
         $Permanences =  Permanence::search($id);
-
         if ($Permanences == null) {
             return response()->json([
                 'status' => false,

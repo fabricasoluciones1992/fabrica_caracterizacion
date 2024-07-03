@@ -74,7 +74,6 @@ public function store(Request $request)
 public function show($id)
 {
     $solicitud = Solicitudes::search($id);
-
     if (!$solicitud) {
         return response()->json([
             'status' => false,

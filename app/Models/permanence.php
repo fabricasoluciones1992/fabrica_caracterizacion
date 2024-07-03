@@ -28,7 +28,7 @@ class Permanence extends Model
 
     public static function search($id){
         $Permanence = DB::select("SELECT * FROM viewPermanences WHERE per_document = $id");
-        return $Permanence[0];
+        return $Permanence;
     }
    
     public static function findBySolTyp($id,$sol_typ_name){

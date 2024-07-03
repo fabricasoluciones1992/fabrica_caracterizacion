@@ -65,9 +65,8 @@ class Solicitudes extends Model
     public static function search($id){
     $solicitud = DB::select("SELECT * FROM viewSolicitudes WHERE per_document = $id");
 
-    if (!empty($solicitud)) {
-        $solicitud = $solicitud[0];
-        $solicitud->status_name = Solicitudes::getStatusName($solicitud->sol_status);
+    foreach($solicitud as $data){
+        $data->status_name = Solicitudes::getStatusName($data->sol_status);
     }
     
     return $solicitud;
