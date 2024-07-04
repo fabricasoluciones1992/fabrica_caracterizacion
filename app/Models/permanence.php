@@ -27,7 +27,7 @@ class Permanence extends Model
 }
 
     public static function search($id){
-        $Permanence = DB::select("SELECT * FROM viewPermanences WHERE per_document = $id");
+        $Permanence = DB::select("SELECT * FROM viewPermanences WHERE per_document = '$id'");
         return $Permanence;
     }
    
